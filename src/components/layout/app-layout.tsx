@@ -1,8 +1,8 @@
 import React from "react";
 import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
-import { useAuthStore } from "../../stores/auth-store";
-import { useAppStore } from "../../stores/app-store";
+import { useAuth } from "hooks/use-auth";
+import { useAppStore } from "stores/app-store";
 import AppSidebar from "./app-sidebar";
 import AppHeader from "./app-header";
 import NotificationContainer from "./notification-container";
@@ -10,7 +10,7 @@ import NotificationContainer from "./notification-container";
 const { Content } = Layout;
 
 const AppLayout: React.FC = () => {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated } = useAuth();
   const { sidebarCollapsed } = useAppStore();
 
   if (!isAuthenticated) {
