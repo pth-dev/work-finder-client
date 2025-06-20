@@ -1,18 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: "user" | "admin";
-  avatar?: string;
-}
-
-interface LoginForm {
-  email: string;
-  password: string;
-}
+import type { User, LoginForm } from "../types";
 
 interface AuthStore {
   // State
@@ -50,7 +38,7 @@ export const useAuthStore = create<AuthStore>()(
             id: "1",
             name: "John Doe",
             email: credentials.email,
-            role: "user",
+            role: "candidate", // Default role for login
           };
 
           set({

@@ -1,9 +1,12 @@
 // Common types used throughout the application
 
+export type UserRole = "candidate" | "recruiter";
+
 export interface User {
   id: string;
   email: string;
   name: string;
+  role: UserRole;
   avatar?: string;
 }
 
@@ -32,7 +35,7 @@ export interface LoginForm {
 }
 
 export interface RegisterForm {
-  name: string;
+  role: UserRole;
   email: string;
   password: string;
   confirmPassword: string;
