@@ -4,6 +4,7 @@ import { ROUTER } from "./constants/Routers";
 
 // Layouts
 import AppLayout from "./components/layout/app-layout";
+import AuthLayout from "./components/layout/auth-layout";
 
 // Guards
 import AuthGuard from "./utils/route-guard/AuthGuard";
@@ -16,6 +17,7 @@ import Loadable from "./components/ui/Loadable";
 // Public Routes
 import AuthLogin from "./pages/login";
 import AuthRegister from "./pages/register";
+import ForgotPassword from "./pages/forgot-password";
 
 /** Private Routes */
 // Dashboard
@@ -136,12 +138,17 @@ const MainRoutes = () => (
 
     {/* Public Routes */}
     <Route element={<GuestGuard />}>
-      <Route path={ROUTER.authentication.login} element={<AuthLogin />} />
-      <Route path={ROUTER.authentication.register} element={<AuthRegister />} />
-      <Route
-        path={ROUTER.authentication.forgot}
-        element={<div>Forgot Password Page</div>}
-      />
+      <Route element={<AuthLayout />}>
+        <Route path={ROUTER.authentication.login} element={<AuthLogin />} />
+        <Route
+          path={ROUTER.authentication.register}
+          element={<AuthRegister />}
+        />
+        <Route
+          path={ROUTER.authentication.forgot}
+          element={<ForgotPassword />}
+        />
+      </Route>
     </Route>
 
     {/* 404 Route */}

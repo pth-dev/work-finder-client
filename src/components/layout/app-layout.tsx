@@ -1,6 +1,5 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { useAuth } from "hooks/use-auth";
 import { useAppStore } from "stores/app-store";
 import AppSidebar from "./app-sidebar";
 import AppHeader from "./app-header";
@@ -8,12 +7,7 @@ import NotificationContainer from "./notification-container";
 import { cn } from "@/lib/utils";
 
 const AppLayout: React.FC = () => {
-  const { isAuthenticated } = useAuth();
   const { sidebarCollapsed } = useAppStore();
-
-  if (!isAuthenticated) {
-    return <Outlet />;
-  }
 
   return (
     <div className="min-h-screen bg-background">

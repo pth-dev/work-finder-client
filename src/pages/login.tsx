@@ -1,15 +1,7 @@
-import React from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "../components/ui/card";
+import React, { useState } from "react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
-
 import { Typography } from "../components/ui/typography";
-import { User, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "hooks/use-auth";
 import { useNavigate } from "react-router-dom";
@@ -24,10 +16,13 @@ import {
   FormLabel,
   FormMessage,
 } from "../components/ui/form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle, faFacebook } from "@fortawesome/free-brands-svg-icons";
 
 const formSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
+  username: z.string().min(1, "Username is required"),
   password: z.string().min(1, "Password is required"),
+  rememberMe: z.boolean().optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -35,18 +30,21 @@ type FormData = z.infer<typeof formSchema>;
 const LoginPage: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [rememberMe, setRememberMe] = useState(false);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
+      rememberMe: false,
     },
   });
 
   const onSubmit = async (values: FormData) => {
     try {
-      await login(values.email, values.password);
+      // Using username as email for login
+      await login(values.username, values.password);
       navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
@@ -54,71 +52,135 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/50">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Welcome Back</CardTitle>
-          <Typography variant="muted">Sign in to your account</Typography>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          placeholder="Enter your email"
-                          className="pl-10"
-                          {...field}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+    <div className="w-full space-y-6">
+      {/* Header */}
+      <div className="text-center space-y-2">
+        <h1 className="text-2xl font-semibold text-gray-900">
+          Login to WorkFinder
+        </h1>
+      </div>
+
+      {/* Form */}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-medium text-gray-700">
+                  Username
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Ali Tuf..."
+                    className="h-12 px-4 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-medium text-gray-700">
+                  Password
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="••••••"
+                    className="h-12 px-4 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Remember Me and Forgot Password */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="remember"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          type="password"
-                          placeholder="Enter your password"
-                          className="pl-10"
-                          {...field}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full">
-                Sign In
-              </Button>
-            </form>
-          </Form>
-          <div className="text-center mt-4">
-            <Typography variant="small">
-              Don't have an account?{" "}
-              <Link to="/register" className="text-primary hover:underline">
-                Sign up
-              </Link>
-            </Typography>
+              <label htmlFor="remember" className="text-sm text-gray-600">
+                Remember Me
+              </label>
+            </div>
+            <Link
+              to="/forgot"
+              className="text-sm text-blue-600 hover:text-blue-800"
+            >
+              Forgot your password?
+            </Link>
           </div>
-        </CardContent>
-      </Card>
+
+          {/* Login Button */}
+          <Button
+            type="submit"
+            className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+          >
+            Log In
+          </Button>
+        </form>
+      </Form>
+
+      {/* Sign Up Link */}
+      <div className="text-center">
+        <Typography variant="small" className="text-gray-600">
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            className="text-blue-600 hover:text-blue-800 font-medium"
+          >
+            Signup
+          </Link>
+        </Typography>
+      </div>
+
+      {/* Divider */}
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-gray-200"></div>
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="px-2 bg-white text-gray-500">or</span>
+        </div>
+      </div>
+
+      {/* Social Login Buttons */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <Button
+          type="button"
+          variant="outline"
+          className="flex-1 h-12 border border-red-200 hover:bg-red-50 text-red-600 font-medium rounded-lg transition-colors"
+        >
+          <FontAwesomeIcon icon={faGoogle} className="w-5 h-5 mr-2" />
+          <span className="hidden sm:inline">Log in via Google+</span>
+          <span className="sm:hidden">Google+</span>
+        </Button>
+
+        <Button
+          type="button"
+          variant="outline"
+          className="flex-1 h-12 border border-blue-200 hover:bg-blue-50 text-blue-600 font-medium rounded-lg transition-colors"
+        >
+          <FontAwesomeIcon icon={faFacebook} className="w-5 h-5 mr-2" />
+          <span className="hidden sm:inline">Log in via Facebook</span>
+          <span className="sm:hidden">Facebook</span>
+        </Button>
+      </div>
     </div>
   );
 };
