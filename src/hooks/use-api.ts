@@ -9,11 +9,6 @@ interface User {
   email: string;
 }
 
-interface PaginationParams {
-  page?: number;
-  limit?: number;
-}
-
 // Query keys
 export const queryKeys = {
   users: ["users"] as const,

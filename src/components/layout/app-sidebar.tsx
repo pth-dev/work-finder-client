@@ -1,172 +1,185 @@
-import React from 'react';
-import { Layout, Menu } from 'antd';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
-  DashboardOutlined,
-  UserOutlined,
-  TeamOutlined,
-  SettingOutlined,
-  FileTextOutlined,
-  BankOutlined,
-} from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { useAppStore } from '../../stores/app-store';
+  LayoutDashboard,
+  User,
+  Users,
+  Settings,
+  FileText,
+  Building,
+  ChevronRight,
+} from "lucide-react";
+import { useAppStore } from "../../stores/app-store";
+import { Button } from "../ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "../ui/collapsible";
+import { cn } from "@/lib/utils";
 
-const { Sider } = Layout;
-
-type MenuItem = Required<MenuProps>['items'][number];
+interface MenuItem {
+  key: string;
+  icon: React.ReactNode;
+  label: string;
+  children?: { key: string; label: string }[];
+}
 
 const AppSidebar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { sidebarCollapsed } = useAppStore();
+  const [openItems, setOpenItems] = useState<string[]>([]);
 
   const menuItems: MenuItem[] = [
     {
-      key: '/',
-      icon: <DashboardOutlined />,
-      label: 'Dashboard',
+      key: "/",
+      icon: <LayoutDashboard className="h-4 w-4" />,
+      label: "Dashboard",
     },
     {
-      key: '/jobs',
-      icon: <BankOutlined />,
-      label: 'Jobs',
+      key: "/jobs",
+      icon: <Building className="h-4 w-4" />,
+      label: "Jobs",
       children: [
         {
-          key: '/jobs',
-          label: 'All Jobs',
+          key: "/jobs",
+          label: "All Jobs",
         },
         {
-          key: '/jobs/create',
-          label: 'Create Job',
+          key: "/jobs/create",
+          label: "Create Job",
         },
         {
-          key: '/jobs/applications',
-          label: 'Applications',
+          key: "/jobs/applications",
+          label: "Applications",
         },
       ],
     },
     {
-      key: '/users',
-      icon: <TeamOutlined />,
-      label: 'Users',
+      key: "/users",
+      icon: <Users className="h-4 w-4" />,
+      label: "Users",
       children: [
         {
-          key: '/users',
-          label: 'All Users',
+          key: "/users",
+          label: "All Users",
         },
         {
-          key: '/users/create',
-          label: 'Create User',
+          key: "/users/create",
+          label: "Create User",
         },
       ],
     },
     {
-      key: '/profile',
-      icon: <UserOutlined />,
-      label: 'Profile',
+      key: "/profile",
+      icon: <User className="h-4 w-4" />,
+      label: "Profile",
     },
     {
-      key: '/reports',
-      icon: <FileTextOutlined />,
-      label: 'Reports',
+      key: "/reports",
+      icon: <FileText className="h-4 w-4" />,
+      label: "Reports",
     },
     {
-      key: '/settings',
-      icon: <SettingOutlined />,
-      label: 'Settings',
+      key: "/settings",
+      icon: <Settings className="h-4 w-4" />,
+      label: "Settings",
     },
   ];
 
-  const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
+  const handleMenuClick = (key: string) => {
     navigate(key);
   };
 
-  // Get the current selected key based on the pathname
-  const getSelectedKey = () => {
-    const pathname = location.pathname;
-    
-    // Find exact match first
-    const exactMatch = menuItems.find(item => item?.key === pathname);
-    if (exactMatch) return [pathname];
-    
-    // Find parent match for nested routes
-    for (const item of menuItems) {
-      if (item && 'children' in item && item.children) {
-        const childMatch = item.children.find(child => 
-          child && typeof child === 'object' && 'key' in child && child.key === pathname
-        );
-        if (childMatch) return [pathname];
-      }
-    }
-    
-    // Default to dashboard if no match
-    return ['/'];
+  const toggleItem = (key: string) => {
+    setOpenItems((prev) =>
+      prev.includes(key) ? prev.filter((item) => item !== key) : [...prev, key]
+    );
   };
 
-  // Get the open keys for expanded menu items
-  const getOpenKeys = () => {
-    const pathname = location.pathname;
-    const openKeys: string[] = [];
-    
-    for (const item of menuItems) {
-      if (item && 'children' in item && item.children) {
-        const hasActiveChild = item.children.some(child => 
-          child && typeof child === 'object' && 'key' in child && 
-          pathname.startsWith(child.key as string)
-        );
-        if (hasActiveChild && typeof item.key === 'string') {
-          openKeys.push(item.key);
-        }
-      }
-    }
-    
-    return openKeys;
-  };
+  const isActive = (key: string) => location.pathname === key;
+  const hasActiveChild = (item: MenuItem) =>
+    item.children?.some((child) => location.pathname === child.key) || false;
 
   return (
-    <Sider
-      trigger={null}
-      collapsible
-      collapsed={sidebarCollapsed}
-      style={{
-        overflow: 'auto',
-        height: '100vh',
-        position: 'fixed',
-        left: 0,
-        top: 0,
-        bottom: 0,
-        zIndex: 1000,
-      }}
-      theme="dark"
+    <aside
+      className={cn(
+        "fixed left-0 top-0 z-50 h-screen bg-slate-900 text-white transition-all duration-200",
+        sidebarCollapsed ? "w-20" : "w-50"
+      )}
     >
-      <div
-        style={{
-          height: 64,
-          margin: 16,
-          background: 'rgba(255, 255, 255, 0.2)',
-          borderRadius: 6,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'white',
-          fontWeight: 'bold',
-          fontSize: sidebarCollapsed ? 14 : 16,
-        }}
-      >
-        {sidebarCollapsed ? 'WF' : 'Work Finder'}
+      {/* Logo */}
+      <div className="flex h-16 items-center justify-center border-b border-slate-800 mx-4">
+        <div className="font-bold text-white">
+          {sidebarCollapsed ? "WF" : "Work Finder"}
+        </div>
       </div>
-      
-      <Menu
-        theme="dark"
-        mode="inline"
-        selectedKeys={getSelectedKey()}
-        defaultOpenKeys={getOpenKeys()}
-        items={menuItems}
-        onClick={handleMenuClick}
-        style={{ borderRight: 0 }}
-      />
-    </Sider>
+
+      {/* Navigation */}
+      <nav className="p-4 space-y-2">
+        {menuItems.map((item) => (
+          <div key={item.key}>
+            {item.children ? (
+              <Collapsible
+                open={openItems.includes(item.key) || hasActiveChild(item)}
+                onOpenChange={() => toggleItem(item.key)}
+              >
+                <CollapsibleTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className={cn(
+                      "w-full justify-start text-white hover:bg-slate-800",
+                      hasActiveChild(item) && "bg-slate-800"
+                    )}
+                  >
+                    {item.icon}
+                    {!sidebarCollapsed && (
+                      <>
+                        <span className="ml-2">{item.label}</span>
+                        <ChevronRight className="ml-auto h-4 w-4 transition-transform duration-200" />
+                      </>
+                    )}
+                  </Button>
+                </CollapsibleTrigger>
+                {!sidebarCollapsed && (
+                  <CollapsibleContent className="space-y-1 mt-1">
+                    {item.children.map((child) => (
+                      <Button
+                        key={child.key}
+                        variant="ghost"
+                        size="sm"
+                        className={cn(
+                          "w-full justify-start text-white hover:bg-slate-800 ml-6",
+                          isActive(child.key) && "bg-slate-700"
+                        )}
+                        onClick={() => handleMenuClick(child.key)}
+                      >
+                        {child.label}
+                      </Button>
+                    ))}
+                  </CollapsibleContent>
+                )}
+              </Collapsible>
+            ) : (
+              <Button
+                variant="ghost"
+                className={cn(
+                  "w-full justify-start text-white hover:bg-slate-800",
+                  isActive(item.key) && "bg-slate-700"
+                )}
+                onClick={() => handleMenuClick(item.key)}
+              >
+                {item.icon}
+                {!sidebarCollapsed && (
+                  <span className="ml-2">{item.label}</span>
+                )}
+              </Button>
+            )}
+          </div>
+        ))}
+      </nav>
+    </aside>
   );
 };
 

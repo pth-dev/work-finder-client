@@ -1,6 +1,13 @@
-import React, { Component, type ErrorInfo, type ReactNode } from "react";
-import { Result, Button } from "antd";
-import { ReloadOutlined, HomeOutlined } from "@ant-design/icons";
+import { Component, type ErrorInfo, type ReactNode } from "react";
+import { Button } from "./button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./card";
+import { RefreshCw, Home, AlertTriangle } from "lucide-react";
 
 interface Props {
   children: ReactNode;
@@ -52,38 +59,34 @@ class ErrorBoundary extends Component<Props, State> {
 
       // Default error UI
       return (
-        <div
-          className="error-boundary-container"
-          style={{
-            height: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "24px",
-          }}
-        >
-          <Result
-            status="500"
-            title="Something went wrong"
-            subTitle="Sorry, an unexpected error occurred. Please try refreshing the page or contact support if the problem persists."
-            extra={[
-              <Button
-                type="primary"
-                icon={<ReloadOutlined />}
-                onClick={this.handleReload}
-                key="reload"
-              >
+        <div className="h-screen flex items-center justify-center p-6">
+          <Card className="w-full max-w-md">
+            <CardHeader className="text-center">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
+                <AlertTriangle className="h-6 w-6 text-destructive" />
+              </div>
+              <CardTitle className="text-xl">Something went wrong</CardTitle>
+              <CardDescription>
+                Sorry, an unexpected error occurred. Please try refreshing the
+                page or contact support if the problem persists.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Button onClick={this.handleReload} className="w-full" size="sm">
+                <RefreshCw className="mr-2 h-4 w-4" />
                 Reload Page
-              </Button>,
+              </Button>
               <Button
-                icon={<HomeOutlined />}
+                variant="outline"
                 onClick={this.handleGoHome}
-                key="home"
+                className="w-full"
+                size="sm"
               >
+                <Home className="mr-2 h-4 w-4" />
                 Go Home
-              </Button>,
-            ]}
-          />
+              </Button>
+            </CardContent>
+          </Card>
         </div>
       );
     }

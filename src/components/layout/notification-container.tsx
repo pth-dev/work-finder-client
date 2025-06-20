@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { notification } from 'antd';
-import { useAppStore } from '../../stores/app-store';
+import React, { useEffect } from "react";
+import { useAppStore } from "../../stores/app-store";
+import { toast } from "@/hooks/use-toast";
 
 const NotificationContainer: React.FC = () => {
   const { notifications, removeNotification } = useAppStore();
@@ -8,16 +8,17 @@ const NotificationContainer: React.FC = () => {
   useEffect(() => {
     // Display new notifications
     notifications.forEach((notif) => {
-      const key = notif.id;
-      
-      notification[notif.type]({
-        key,
-        message: notif.title,
+      const variant = notif.type === "error" ? "destructive" : "default";
+
+      toast({
+        title: notif.title,
         description: notif.message,
-        placement: 'topRight',
-        duration: 4.5,
-        onClose: () => removeNotification(notif.id),
+        variant,
+        duration: 4500,
       });
+
+      // Remove notification from store after showing
+      removeNotification(notif.id);
     });
   }, [notifications, removeNotification]);
 

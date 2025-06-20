@@ -1,150 +1,132 @@
-import React from 'react';
-import { Layout, Button, Dropdown, Avatar, Space, Input, Badge } from 'antd';
+import React from "react";
+import { Menu, Bell, User, LogOut, Settings, Search } from "lucide-react";
+import { useAuthStore } from "../../stores/auth-store";
+import { useAppStore } from "../../stores/app-store";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Badge } from "../ui/badge";
 import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  BellOutlined,
-  UserOutlined,
-  LogoutOutlined,
-  SettingOutlined,
-  SearchOutlined,
-} from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { useAuthStore } from '../../stores/auth-store';
-import { useAppStore } from '../../stores/app-store';
-
-const { Header } = Layout;
-const { Search } = Input;
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 const AppHeader: React.FC = () => {
   const { user, logout } = useAuthStore();
-  const { 
-    sidebarCollapsed, 
-    toggleSidebar, 
+  const {
+    sidebarCollapsed,
+    toggleSidebar,
     notifications,
     globalSearch,
-    setGlobalSearch 
+    setGlobalSearch,
   } = useAppStore();
 
-  const userMenuItems: MenuProps['items'] = [
-    {
-      key: 'profile',
-      icon: <UserOutlined />,
-      label: 'Profile',
-      onClick: () => {
-        // Navigate to profile page
-        window.location.href = '/profile';
-      },
-    },
-    {
-      key: 'settings',
-      icon: <SettingOutlined />,
-      label: 'Settings',
-      onClick: () => {
-        // Navigate to settings page
-        window.location.href = '/settings';
-      },
-    },
-    {
-      type: 'divider',
-    },
-    {
-      key: 'logout',
-      icon: <LogoutOutlined />,
-      label: 'Logout',
-      onClick: logout,
-    },
-  ];
+  const handleProfileClick = () => {
+    window.location.href = "/profile";
+  };
 
-  const notificationMenuItems: MenuProps['items'] = notifications.length > 0 
-    ? notifications.slice(0, 5).map((notification) => ({
-        key: notification.id,
-        label: (
-          <div style={{ maxWidth: 250 }}>
-            <div style={{ fontWeight: 500, marginBottom: 4 }}>
-              {notification.title}
-            </div>
-            <div style={{ fontSize: 12, color: '#666' }}>
-              {notification.message}
-            </div>
-          </div>
-        ),
-      }))
-    : [
-        {
-          key: 'no-notifications',
-          label: 'No new notifications',
-          disabled: true,
-        },
-      ];
+  const handleSettingsClick = () => {
+    window.location.href = "/settings";
+  };
 
   return (
-    <Header
-      style={{
-        padding: '0 24px',
-        background: '#fff',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderBottom: '1px solid #f0f0f0',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+    <header className="px-6 bg-card border-b border-border flex items-center justify-between h-16">
+      <div className="flex items-center gap-4">
         <Button
-          type="text"
-          icon={sidebarCollapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          variant="ghost"
+          size="icon"
           onClick={toggleSidebar}
-          style={{
-            fontSize: '16px',
-            width: 64,
-            height: 64,
-          }}
-        />
-        
-        <Search
-          placeholder="Search..."
-          value={globalSearch}
-          onChange={(e) => setGlobalSearch(e.target.value)}
-          style={{ width: 300 }}
-          prefix={<SearchOutlined />}
-        />
+          className="h-10 w-10"
+        >
+          {sidebarCollapsed ? (
+            <Menu className="h-4 w-4" />
+          ) : (
+            <Menu className="h-4 w-4" />
+          )}
+        </Button>
+
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search..."
+            value={globalSearch}
+            onChange={(e) => setGlobalSearch(e.target.value)}
+            className="w-80 pl-10"
+          />
+        </div>
       </div>
 
-      <Space size="middle">
-        <Dropdown
-          menu={{ items: notificationMenuItems }}
-          placement="bottomRight"
-          trigger={['click']}
-        >
-          <Button
-            type="text"
-            icon={
-              <Badge count={notifications.length} size="small">
-                <BellOutlined style={{ fontSize: 16 }} />
-              </Badge>
-            }
-            style={{ border: 'none' }}
-          />
-        </Dropdown>
+      <div className="flex items-center gap-4">
+        {/* Notifications Dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="relative">
+              <Bell className="h-4 w-4" />
+              {notifications.length > 0 && (
+                <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs">
+                  {notifications.length}
+                </Badge>
+              )}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-80">
+            <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {notifications.length > 0 ? (
+              notifications.slice(0, 5).map((notification) => (
+                <DropdownMenuItem
+                  key={notification.id}
+                  className="flex flex-col items-start p-4"
+                >
+                  <div className="font-medium">{notification.title}</div>
+                  <div className="text-sm text-muted-foreground">
+                    {notification.message}
+                  </div>
+                </DropdownMenuItem>
+              ))
+            ) : (
+              <DropdownMenuItem disabled>No new notifications</DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
 
-        <Dropdown
-          menu={{ items: userMenuItems }}
-          placement="bottomRight"
-          trigger={['click']}
-        >
-          <Space style={{ cursor: 'pointer' }}>
-            <Avatar
-              size="small"
-              src={user?.avatar}
-              icon={<UserOutlined />}
-            />
-            <span style={{ fontWeight: 500 }}>
-              {user?.name || 'User'}
-            </span>
-          </Space>
-        </Dropdown>
-      </Space>
-    </Header>
+        {/* User Dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="flex items-center gap-2 h-10">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={user?.avatar} />
+                <AvatarFallback>
+                  <User className="h-4 w-4" />
+                </AvatarFallback>
+              </Avatar>
+              <span className="font-medium">{user?.name || "User"}</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleProfileClick}>
+              <User className="mr-2 h-4 w-4" />
+              Profile
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleSettingsClick}>
+              <Settings className="mr-2 h-4 w-4" />
+              Settings
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={logout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </header>
   );
 };
 

@@ -1,54 +1,69 @@
 import React from "react";
-import { Card, Typography, Space, Button, Avatar, Row, Col } from "antd";
-import { UserOutlined, EditOutlined } from "@ant-design/icons";
-
-const { Title, Paragraph, Text } = Typography;
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
+import { Typography } from "../components/ui/typography";
+import { User, Edit } from "lucide-react";
 
 const ProfilePage: React.FC = () => {
   return (
-    <div>
-      <Title level={2} style={{ marginBottom: 24 }}>
-        Profile
-      </Title>
+    <div className="space-y-6">
+      <Typography variant="h2">Profile</Typography>
 
-      <Row gutter={[24, 24]}>
-        <Col xs={24} lg={8}>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-1">
           <Card>
-            <div style={{ textAlign: "center" }}>
-              <Avatar
-                size={120}
-                icon={<UserOutlined />}
-                style={{ marginBottom: 16 }}
-              />
-              <Title level={4}>John Doe</Title>
-              <Text type="secondary">john.doe@example.com</Text>
-              <div style={{ marginTop: 16 }}>
-                <Button type="primary" icon={<EditOutlined />}>
-                  Edit Profile
-                </Button>
-              </div>
-            </div>
+            <CardContent className="text-center pt-6">
+              <Avatar className="w-30 h-30 mx-auto mb-4">
+                <AvatarImage src="" />
+                <AvatarFallback>
+                  <User className="w-12 h-12" />
+                </AvatarFallback>
+              </Avatar>
+              <Typography variant="h4" className="mb-2">
+                John Doe
+              </Typography>
+              <Typography variant="muted" className="mb-4">
+                john.doe@example.com
+              </Typography>
+              <Button>
+                <Edit className="mr-2 h-4 w-4" />
+                Edit Profile
+              </Button>
+            </CardContent>
           </Card>
-        </Col>
+        </div>
 
-        <Col xs={24} lg={16}>
-          <Card title="Profile Information">
-            <div style={{ textAlign: "center", padding: "40px 20px" }}>
-              <Title level={4}>Profile Management</Title>
-              <Paragraph>
-                This section is ready for you to implement profile management
-                features. Add forms for editing user information, uploading
-                avatars, and managing account settings.
-              </Paragraph>
-              <Space>
-                <Button type="primary">Edit Information</Button>
-                <Button>Change Password</Button>
-                <Button>Upload Avatar</Button>
-              </Space>
-            </div>
+        <div className="lg:col-span-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>Profile Information</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-10">
+                <Typography variant="h4" className="mb-4">
+                  Profile Management
+                </Typography>
+                <Typography variant="muted" className="mb-6">
+                  This section is ready for you to implement profile management
+                  features. Add forms for editing user information, uploading
+                  avatars, and managing account settings.
+                </Typography>
+                <div className="flex flex-wrap gap-3 justify-center">
+                  <Button>Edit Information</Button>
+                  <Button variant="outline">Change Password</Button>
+                  <Button variant="outline">Upload Avatar</Button>
+                </div>
+              </div>
+            </CardContent>
           </Card>
-        </Col>
-      </Row>
+        </div>
+      </div>
     </div>
   );
 };
