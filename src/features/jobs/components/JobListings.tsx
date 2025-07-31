@@ -21,8 +21,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shared/components";
-import { type Job } from "@/shared/types";
+} from "@/components";
+import { type Job } from "@/types";
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 

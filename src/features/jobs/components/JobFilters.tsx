@@ -13,13 +13,13 @@ import {
   Label,
   Separator,
   Badge,
-} from "@/shared/components";
+} from "@/components";
 import {
   type JobFilter,
   type JobType,
   type ExperienceLevel,
   type WorkLocation,
-} from "@/shared/types";
+} from "@/types";
 import { jobCategories, locations } from "@/lib/mock-data";
 
 interface JobFiltersProps {
@@ -168,12 +168,8 @@ export const JobFilters: React.FC<JobFiltersProps> = ({
                   <Checkbox
                     id={`type-${type.value}`}
                     checked={filters.type?.includes(type.value) || false}
-                    onCheckedChange={(checked) =>
-                      handleArrayFilterChange(
-                        "type",
-                        type.value,
-                        checked as boolean
-                      )
+                    onCheckedChange={(checked: boolean) =>
+                      handleArrayFilterChange("type", type.value, checked)
                     }
                   />
                   <Label
@@ -202,11 +198,11 @@ export const JobFilters: React.FC<JobFiltersProps> = ({
                     checked={
                       filters.experienceLevel?.includes(level.value) || false
                     }
-                    onCheckedChange={(checked) =>
+                    onCheckedChange={(checked: boolean) =>
                       handleArrayFilterChange(
                         "experienceLevel",
                         level.value,
-                        checked as boolean
+                        checked
                       )
                     }
                   />
@@ -239,11 +235,11 @@ export const JobFilters: React.FC<JobFiltersProps> = ({
                     checked={
                       filters.workLocation?.includes(location.value) || false
                     }
-                    onCheckedChange={(checked) =>
+                    onCheckedChange={(checked: boolean) =>
                       handleArrayFilterChange(
                         "workLocation",
                         location.value,
-                        checked as boolean
+                        checked
                       )
                     }
                   />
@@ -269,7 +265,7 @@ export const JobFilters: React.FC<JobFiltersProps> = ({
                   <Checkbox
                     id={`category-${category}`}
                     checked={filters.categories?.includes(category) || false}
-                    onCheckedChange={(checked) =>
+                    onCheckedChange={(checked: boolean) =>
                       handleArrayFilterChange(
                         "categories",
                         category,
@@ -304,7 +300,7 @@ export const JobFilters: React.FC<JobFiltersProps> = ({
                       filters.salaryMin === range.min &&
                       filters.salaryMax === range.max
                     }
-                    onCheckedChange={(checked) => {
+                    onCheckedChange={(checked: boolean) => {
                       if (checked) {
                         handleFilterChange("salaryMin", range.min);
                         handleFilterChange("salaryMax", range.max);

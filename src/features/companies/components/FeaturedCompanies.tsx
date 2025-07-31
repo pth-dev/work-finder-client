@@ -7,8 +7,8 @@ import {
   Building2,
   TrendingUp,
 } from "lucide-react";
-import { Button, Card, CardContent, Badge } from "@/shared/components";
-import { type Company } from "@/shared/types";
+import { Button, Card, CardContent, Badge } from "@/components";
+import { type Company } from "@/types";
 import { useNavigate } from "react-router-dom";
 
 interface FeaturedCompaniesProps {

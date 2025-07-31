@@ -1,5 +1,5 @@
-import { ReactNode, useEffect } from 'react';
-import { useAuthStore } from '@/features/authentication/stores/auth-store';
+import { ReactNode, useEffect } from "react";
+import { useAuthStore } from "@/stores";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -11,14 +11,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        const token = localStorage.getItem('work-finder-auth');
+        const token = localStorage.getItem("work-finder-auth");
         if (token) {
           await getCurrentUser();
         } else {
           setInitialized();
         }
       } catch (error) {
-        console.error('Auth initialization failed:', error);
+        console.error("Auth initialization failed:", error);
         setInitialized();
       }
     };

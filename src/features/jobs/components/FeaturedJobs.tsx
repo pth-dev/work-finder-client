@@ -7,8 +7,8 @@ import {
   ArrowRight,
   Bookmark,
 } from "lucide-react";
-import { Button, Card, CardContent, Badge } from "@/shared/components";
-import { type Job } from "@/shared/types";
+import { Button, Card, CardContent, Badge } from "@/components";
+import { type Job } from "@/types";
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 

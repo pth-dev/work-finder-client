@@ -1,2 +1,3 @@
 // Authentication stores
-export { useAuthStore } from './auth-store'
+// Re-export from shared stores
+export { useAuthStore } from "@/stores/auth-store";

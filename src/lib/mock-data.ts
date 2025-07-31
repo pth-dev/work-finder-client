@@ -8,7 +8,7 @@ import {
   type WorkLocation,
   type CompanySize,
   type ApplicationStatus,
-} from "@/shared/types";
+} from "@/types";
 
 // Mock Companies Data
 export const mockCompanies: Company[] = [
