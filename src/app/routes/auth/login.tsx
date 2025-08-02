@@ -3,7 +3,10 @@ import { LoginForm } from "@/features/authentication/components/LoginForm";
 
 const LoginRoute = () => {
   return (
-    <AuthLayout title="Log in to your account">
+    <AuthLayout
+      title="Chào mừng bạn quay lại"
+      subtitle="Mỗi ứng viên là một cơ hội – hôm nay bạn chọn tương lai cho doanh nghiệp!"
+    >
       <LoginForm />
     </AuthLayout>
   );

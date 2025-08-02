@@ -18,13 +18,13 @@ interface MobileMenuProps {
 }
 
 export const MobileMenu = ({ navigationItems, onClose }: MobileMenuProps) => {
-  const { isAuthenticated, user, logout } = useAuthStore();
+  const { isAuthenticated, user, clearAuth } = useAuthStore();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const handleLogout = async () => {
     try {
-      await logout();
+      clearAuth();
       onClose();
       navigate(paths.home.getHref());
     } catch (error) {
@@ -84,12 +84,12 @@ export const MobileMenu = ({ navigationItems, onClose }: MobileMenuProps) => {
                 {user?.avatar ? (
                   <img
                     src={user.avatar}
-                    alt={user.name || user.email}
+                    alt={user.full_name || user.email}
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
                   <span className="text-white text-sm font-medium">
-                    {user?.name?.charAt(0)?.toUpperCase() ||
+                    {user?.full_name?.charAt(0)?.toUpperCase() ||
                       user?.email?.charAt(0)?.toUpperCase() ||
                       "U"}
                   </span>
@@ -97,7 +97,7 @@ export const MobileMenu = ({ navigationItems, onClose }: MobileMenuProps) => {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-sm font-medium text-gray-900 truncate">
-                  {user?.name || "User"}
+                  {user?.full_name || "User"}
                 </div>
                 <div className="text-xs text-gray-500 truncate">
                   {user?.email}

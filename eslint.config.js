@@ -105,6 +105,27 @@ export default tseslint.config([
           ],
         },
       ],
+
+      // 3. Enforce i18n usage - prevent hardcoded strings
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: "JSXText[value=/[a-zA-Z]/]",
+          message:
+            "Hardcoded text in JSX is not allowed. Use i18n with useTranslation hook: t('key')",
+        },
+        {
+          selector: "Literal[value=/^[A-Z][a-zA-Z\\s]{2,}$/]",
+          message:
+            "Hardcoded strings are not allowed. Use i18n with useTranslation hook: t('key')",
+        },
+        {
+          selector:
+            "TemplateLiteral > TemplateElement[value.raw=/[A-Z][a-zA-Z\\s]{2,}/]",
+          message:
+            "Hardcoded strings in template literals are not allowed. Use i18n with useTranslation hook: t('key')",
+        },
+      ],
     },
   },
 ]);

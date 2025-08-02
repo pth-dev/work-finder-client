@@ -1,1 +1,2 @@
-// Jobs services will be exported from here
+// Jobs services
+// Note: jobs-api.ts has been removed - use ../api instead

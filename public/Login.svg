@@ -1,0 +1,26 @@
+<svg width="895" height="553" viewBox="0 0 895 553" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="895" height="553" rx="20" fill="url(#paint0_linear_662_5903)"/>
+<g opacity="0.1">
+<path d="M200 150C200 120 225 95 255 95H640C670 95 695 120 695 150V400C695 430 670 455 640 455H255C225 455 200 430 200 400V150Z" fill="white"/>
+</g>
+<g opacity="0.8">
+<circle cx="300" cy="200" r="40" fill="#1967D2"/>
+<circle cx="450" cy="180" r="30" fill="#4285F4"/>
+<circle cx="600" cy="220" r="35" fill="#34A853"/>
+</g>
+<g opacity="0.6">
+<rect x="250" y="300" width="150" height="20" rx="10" fill="#1967D2"/>
+<rect x="250" y="340" width="200" height="20" rx="10" fill="#4285F4"/>
+<rect x="250" y="380" width="180" height="20" rx="10" fill="#34A853"/>
+</g>
+<g opacity="0.4">
+<path d="M500 320L520 300L540 320L560 300L580 320" stroke="#1967D2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M500 360L520 340L540 360L560 340L580 360" stroke="#4285F4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_662_5903" x1="0" y1="0" x2="895" y2="553" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F8FAFF"/>
+<stop offset="1" stop-color="#E3F2FD"/>
+</linearGradient>
+</defs>
+</svg>

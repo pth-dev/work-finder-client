@@ -1,28 +1,22 @@
-export type JobType = 'full-time' | 'part-time' | 'contract' | 'internship' | 'freelance';
-export type ExperienceLevel = 'entry-level' | 'mid-level' | 'senior-level' | 'executive';
-export type WorkLocation = 'remote' | 'hybrid' | 'on-site';
+// ✅ BACKEND-FIRST: Simple types matching backend enums
+export type JobType =
+  | "full_time"
+  | "part_time"
+  | "contract"
+  | "internship"
+  | "freelance";
+export type JobStatus = "active" | "inactive" | "expired" | "draft";
 
-export interface JobSalary {
-  min: number;
-  max: number;
-  currency: string;
-  period: 'hourly' | 'monthly' | 'yearly';
+// ✅ BACKEND-FIRST: Company info from populated relation
+export interface JobCompany {
+  company_id: number;
+  company_name: string;
+  company_image?: string;
+  location?: string;
+  is_verified: boolean;
 }
 
-export interface JobRequirement {
-  id: string;
-  type: 'skill' | 'experience' | 'education' | 'language';
-  name: string;
-  level: 'beginner' | 'intermediate' | 'advanced' | 'expert';
-  required: boolean;
-}
-
-export interface JobBenefit {
-  id: string;
-  name: string;
-  description?: string;
-}
-
+// 🔄 KEEP ORIGINAL: Job interface for existing components
 export interface Job {
   id: string;
   title: string;
@@ -32,17 +26,19 @@ export interface Job {
   companyName: string;
   companyLogo?: string;
   type: JobType;
-  experienceLevel: ExperienceLevel;
-  workLocation: WorkLocation;
+  experienceLevel?: string; // Add missing field for mock data
   location: {
     city: string;
     state: string;
     country: string;
     isRemote: boolean;
   };
-  salary?: JobSalary;
-  requirements: JobRequirement[];
-  benefits: JobBenefit[];
+  salary?: {
+    min: number;
+    max: number;
+    currency: string;
+    period: "hourly" | "monthly" | "yearly";
+  };
   skills: string[];
   categories: string[];
   postedAt: string;
@@ -53,46 +49,48 @@ export interface Job {
   viewsCount: number;
   featured: boolean;
   urgent: boolean;
-  applicationDeadline?: string;
-  contactEmail?: string;
-  applicationUrl?: string;
 }
 
-export interface JobFilter {
-  query?: string;
+// ✅ NEW: Backend job interface for direct API consumption
+export interface BackendJob {
+  job_id: number;
+  company_id: number;
+  job_title: string;
+  description?: string;
   location?: string;
-  type?: JobType[];
-  experienceLevel?: ExperienceLevel[];
-  workLocation?: WorkLocation[];
-  salaryMin?: number;
-  salaryMax?: number;
-  categories?: string[];
-  skills?: string[];
-  companyId?: string;
-  postedWithin?: 'day' | 'week' | 'month' | 'all';
-  featured?: boolean;
+  category?: string;
+  salary_min?: number;
+  salary_max?: number;
+  salary?: string;
+  job_type?: JobType;
+  status: JobStatus;
+  posted_date: string;
+  expires_at?: string;
+  view_count: number;
+  save_count: number;
+  application_count: number;
+  company?: JobCompany;
+}
+
+// ✅ BACKEND-FIRST: Filter interface matching backend API
+export interface JobFilter {
+  search?: string; // Backend uses 'search' not 'query'
+  location?: string;
+  category?: string;
+  job_type?: JobType; // Backend uses single value
+  company_id?: number; // Backend uses number ID
   page?: number;
   limit?: number;
-  sortBy?: 'relevance' | 'date' | 'salary' | 'company';
-  sortOrder?: 'asc' | 'desc';
+  sortBy?: "posted_date" | "salary" | "save_count";
+  sortOrder?: "ASC" | "DESC"; // Backend uses uppercase
 }
 
+// ✅ BACKEND-FIRST: Response interface matching backend format
 export interface JobSearchResult {
   jobs: Job[];
   total: number;
   page: number;
   limit: number;
   totalPages: number;
-  hasNext: boolean;
-  hasPrev: boolean;
-  filters: JobFilter;
-}
-
-export interface SavedJob {
-  id: string;
-  userId: string;
-  jobId: string;
-  job: Job;
-  savedAt: string;
-  notes?: string;
+  // Removed hasNext/hasPrev - can be calculated from other fields
 }

@@ -58,7 +58,7 @@ export const LanguageSwitcher = () => {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 z-50 animate-in slide-in-from-top-2 duration-200">
+        <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 z-[9999] animate-in slide-in-from-top-2 duration-200">
           <div className="py-2">
             {Object.entries(SUPPORTED_LANGUAGES).map(([code, name]) => {
               const language = code as SupportedLanguage;

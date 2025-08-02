@@ -44,19 +44,45 @@
     "next": "Next",
     "previous": "Previous",
     "submit": "Submit",
-    "reset": "Reset"
+    "reset": "Reset",
+    "time": {
+      "justNow": "Just now",
+      "minutesAgo": "{{count}} minute ago",
+      "minutesAgo_other": "{{count}} minutes ago",
+      "hoursAgo": "{{count}} hour ago",
+      "hoursAgo_other": "{{count}} hours ago",
+      "daysAgo": "{{count}} day ago",
+      "daysAgo_other": "{{count}} days ago",
+      "weeksAgo": "{{count}} week ago",
+      "weeksAgo_other": "{{count}} weeks ago",
+      "monthsAgo": "{{count}} month ago",
+      "monthsAgo_other": "{{count}} months ago",
+      "yearsAgo": "{{count}} year ago",
+      "yearsAgo_other": "{{count}} years ago"
+    },
+    "salary": {
+      "range": "{{min}}-{{max}} million VND",
+      "from": "From {{amount}} million VND",
+      "upTo": "Up to {{amount}} million VND",
+      "negotiable": "Negotiable"
+    }
   },
   "auth": {
     "login": {
       "title": "Sign In",
       "subtitle": "Welcome back! Please sign in to your account",
       "email": "Email Address",
+      "emailPlaceholder": "Enter your email address",
       "password": "Password",
+      "passwordPlaceholder": "Enter your password",
       "rememberMe": "Remember me",
       "forgotPassword": "Forgot password?",
       "signIn": "Sign In",
+      "signingIn": "Signing in...",
       "noAccount": "Don't have an account?",
-      "signUp": "Sign up here"
+      "signUp": "Sign up for free",
+      "authenticationError": "Authentication Error",
+      "loginFailed": "Login failed. Please try again."
     },
     "register": {
       "title": "Create Account",
@@ -73,16 +99,50 @@
     }
   },
   "jobs": {
-    "title": "Find Your Dream Job",
-    "searchPlaceholder": "Job title, keywords, or company",
-    "locationPlaceholder": "City or remote",
+    "title": "Find Jobs",
+    "findJobs": "Find Jobs",
+    "searchPlaceholder": "Job title, keywords...",
+    "locationPlaceholder": "City or postcode",
     "searchButton": "Search Jobs",
+    "discoverOpportunities": "Discover your next career opportunity from thousands of job listings",
     "filters": {
+      "title": "Filters",
+      "clearAll": "Clear all",
+      "search": "Search",
+      "searchPlaceholder": "Job title, keywords...",
+      "location": "Location",
+      "selectLocation": "Select location",
+      "category": "Category",
+      "selectCategory": "Select category",
       "jobType": "Job Type",
-      "experience": "Experience Level",
-      "salary": "Salary Range",
+      "experienceLevel": "Experience Level",
+      "salaryRange": "Salary Range",
+      "postedWithin": "Posted Within",
       "company": "Company",
-      "location": "Location"
+      "categories": {
+        "all": "All Categories",
+        "technology": "Technology",
+        "design": "Design",
+        "marketing": "Marketing",
+        "sales": "Sales",
+        "finance": "Finance",
+        "hr": "Human Resources",
+        "operations": "Operations"
+      },
+      "locations": {
+        "all": "All Locations",
+        "hoChiMinh": "Ho Chi Minh City",
+        "hanoi": "Hanoi",
+        "daNang": "Da Nang",
+        "canTho": "Can Tho",
+        "remote": "Remote"
+      },
+      "postedWithinOptions": {
+        "all": "Any time",
+        "day": "Past 24 hours",
+        "week": "Past week",
+        "month": "Past month"
+      }
     },
     "jobTypes": {
       "fullTime": "Full-time",
@@ -95,7 +155,34 @@
       "entry": "Entry Level",
       "mid": "Mid Level",
       "senior": "Senior Level",
-      "lead": "Lead/Manager"
+      "lead": "Lead",
+      "executive": "Executive"
     }
+  },
+  "companies": {
+    "title": "Top Companies",
+    "topCompanies": "Top Companies",
+    "exploreCompanies": "Explore amazing companies that are actively hiring and building the future",
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "viewJobs": "View Jobs",
+    "employees": "employees",
+    "openPositions": "open positions"
+  },
+  "hero": {
+    "title": {
+      "main": "New Beginnings – Big Opportunities –",
+      "highlight": "Real Success",
+      "subtitle": ""
+    },
+    "description": "Start your career journey with amazing opportunities",
+    "search": {
+      "title": "Find Your Dream Job",
+      "subtitle": "Discover thousands of job opportunities from leading companies",
+      "jobPlaceholder": "Job title, keywords, or company",
+      "locationPlaceholder": "City or postcode",
+      "button": "Find Jobs"
+    },
+    "popularSearches": "Popular Searches"
   }
 }

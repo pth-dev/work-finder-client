@@ -1,1 +1,2 @@
-// Companies services will be exported from here
+// Companies services exports
+// Note: API functions moved to api/ folder for consistency

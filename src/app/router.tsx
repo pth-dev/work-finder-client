@@ -23,7 +23,7 @@ const convert = (queryClient: QueryClient) => (m: any) => {
 
 export const createAppRouter = (queryClient: QueryClient) =>
   createBrowserRouter([
-    // Auth routes - NO AppLayout (có AuthLayout riêng)
+    // Auth routes
     {
       path: paths.auth.register.path,
       lazy: () => import("./routes/auth/register").then(convert(queryClient)),
@@ -31,6 +31,16 @@ export const createAppRouter = (queryClient: QueryClient) =>
     {
       path: paths.auth.login.path,
       lazy: () => import("./routes/auth/login").then(convert(queryClient)),
+    },
+    {
+      path: paths.auth.forgotPassword.path,
+      lazy: () =>
+        import("./routes/auth/forgot-password").then(convert(queryClient)),
+    },
+    {
+      path: paths.auth.verifyOTP.path,
+      lazy: () =>
+        import("./routes/auth/verify-otp").then(convert(queryClient)),
     },
 
     // Main app với AppLayout wrapper

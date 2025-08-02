@@ -19,6 +19,20 @@ export const paths = {
           redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""
         }`,
     },
+    forgotPassword: {
+      path: "/auth/forgot-password",
+      getHref: () => "/auth/forgot-password",
+    },
+    resetPassword: {
+      path: "/auth/reset-password",
+      getHref: (token?: string) =>
+        `/auth/reset-password${token ? `?token=${token}` : ""}`,
+    },
+    verifyOTP: {
+      path: "/auth/verify-otp",
+      getHref: (email?: string) =>
+        `/auth/verify-otp${email ? `?email=${encodeURIComponent(email)}` : ""}`,
+    },
   },
 
   app: {

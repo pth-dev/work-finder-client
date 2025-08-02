@@ -1,8 +1,9 @@
 // Re-export all types for easy importing
-export * from './job';
-export * from './company';
-export * from './user';
-export * from './application';
+export * from "./common";
+export * from "./job";
+export * from "./company";
+export * from "./user";
+export * from "./application";
 
 // Common types
 export interface ApiResponse<T> {
@@ -32,7 +33,7 @@ export interface SelectOption {
 
 export interface SearchSuggestion {
   id: string;
-  type: 'job' | 'company' | 'location' | 'skill';
+  type: "job" | "company" | "location" | "skill";
   text: string;
   count?: number;
 }
@@ -46,7 +47,12 @@ export interface NotificationSettings {
 export interface Notification {
   id: string;
   userId: string;
-  type: 'job_alert' | 'application_update' | 'interview_reminder' | 'company_update' | 'system';
+  type:
+    | "job_alert"
+    | "application_update"
+    | "interview_reminder"
+    | "company_update"
+    | "system";
   title: string;
   message: string;
   data?: Record<string, any>;

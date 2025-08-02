@@ -10,21 +10,33 @@ import {
 import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/stores";
+import { useLogout } from "@/features/authentication/api/logout";
 import { paths } from "@/config/paths";
 import { cn } from "@/utils";
 
 export const UserMenu = () => {
-  const { user, logout } = useAuthStore();
+  const { user, clearAuth } = useAuthStore();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  const logoutMutation = useLogout({
+    mutationConfig: {
+      onSuccess: () => {
+        clearAuth();
+        setIsOpen(false);
+        navigate(paths.home.getHref());
+      },
+      onError: (error) => {
+        console.error("Logout failed:", error);
+      },
+    },
+  });
+
   const handleLogout = async () => {
     try {
-      await logout();
-      setIsOpen(false);
-      navigate(paths.home.getHref());
+      await logoutMutation.mutateAsync();
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -54,12 +66,12 @@ export const UserMenu = () => {
           {user?.avatar ? (
             <img
               src={user.avatar}
-              alt={user.name || user.email}
+              alt={user.full_name || user.email}
               className="w-full h-full rounded-full object-cover"
             />
           ) : (
             <span className="text-white text-sm font-medium">
-              {user?.name?.charAt(0)?.toUpperCase() ||
+              {user?.full_name?.charAt(0)?.toUpperCase() ||
                 user?.email?.charAt(0)?.toUpperCase() ||
                 "U"}
             </span>
@@ -67,7 +79,7 @@ export const UserMenu = () => {
         </div>
         <div className="hidden md:block text-left">
           <div className="text-sm font-medium text-gray-900">
-            {user?.name || "User"}
+            {user?.full_name || "User"}
           </div>
           <div className="text-xs text-gray-500 capitalize">
             {user?.role || "Member"}
@@ -83,19 +95,19 @@ export const UserMenu = () => {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 z-50 animate-in slide-in-from-top-2 duration-200">
+        <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 z-[9999] animate-in slide-in-from-top-2 duration-200">
           <div className="p-3 border-b border-gray-100">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-[#1967d2] to-[#1557b8] rounded-full flex items-center justify-center">
                 {user?.avatar ? (
                   <img
                     src={user.avatar}
-                    alt={user.name || user.email}
+                    alt={user.full_name || user.email}
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
                   <span className="text-white text-sm font-medium">
-                    {user?.name?.charAt(0)?.toUpperCase() ||
+                    {user?.full_name?.charAt(0)?.toUpperCase() ||
                       user?.email?.charAt(0)?.toUpperCase() ||
                       "U"}
                   </span>
@@ -103,7 +115,7 @@ export const UserMenu = () => {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-sm font-medium text-gray-900 truncate">
-                  {user?.name || "User"}
+                  {user?.full_name || "User"}
                 </div>
                 <div className="text-xs text-gray-500 truncate">
                   {user?.email}

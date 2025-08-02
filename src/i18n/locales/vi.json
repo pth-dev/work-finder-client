@@ -44,19 +44,39 @@
     "next": "Tiếp theo",
     "previous": "Trước đó",
     "submit": "Gửi",
-    "reset": "Đặt lại"
+    "reset": "Đặt lại",
+    "time": {
+      "justNow": "Vừa xong",
+      "minutesAgo": "{{count}} phút trước",
+      "hoursAgo": "{{count}} giờ trước",
+      "daysAgo": "{{count}} ngày trước",
+      "weeksAgo": "{{count}} tuần trước",
+      "monthsAgo": "{{count}} tháng trước",
+      "yearsAgo": "{{count}} năm trước"
+    },
+    "salary": {
+      "range": "{{min}}-{{max}} triệu VND",
+      "from": "Từ {{amount}} triệu VND",
+      "upTo": "Lên đến {{amount}} triệu VND",
+      "negotiable": "Thỏa thuận"
+    }
   },
   "auth": {
     "login": {
       "title": "Đăng nhập",
       "subtitle": "Chào mừng bạn trở lại! Vui lòng đăng nhập vào tài khoản của bạn",
       "email": "Địa chỉ email",
+      "emailPlaceholder": "Nhập địa chỉ email của bạn",
       "password": "Mật khẩu",
+      "passwordPlaceholder": "Nhập mật khẩu của bạn",
       "rememberMe": "Ghi nhớ đăng nhập",
       "forgotPassword": "Quên mật khẩu?",
       "signIn": "Đăng nhập",
+      "signingIn": "Đang đăng nhập...",
       "noAccount": "Chưa có tài khoản?",
-      "signUp": "Đăng ký tại đây"
+      "signUp": "Đăng ký miễn phí",
+      "authenticationError": "Lỗi xác thực",
+      "loginFailed": "Đăng nhập thất bại. Vui lòng thử lại."
     },
     "register": {
       "title": "Tạo tài khoản",
@@ -70,19 +90,99 @@
       "createAccount": "Tạo tài khoản",
       "hasAccount": "Đã có tài khoản?",
       "signIn": "Đăng nhập tại đây"
+    },
+    "messages": {
+      "registration": {
+        "success": "Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản.",
+        "failed": "Đăng ký thất bại. Vui lòng thử lại.",
+        "emailExists": "Email này đã được đăng ký. Vui lòng sử dụng email khác.",
+        "invalidData": "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại thông tin."
+      },
+      "login": {
+        "success": "Đăng nhập thành công! Chào mừng bạn trở lại.",
+        "failed": "Đăng nhập thất bại. Vui lòng kiểm tra email và mật khẩu.",
+        "invalidCredentials": "Email hoặc mật khẩu không chính xác.",
+        "accountNotVerified": "Tài khoản chưa được xác thực. Vui lòng kiểm tra email.",
+        "emailNotVerified": "Vui lòng xác thực email trước khi đăng nhập."
+      },
+      "otp": {
+        "verifySuccess": "Xác thực OTP thành công! Tài khoản đã được kích hoạt.",
+        "verifyFailed": "Xác thực OTP thất bại. Vui lòng thử lại.",
+        "invalidOtp": "Mã OTP không chính xác hoặc đã hết hạn.",
+        "resendSuccess": "Đã gửi lại mã OTP. Vui lòng kiểm tra email.",
+        "resendFailed": "Gửi lại OTP thất bại. Vui lòng thử lại sau.",
+        "expired": "Mã OTP đã hết hạn. Vui lòng yêu cầu mã mới.",
+        "userNotFound": "Không tìm thấy người dùng.",
+        "noOtpFound": "Không tìm thấy mã OTP. Vui lòng yêu cầu mã mới.",
+        "otpExpired": "Mã OTP đã hết hạn. Vui lòng yêu cầu mã mới.",
+        "invalidOtpOperation": "Mã OTP không hợp lệ cho thao tác này.",
+        "emailAlreadyVerified": "Email đã được xác thực."
+      },
+      "token": {
+        "invalidRefreshToken": "Token làm mới không hợp lệ. Vui lòng đăng nhập lại."
+      },
+      "forgotPassword": {
+        "otpSent": "Nếu email tồn tại, bạn sẽ nhận được mã OTP để đặt lại mật khẩu."
+      },
+      "resetPassword": {
+        "success": "Đặt lại mật khẩu thành công.",
+        "invalidEmailOrOtp": "Email hoặc mã OTP không hợp lệ."
+      },
+      "logout": {
+        "success": "Đăng xuất thành công."
+      },
+      "common": {
+        "networkError": "Lỗi kết nối mạng. Vui lòng kiểm tra kết nối internet.",
+        "serverError": "Lỗi máy chủ. Vui lòng thử lại sau.",
+        "unknownError": "Đã xảy ra lỗi không xác định. Vui lòng thử lại."
+      }
     }
   },
   "jobs": {
-    "title": "Tìm công việc mơ ước của bạn",
-    "searchPlaceholder": "Tên công việc, từ khóa hoặc công ty",
-    "locationPlaceholder": "Thành phố hoặc làm việc từ xa",
-    "searchButton": "Tìm việc làm",
+    "title": "Tìm Việc Làm",
+    "findJobs": "Tìm Việc Làm",
+    "searchPlaceholder": "Tên công việc, từ khóa...",
+    "locationPlaceholder": "Thành phố hoặc mã bưu điện",
+    "searchButton": "Tìm Việc Làm",
+    "discoverOpportunities": "Khám phá cơ hội nghề nghiệp tiếp theo của bạn từ hàng nghìn tin tuyển dụng",
     "filters": {
+      "title": "Bộ lọc",
+      "clearAll": "Xóa tất cả",
+      "search": "Tìm kiếm",
+      "searchPlaceholder": "Tên công việc, từ khóa...",
+      "location": "Địa điểm",
+      "selectLocation": "Chọn địa điểm",
+      "category": "Danh mục",
+      "selectCategory": "Chọn danh mục",
       "jobType": "Loại công việc",
-      "experience": "Mức độ kinh nghiệm",
-      "salary": "Mức lương",
+      "experienceLevel": "Mức độ kinh nghiệm",
+      "salaryRange": "Mức lương",
+      "postedWithin": "Đăng trong vòng",
       "company": "Công ty",
-      "location": "Địa điểm"
+      "categories": {
+        "all": "Tất cả danh mục",
+        "technology": "Công nghệ",
+        "design": "Thiết kế",
+        "marketing": "Marketing",
+        "sales": "Bán hàng",
+        "finance": "Tài chính",
+        "hr": "Nhân sự",
+        "operations": "Vận hành"
+      },
+      "locations": {
+        "all": "Tất cả địa điểm",
+        "hoChiMinh": "Thành phố Hồ Chí Minh",
+        "hanoi": "Hà Nội",
+        "daNang": "Đà Nẵng",
+        "canTho": "Cần Thơ",
+        "remote": "Làm việc từ xa"
+      },
+      "postedWithinOptions": {
+        "all": "Bất kỳ lúc nào",
+        "day": "24 giờ qua",
+        "week": "Tuần qua",
+        "month": "Tháng qua"
+      }
     },
     "jobTypes": {
       "fullTime": "Toàn thời gian",
@@ -95,7 +195,34 @@
       "entry": "Mới bắt đầu",
       "mid": "Trung cấp",
       "senior": "Cao cấp",
-      "lead": "Trưởng nhóm/Quản lý"
+      "lead": "Trưởng nhóm",
+      "executive": "Điều hành"
     }
+  },
+  "companies": {
+    "title": "Công Ty Hàng Đầu",
+    "topCompanies": "Công Ty Hàng Đầu",
+    "exploreCompanies": "Khám phá những công ty tuyệt vời đang tích cực tuyển dụng và xây dựng tương lai",
+    "follow": "Theo dõi",
+    "unfollow": "Bỏ theo dõi",
+    "viewJobs": "Xem Việc Làm",
+    "employees": "nhân viên",
+    "openPositions": "vị trí đang tuyển"
+  },
+  "hero": {
+    "title": {
+      "main": "Khởi đầu mới – Cơ hội lớn –",
+      "highlight": "Thành công thật",
+      "subtitle": ""
+    },
+    "description": "Bắt đầu hành trình sự nghiệp với những cơ hội tuyệt vời",
+    "search": {
+      "title": "Tìm việc làm mơ ước",
+      "subtitle": "Khám phá hàng nghìn cơ hội việc làm từ các công ty hàng đầu",
+      "jobPlaceholder": "Tên công việc, từ khóa hoặc công ty",
+      "locationPlaceholder": "Thành phố hoặc mã bưu điện",
+      "button": "Tìm việc làm"
+    },
+    "popularSearches": "Tìm kiếm phổ biến"
   }
 }

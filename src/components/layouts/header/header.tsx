@@ -1,6 +1,6 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "@/stores";
 import { paths } from "@/config/paths";
@@ -12,21 +12,76 @@ import { MobileMenu } from "./mobile-menu";
 import { LanguageSwitcher } from "./language-switcher";
 
 export const Header = () => {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigationItems = useNavigationItems();
 
+  // Get appropriate home path based on user role
+  const getHomePath = () => {
+    if (!isAuthenticated || !user) {
+      return paths.home.getHref();
+    }
+
+    // If user is job_seeker (ứng viên), redirect to home
+    if (user.role === "job_seeker") {
+      return paths.home.getHref();
+    }
+
+    // For other roles (recruiter, admin), redirect to dashboard
+    return paths.app.dashboard.getHref();
+  };
+
+  // Check if we're on the home page
+  const isHomePage =
+    location.pathname === "/" || location.pathname === paths.home.getHref();
+
+  // Handle scroll detection
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 50);
+    };
+
+    if (isHomePage) {
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }
+  }, [isHomePage]);
+
+  // Dynamic header styling based on page and scroll state
+  const getHeaderClasses = () => {
+    const baseTransition = "transition-all duration-300";
+
+    if (isHomePage) {
+      // Home page:
+      // Mobile: sticky positioning to push content down (no overlay)
+      // Desktop: fixed positioning to overlay hero and stay during scroll
+      const homeBaseClasses = `${baseTransition} sticky md:fixed top-0 left-0 right-0 z-40`;
+
+      if (isScrolled) {
+        return `${homeBaseClasses} bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm`;
+      } else {
+        return `${homeBaseClasses} bg-white md:bg-transparent border-b md:border-transparent border-gray-100`;
+      }
+    } else {
+      // Other pages: sticky positioning with white background
+      return `${baseTransition} sticky top-0 z-40 bg-white border-b border-gray-100`;
+    }
+  };
+
   return (
-    <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <header className={getHeaderClasses()}>
       <div className="container mx-auto">
-        <div className="flex justify-between items-center h-[80px]">
+        <div className="flex justify-between items-center h-16 md:h-[80px]">
           {/* Left Section: Logo + Navigation */}
           <div className="flex items-center">
             {/* Logo */}
             <Link
-              to={paths.home.getHref()}
+              to={getHomePath()}
               className="flex items-center hover:opacity-80 transition-opacity"
               aria-label="WorkFinder Home"
             >

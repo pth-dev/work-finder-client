@@ -18,11 +18,11 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown";
+} from "@/components/ui/dropdown-menu";
 import { Link } from "react-router-dom";
 import { paths } from "@/config/paths";
 import { useAuthStore } from "@/stores";
-import { cn } from "@/utils/cn";
+import { cn } from "@/utils";
 
 type SideNavigationItem = {
   name: string;
@@ -84,10 +84,10 @@ const Progress = () => {
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const { logout } = useAuthStore();
+  const { clearAuth } = useAuthStore();
 
   const handleLogout = () => {
-    logout();
+    clearAuth();
     navigate(paths.auth.login.getHref());
   };
 

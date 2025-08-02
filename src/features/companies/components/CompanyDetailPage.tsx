@@ -33,6 +33,7 @@ import {
 import { FeaturedJobs } from "@/features/jobs/components/FeaturedJobs";
 import { mockCompanies, mockJobs } from "@/lib/mock-data";
 import { Company, Job, CompanyReview } from "@/types";
+import { useSaveJob } from "@/features/jobs/hooks";
 
 export function CompanyDetailPage() {
   const { id } = useParams();
@@ -123,9 +124,14 @@ export function CompanyDetailPage() {
     // TODO: Implement follow company API call
   };
 
-  const handleSaveJob = (jobId: string) => {
-    console.log("Save job:", jobId);
-    // TODO: Implement save job functionality
+  // Use centralized save job logic
+  const { mutate: saveJobMutation } = useSaveJob();
+
+  const handleSaveJob = (jobId: string, currentlySaved: boolean = false) => {
+    saveJobMutation({
+      jobId,
+      action: currentlySaved ? "unsave" : "save",
+    });
   };
 
   const getEmployeeCountDisplay = (size: string, count: number) => {

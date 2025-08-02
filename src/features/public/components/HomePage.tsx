@@ -1,17 +1,21 @@
 import { HeroSection } from "./hero-section";
 import { FeaturedJobs } from "@/features/jobs/components/FeaturedJobs";
 import { FeaturedCompanies } from "@/features/companies/components/FeaturedCompanies";
-import { recentJobs, featuredCompanies } from "@/lib/mock-data";
+import { useFeaturedCompanies } from "@/features/companies/hooks";
+// ✅ REMOVED: transformer - using direct backend format
+import type { JobSearchParams } from "@/components/ui/search/hero-search-form";
 
 export function HomePage() {
-  const handleSearch = (query: string, location: string, category: string) => {
-    console.log("Search:", { query, location, category });
-    // This will be handled by the navigation in HeroSection
-  };
+  // Use real API for companies instead of mock data
+  const { data: companiesData, isLoading: companiesLoading } =
+    useFeaturedCompanies(6);
 
-  const handleSaveJob = (jobId: string) => {
-    console.log("Save job:", jobId);
-    // TODO: Implement save job functionality
+  // ✅ BACKEND-FIRST: Use API companies directly without transformation
+  const companies = companiesData?.data?.companies || [];
+
+  const handleSearch = (params: JobSearchParams) => {
+    console.log("Search:", params);
+    // This will be handled by the navigation in HeroSection
   };
 
   return (
@@ -19,15 +23,11 @@ export function HomePage() {
       {/* Hero Section */}
       <HeroSection onSearch={handleSearch} />
 
-      {/* Featured Jobs Section */}
-      <FeaturedJobs
-        jobs={recentJobs}
-        onSaveJob={handleSaveJob}
-        isLoading={false}
-      />
+      {/* ✅ NEW: Component using backend format directly */}
+      <FeaturedJobs />
 
-      {/* Featured Companies Section */}
-      <FeaturedCompanies companies={featuredCompanies} isLoading={false} />
+      {/* ✅ NEW: Companies using backend format directly */}
+      <FeaturedCompanies companies={companies} isLoading={companiesLoading} />
     </main>
   );
 }
