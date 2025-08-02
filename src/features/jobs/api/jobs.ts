@@ -33,10 +33,17 @@ export const getFeaturedJobs = (
 };
 
 /**
- * Get single job by ID
+ * Get single job by ID or slug
  */
-export const getJob = (id: number): Promise<{ data: ApiJobPost }> => {
-  return api.get(`/jobs/${id}`);
+export const getJob = (identifier: string | number): Promise<{ data: ApiJobPost }> => {
+  return api.get(`/jobs/${identifier}`);
+};
+
+/**
+ * Get single job by slug (SEO-friendly)
+ */
+export const getJobBySlug = (slug: string): Promise<{ data: ApiJobPost }> => {
+  return api.get(`/jobs/${slug}`);
 };
 
 /**

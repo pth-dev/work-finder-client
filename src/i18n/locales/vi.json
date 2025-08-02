@@ -91,6 +91,15 @@
       "hasAccount": "Đã có tài khoản?",
       "signIn": "Đăng nhập tại đây"
     },
+    "placeholders": {
+      "firstName": "Nhập tên của bạn",
+      "lastName": "Nhập họ của bạn",
+      "phoneNumber": "Nhập số điện thoại của bạn"
+    },
+    "labels": {
+      "termsAccepted": "Tôi đồng ý với Điều khoản dịch vụ và Chính sách bảo mật",
+      "marketingEmails": "Tôi muốn nhận email về cơ hội việc làm và tin tức từ WorkFinder"
+    },
     "messages": {
       "registration": {
         "success": "Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản.",

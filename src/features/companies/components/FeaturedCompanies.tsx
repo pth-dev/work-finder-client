@@ -24,7 +24,7 @@ const CompanyCard: React.FC<{
 }> = ({ company, onViewCompany }) => {
   const { t } = useTranslation();
   const formatCompanySize = (size?: string | null) => {
-    if (!size) return "Unknown";
+    if (!size) return t("common:companies.unknown");
     // Backend returns simple strings like "100-500", "large", etc.
     return size;
   };
@@ -68,7 +68,7 @@ const CompanyCard: React.FC<{
                 {company.company_name}
               </h3>
               <p className="text-gray-600 text-sm mb-2">
-                {company.industry || "Technology"}
+                {company.industry || t("common:companies.unknown")}
               </p>
               <div className="flex items-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center">
@@ -86,15 +86,16 @@ const CompanyCard: React.FC<{
 
         {/* Company Description */}
         <p className="text-gray-700 text-sm mb-4 line-clamp-2">
-          {company.description ||
-            "Leading technology company focused on innovation and growth."}
+          {company.description || t("common:companies.defaultDescription")}
         </p>
 
         {/* Company Details */}
         <div className="space-y-2 mb-4">
           <div className="flex items-center text-gray-600 text-sm">
             <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
-            <span>{company.location || "Multiple Locations"}</span>
+            <span>
+              {company.location || t("common:companies.multipleLocations")}
+            </span>
           </div>
 
           <div className="flex items-center text-gray-600 text-sm">
@@ -115,7 +116,7 @@ const CompanyCard: React.FC<{
             )}
             {company.is_verified && (
               <Badge className="text-xs bg-green-100 text-green-800 border-green-200">
-                Verified
+                {t("common:companies.verified")}
               </Badge>
             )}
           </div>

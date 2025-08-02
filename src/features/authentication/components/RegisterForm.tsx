@@ -1,52 +1,53 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeOff, Eye } from "lucide-react";
-import { z } from "zod";
+
+import { useTranslation } from "react-i18next";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { paths } from "@/config/paths";
 import { useRegister } from "../api/register";
 import { useMutationLoading } from "@/hooks/use-loading";
 import { useToast } from "@/services/toast-service";
 
-const registerSchema = z
-  .object({
-    fullName: z.string().min(2, "Họ tên phải có ít nhất 2 ký tự"),
-    email: z.string().email({ message: "Vui lòng nhập email hợp lệ" }),
-    password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
-    confirmPassword: z.string(),
-    role: z.enum(['job_seeker', 'recruiter']),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Mật khẩu xác nhận không khớp",
-    path: ["confirmPassword"],
-  });
+import {
+  createRegisterSchema,
+  type RegisterFormData,
+} from "@/utils/validations/auth.schemas";
 
 export function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const toast = useToast();
+
+  const registerSchema = createRegisterSchema(t);
+
+  // Get email from navigation state (from forgot password)
+  const prefilledEmail = location.state?.email || "";
 
   const registerMutation = useMutationLoading(
     useRegister({
       mutationConfig: {
         onSuccess: (response) => {
           // Show success toast using message from response
-          const messageKey = response.message || 'auth.messages.registration.success';
+          const messageKey =
+            response.message || "auth.messages.registration.success";
           toast.success(messageKey);
-          
+
           // Navigate to OTP verification page
           const email = response.data?.email || form.getValues().email;
           navigate(paths.auth.verifyOTP.getHref(), {
@@ -56,34 +57,39 @@ export function RegisterForm() {
         },
         onError: (error: any) => {
           // Show error toast based on error message/key from backend
-          const messageKey = error?.response?.data?.message || 'auth.messages.registration.failed';
+          const messageKey =
+            error?.response?.data?.message ||
+            "auth.messages.registration.failed";
           toast.error(messageKey);
         },
       },
     }),
-    'registration',
+    "registration",
     {
       globalLoading: true,
     }
   );
 
-  const form = useForm<z.infer<typeof registerSchema>>({
+  const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      fullName: "",
-      email: "",
+      firstName: "",
+      lastName: "",
+      email: prefilledEmail,
       password: "",
       confirmPassword: "",
-      role: "job_seeker" as const,
+      phoneNumber: "",
+      termsAccepted: false,
+      marketingEmails: false,
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof registerSchema>) => {
+  const onSubmit = async (values: RegisterFormData) => {
     registerMutation.mutate({
       email: values.email,
       password: values.password,
-      full_name: values.fullName,
-      role: values.role,
+      full_name: `${values.firstName} ${values.lastName}`.trim(),
+      role: "job_seeker", // Default role since it's not in the form
     });
   };
 
@@ -108,7 +114,7 @@ export function RegisterForm() {
             <div className="ml-3">
               <h3 className="text-sm font-medium text-red-800">Lỗi đăng ký</h3>
               <div className="mt-2 text-sm text-red-700">
-                <p>{registerMutation.error?.message || 'Đăng ký thất bại'}</p>
+                <p>{registerMutation.error?.message || "Đăng ký thất bại"}</p>
               </div>
             </div>
           </div>
@@ -120,10 +126,10 @@ export function RegisterForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-5 w-full"
         >
-          {/* Full Name Field */}
+          {/* First Name Field */}
           <FormField
             control={form.control}
-            name="fullName"
+            name="firstName"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
@@ -131,8 +137,30 @@ export function RegisterForm() {
                     <Input
                       {...field}
                       type="text"
-                      placeholder="Họ và tên"
-                      autoComplete="name"
+                      placeholder={t("auth.placeholders.firstName")}
+                      autoComplete="given-name"
+                      className="h-12 lg:h-14 border-[#c6c6c9] text-[#56575d] text-sm lg:text-base font-medium bg-transparent"
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage className="text-red-600 text-sm" />
+              </FormItem>
+            )}
+          />
+
+          {/* Last Name Field */}
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <div className="h-12 lg:h-14 relative rounded-lg">
+                    <Input
+                      {...field}
+                      type="text"
+                      placeholder={t("auth.placeholders.lastName")}
+                      autoComplete="family-name"
                       className="h-12 lg:h-14 border-[#c6c6c9] text-[#56575d] text-sm lg:text-base font-medium bg-transparent"
                     />
                   </div>
@@ -236,33 +264,68 @@ export function RegisterForm() {
             )}
           />
 
-          {/* Role Selection */}
+          {/* Phone Number Field */}
           <FormField
             control={form.control}
-            name="role"
+            name="phoneNumber"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    className="flex flex-row space-x-6"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="job_seeker" id="job-seeker" />
-                      <Label htmlFor="job-seeker" className="cursor-pointer text-sm font-medium text-gray-900">
-                        Ứng viên
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="recruiter" id="recruiter" />
-                      <Label htmlFor="recruiter" className="cursor-pointer text-sm font-medium text-gray-900">
-                        Nhà tuyển dụng
-                      </Label>
-                    </div>
-                  </RadioGroup>
+                  <div className="h-12 lg:h-14 relative rounded-lg">
+                    <Input
+                      {...field}
+                      type="tel"
+                      placeholder={t("auth.placeholders.phoneNumber")}
+                      autoComplete="tel"
+                      className="h-12 lg:h-14 border-[#c6c6c9] text-[#56575d] text-sm lg:text-base font-medium bg-transparent"
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage className="text-red-600 text-sm" />
+              </FormItem>
+            )}
+          />
+
+          {/* Terms Accepted Field */}
+          <FormField
+            control={form.control}
+            name="termsAccepted"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel className="text-sm">
+                    {t("auth.labels.termsAccepted")}
+                  </FormLabel>
+                  <FormMessage className="text-red-600 text-sm" />
+                </div>
+              </FormItem>
+            )}
+          />
+
+          {/* Marketing Emails Field */}
+          <FormField
+            control={form.control}
+            name="marketingEmails"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <div className="space-y-1 leading-none">
+                  <FormLabel className="text-sm">
+                    {t("auth.labels.marketingEmails")}
+                  </FormLabel>
+                  <FormMessage className="text-red-600 text-sm" />
+                </div>
               </FormItem>
             )}
           />

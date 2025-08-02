@@ -10,6 +10,7 @@ import {
   ExternalLink,
   Share2,
 } from "lucide-react";
+import { generateJobSlug } from "@/utils/slug-utils";
 
 import {
   Button,
@@ -56,12 +57,14 @@ export function SavedJobsPage() {
     }, 500);
   }, []);
 
-  const handleViewJob = (jobId: string) => {
-    navigate(`/jobs/${jobId}`);
+  const handleViewJob = (job: Job) => {
+    const slug = generateJobSlug(job);
+    navigate(`/jobs/${slug}`);
   };
 
-  const handleApplyToJob = (jobId: string) => {
-    navigate(`/jobs/${jobId}`);
+  const handleApplyToJob = (job: Job) => {
+    const slug = generateJobSlug(job);
+    navigate(`/jobs/${slug}`);
   };
 
   const handleUnsaveJob = (savedJobId: string) => {
@@ -69,7 +72,8 @@ export function SavedJobsPage() {
   };
 
   const handleShareJob = (job: Job) => {
-    const url = `${window.location.origin}/jobs/${job.id}`;
+    const slug = generateJobSlug(job);
+    const url = `${window.location.origin}/jobs/${slug}`;
     navigator.clipboard.writeText(url);
     // TODO: Show toast notification
   };
@@ -104,7 +108,7 @@ export function SavedJobsPage() {
                 <div>
                   <h3
                     className="text-xl font-semibold text-gray-900 hover:text-blue-600 cursor-pointer transition-colors"
-                    onClick={() => handleViewJob(job.id)}
+                    onClick={() => handleViewJob(job)}
                   >
                     {job.title}
                   </h3>
@@ -215,7 +219,7 @@ export function SavedJobsPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => handleViewJob(job.id)}
+                onClick={() => handleViewJob(job)}
               >
                 <Eye className="h-4 w-4 mr-1" />
                 View Details
@@ -232,7 +236,7 @@ export function SavedJobsPage() {
             <div className="flex space-x-2">
               <Button
                 size="sm"
-                onClick={() => handleApplyToJob(job.id)}
+                onClick={() => handleApplyToJob(job)}
                 className="bg-blue-600 hover:bg-blue-700"
               >
                 Apply Now

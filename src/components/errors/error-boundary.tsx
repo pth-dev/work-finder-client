@@ -1,6 +1,7 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { Button } from '@/components/ui/button';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import React, { Component, ErrorInfo, ReactNode } from "react";
+import { Button } from "@/components/ui/button";
+import { ErrorState } from "@/components/ui/error-state";
+import { AlertTriangle, RefreshCw } from "lucide-react";
 
 interface Props {
   children: ReactNode;
@@ -27,8 +28,8 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Log error to console in development
-    if (process.env.NODE_ENV === 'development') {
-      console.error('ErrorBoundary caught an error:', error, errorInfo);
+    if (process.env.NODE_ENV === "development") {
+      console.error("ErrorBoundary caught an error:", error, errorInfo);
     }
 
     this.setState({
@@ -61,7 +62,8 @@ export class ErrorBoundary extends Component<Props, State> {
                 Something went wrong
               </h2>
               <p className="text-gray-600">
-                We're sorry, but something unexpected happened. Our team has been notified.
+                We're sorry, but something unexpected happened. Our team has
+                been notified.
               </p>
             </div>
 
@@ -70,9 +72,9 @@ export class ErrorBoundary extends Component<Props, State> {
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Try Again
               </Button>
-              
-              <Button 
-                variant="outline" 
+
+              <Button
+                variant="outline"
                 onClick={() => window.location.reload()}
                 className="w-full"
               >
@@ -80,7 +82,7 @@ export class ErrorBoundary extends Component<Props, State> {
               </Button>
             </div>
 
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {process.env.NODE_ENV === "development" && this.state.error && (
               <details className="mt-6 text-left">
                 <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
                   Error Details (Development)
@@ -91,12 +93,16 @@ export class ErrorBoundary extends Component<Props, State> {
                   </div>
                   <div className="mb-2">
                     <strong>Stack:</strong>
-                    <pre className="whitespace-pre-wrap">{this.state.error.stack}</pre>
+                    <pre className="whitespace-pre-wrap">
+                      {this.state.error.stack}
+                    </pre>
                   </div>
                   {this.state.errorInfo && (
                     <div>
                       <strong>Component Stack:</strong>
-                      <pre className="whitespace-pre-wrap">{this.state.errorInfo.componentStack}</pre>
+                      <pre className="whitespace-pre-wrap">
+                        {this.state.errorInfo.componentStack}
+                      </pre>
                     </div>
                   )}
                 </div>
@@ -123,50 +129,45 @@ export function withErrorBoundary<P extends object>(
     </ErrorBoundary>
   );
 
-  WrappedComponent.displayName = `withErrorBoundary(${Component.displayName || Component.name})`;
-  
+  WrappedComponent.displayName = `withErrorBoundary(${
+    Component.displayName || Component.name
+  })`;
+
   return WrappedComponent;
 }
 
 // Specific error boundaries for different sections
-export const JobListErrorBoundary: React.FC<{ children: ReactNode }> = ({ children }) => (
+export const JobListErrorBoundary: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => (
   <ErrorBoundary
     fallback={
-      <div className="p-8 text-center">
-        <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          Unable to load jobs
-        </h3>
-        <p className="text-gray-600 mb-4">
-          There was an error loading the job listings. Please try refreshing the page.
-        </p>
-        <Button onClick={() => window.location.reload()}>
-          <RefreshCw className="h-4 w-4 mr-2" />
-          Refresh
-        </Button>
-      </div>
+      <ErrorState
+        type="server"
+        title="Unable to load jobs"
+        message="There was an error loading the job listings. Please try refreshing the page."
+        onRetry={() => window.location.reload()}
+        className="p-8"
+      />
     }
   >
     {children}
   </ErrorBoundary>
 );
 
-export const CompanyListErrorBoundary: React.FC<{ children: ReactNode }> = ({ children }) => (
+export const CompanyListErrorBoundary: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => (
   <ErrorBoundary
     fallback={
-      <div className="p-8 text-center">
-        <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          Unable to load companies
-        </h3>
-        <p className="text-gray-600 mb-4">
-          There was an error loading the company listings. Please try refreshing the page.
-        </p>
-        <Button onClick={() => window.location.reload()}>
-          <RefreshCw className="h-4 w-4 mr-2" />
-          Refresh
-        </Button>
-      </div>
+      <ErrorState
+        type="server"
+        title="Unable to load companies"
+        message="There was an error loading the company listings. Please try refreshing
+          the page."
+        onRetry={() => window.location.reload()}
+        className="p-8"
+      />
     }
   >
     {children}

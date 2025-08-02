@@ -21,8 +21,14 @@ export * from "./table";
 export * from "./dropdown-menu";
 export * from "./spinner";
 export * from "./error-state";
+export * from "./skeleton";
+export * from "./textarea";
+export * from "./error-boundary";
 
 // Job-related UI components
 export * from "./job-card";
 export * from "./company-logo";
 export * from "./job-grid";
+
+// Company-related UI components
+export * from "./company-card";

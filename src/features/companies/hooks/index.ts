@@ -5,6 +5,7 @@ import {
   UseMutationOptions,
 } from "@tanstack/react-query";
 import { MutationConfig } from "@/lib/react-query";
+import { ApiJobsResponse } from "@/features/jobs/types";
 import {
   ApiCompaniesResponse,
   ApiCompanyResponse,
@@ -12,6 +13,8 @@ import {
   CreateCompanyRequest,
   UpdateCompanyRequest,
   JoinCompanyRequest,
+  FollowCompanyResponse,
+  CompanyJobsFilters,
 } from "../types";
 import {
   getCompanies,
@@ -22,6 +25,9 @@ import {
   requestJoinCompany,
   getUserCompany,
   getFeaturedCompanies,
+  followCompany,
+  unfollowCompany,
+  getCompanyJobs,
 } from "../api/companies";
 
 // ===== QUERY HOOKS =====
@@ -101,6 +107,27 @@ export const useUserCompany = (
     gcTime: 10 * 60 * 1000, // 10 minutes
     enabled: options.enabled ?? true,
     refetchOnWindowFocus: true,
+    retry: 2,
+  });
+};
+
+/**
+ * Hook to fetch jobs from a specific company
+ */
+export const useCompanyJobs = (
+  companyId: number,
+  filters: CompanyJobsFilters = {},
+  options: {
+    enabled?: boolean;
+  } = {}
+) => {
+  return useQuery({
+    queryKey: ["company-jobs", companyId, filters],
+    queryFn: () => getCompanyJobs(companyId, filters),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    enabled: options.enabled ?? !!companyId,
+    refetchOnWindowFocus: false,
     retry: 2,
   });
 };
@@ -191,6 +218,48 @@ export const useJoinCompany = ({
     mutationFn: requestJoinCompany,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["user-company"] });
+    },
+    ...mutationConfig,
+  });
+};
+
+// ===== FOLLOW/UNFOLLOW HOOKS =====
+
+type UseFollowCompanyOptions = {
+  mutationConfig?: MutationConfig<typeof followCompany>;
+};
+
+export const useFollowCompany = ({
+  mutationConfig,
+}: UseFollowCompanyOptions = {}) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: followCompany,
+    onSuccess: (_, companyId) => {
+      queryClient.invalidateQueries({ queryKey: ["company", companyId] });
+      queryClient.invalidateQueries({ queryKey: ["companies"] });
+      queryClient.invalidateQueries({ queryKey: ["featured-companies"] });
+    },
+    ...mutationConfig,
+  });
+};
+
+type UseUnfollowCompanyOptions = {
+  mutationConfig?: MutationConfig<typeof unfollowCompany>;
+};
+
+export const useUnfollowCompany = ({
+  mutationConfig,
+}: UseUnfollowCompanyOptions = {}) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: unfollowCompany,
+    onSuccess: (_, companyId) => {
+      queryClient.invalidateQueries({ queryKey: ["company", companyId] });
+      queryClient.invalidateQueries({ queryKey: ["companies"] });
+      queryClient.invalidateQueries({ queryKey: ["featured-companies"] });
     },
     ...mutationConfig,
   });

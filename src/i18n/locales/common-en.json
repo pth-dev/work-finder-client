@@ -1,0 +1,371 @@
+{
+  "actions": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "apply": "Apply",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "reset": "Reset",
+    "confirm": "Confirm",
+    "retry": "Retry",
+    "refresh": "Refresh",
+    "continue": "Continue",
+    "skip": "Skip"
+  },
+  "statuses": {
+    "loading": "Loading...",
+    "success": "Success",
+    "error": "Error",
+    "pending": "Pending",
+    "completed": "Completed",
+    "failed": "Failed",
+    "processing": "Processing",
+    "waiting": "Waiting",
+    "ready": "Ready"
+  },
+  "errors": {
+    "validation": {
+      "required": "{{field}} is required",
+      "email": "{{field}} must be a valid email",
+      "minLength": "{{field}} must be at least {{min}} characters",
+      "maxLength": "{{field}} must not exceed {{max}} characters",
+      "passwordMismatch": "Password confirmation does not match",
+      "invalidFormat": "{{field}} format is invalid",
+      "strongPassword": "Password must contain at least 1 uppercase, 1 lowercase, 1 number and 1 special character",
+      "numeric": "{{field}} must be a number",
+      "positive": "{{field}} must be positive",
+      "range": "{{field}} must be between {{min}} and {{max}}",
+      "unique": "{{field}} already exists",
+      "match": "{{field}} does not match {{target}}",
+      "url": "{{field}} must be a valid URL",
+      "phoneNumber": "{{field}} must be a valid phone number",
+      "fileSize": "{{field}} must be less than {{size}}MB",
+      "fileType": "{{field}} must be a {{types}} file",
+      "dateInPast": "{{field}} cannot be in the past",
+      "dateInFuture": "{{field}} cannot be in the future",
+      "startBeforeEnd": "{{field}} cannot be before {{startField}}",
+      "endAfterStart": "{{field}} cannot be after {{endField}}",
+      "termsAccepted": "You must accept the terms and conditions",
+      "currentJobRequired": "{{field}} is required unless this is your current job",
+      "currentStudyRequired": "{{field}} is required unless you are currently studying",
+      "salaryRange": "Minimum salary cannot be greater than maximum salary",
+      "nameFormat": "{{field}} can only contain letters and spaces",
+      "passwordStrength": {
+        "uppercase": "{{field}} must contain at least one uppercase letter",
+        "lowercase": "{{field}} must contain at least one lowercase letter",
+        "number": "{{field}} must contain at least one number",
+        "special": "{{field}} must contain at least one special character"
+      }
+    },
+    "api": {
+      "networkError": "Network error. Please check your connection and try again",
+      "serverError": "Server error. Please try again later",
+      "unauthorized": "You are not authorized to access this resource",
+      "forbidden": "Access denied",
+      "notFound": "Data not found",
+      "timeout": "Request timeout",
+      "badRequest": "Invalid request",
+      "conflict": "Data conflict",
+      "tooManyRequests": "Too many requests. Please try again later",
+      "serviceUnavailable": "Service temporarily unavailable"
+    },
+    "auth": {
+      "emailNotFound": "Email is not registered in the system",
+      "invalidCredentials": "Invalid email or password",
+      "emailExists": "Email is already registered",
+      "accountNotVerified": "Account is not verified",
+      "otpInvalid": "OTP is invalid or expired",
+      "otpExpired": "OTP has expired",
+      "tokenInvalid": "Token is invalid or expired",
+      "sessionExpired": "Session has expired",
+      "passwordWeak": "Password is too weak",
+      "accountLocked": "Account has been locked",
+      "loginAttempts": "Too many login attempts. Please try again later"
+    },
+    "form": {
+      "invalidData": "Invalid data",
+      "missingFields": "Please fill in all required fields",
+      "saveError": "Unable to save data",
+      "loadError": "Unable to load data"
+    }
+  },
+  "notifications": {
+    "success": {
+      "saved": "Saved successfully",
+      "updated": "Updated successfully",
+      "deleted": "Deleted successfully",
+      "created": "Created successfully",
+      "sent": "Sent successfully",
+      "uploaded": "Uploaded successfully",
+      "downloaded": "Downloaded successfully",
+      "copied": "Copied successfully"
+    },
+    "info": {
+      "processing": "Processing...",
+      "noData": "No data available",
+      "comingSoon": "Feature coming soon",
+      "maintenance": "System under maintenance",
+      "updating": "Updating data"
+    },
+    "warning": {
+      "unsavedChanges": "You have unsaved changes",
+      "dataLoss": "Data may be lost",
+      "irreversible": "This action cannot be undone"
+    }
+  },
+  "auth": {
+    "forgotPassword": {
+      "otpSent": "OTP has been sent to your email",
+      "checkEmail": "Please check your email for the OTP",
+      "emailSent": "Email has been sent",
+      "emailSentDescription": "We have sent password reset instructions to your email. Please check your inbox and follow the instructions.",
+      "backToLogin": "Back to login",
+      "sendInstructions": "Send password reset instructions",
+      "sending": "Sending..."
+    },
+    "login": {
+      "success": "Login successful! Welcome back",
+      "failed": "Login failed. Please try again",
+      "error": "Login error",
+      "signIn": "Sign in",
+      "signing": "Signing in...",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up now"
+    },
+    "register": {
+      "success": "Registration successful! Please check your email for verification",
+      "failed": "Registration failed. Please try again",
+      "signUp": "Sign up",
+      "signing": "Signing up...",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in now",
+      "jobSeeker": "Job Seeker",
+      "recruiter": "Recruiter",
+      "selectRole": "Select your role"
+    }
+  },
+  "fields": {
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "fullName": "Full Name",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone Number",
+    "phoneNumber": "Phone Number",
+    "termsAccepted": "Terms and Conditions",
+    "marketingEmails": "Receive Marketing Emails",
+    "token": "Token",
+    "address": "Address",
+    "city": "City",
+    "country": "Country",
+    "company": "Company",
+    "position": "Position",
+    "description": "Description",
+    "title": "Title",
+    "content": "Content",
+    "category": "Category",
+    "tags": "Tags",
+    "date": "Date",
+    "time": "Time",
+    "status": "Status",
+    "type": "Type",
+    "priority": "Priority"
+  },
+  "ui": {
+    "error": "Error",
+    "loading": "Loading...",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "reset": "Reset",
+    "confirm": "Confirm",
+    "close": "Close",
+    "retry": "Try again"
+  },
+  "errorStates": {
+    "network": {
+      "title": "Cannot connect",
+      "message": "Please check your network connection and try again."
+    },
+    "server": {
+      "title": "Server error",
+      "message": "A server error occurred. Please try again later."
+    },
+    "notFound": {
+      "title": "Data not found",
+      "message": "No data to display."
+    },
+    "invalidId": {
+      "title": "Invalid ID",
+      "message": "Please check the URL and try again."
+    },
+    "generic": {
+      "title": "An error occurred",
+      "message": "Please try again later or contact support."
+    }
+  },
+  "companies": {
+    "unknown": "Unknown",
+    "unknownCompany": "Unknown Company",
+    "multipleLocations": "Multiple Locations",
+    "verified": "Verified",
+    "employees": "employees",
+    "openPositions": "open positions",
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "viewJobs": "View Jobs",
+    "backToCompanies": "Back to Companies",
+    "defaultDescription": "Leading technology company focused on innovation and growth.",
+    "foundedIn": "Founded in {{year}}",
+    "employeeCount": "{{count}} employees",
+    "employeeCountK": "{{count}}k+ employees",
+    "na": "N/A",
+    "companiesCount": "{{count}} Companies",
+    "loadingCompanies": "Loading companies...",
+    "showingResults": "Showing {{start}} - {{end}} of {{total}} results",
+    "activeFilters": "Active Filters:",
+    "clearAll": "Clear All",
+    "searchFilter": "Search: \"{{query}}\"",
+    "job": "job",
+    "jobs": "jobs",
+    "followers": "followers",
+    "viewCompanyProfile": "View Company Profile",
+    "companyProfile": "Company Profile",
+    "about": "About {{companyName}}",
+    "noDescriptionAvailable": "No description available.",
+    "errorLoadingCompany": "Error Loading Company",
+    "couldNotLoadCompany": "We couldn't load the company details. Please try again later.",
+    "tryAgain": "Try Again",
+    "searchPlaceholder": "Search companies, industries, or technologies"
+  },
+  "jobs": {
+    "backToJobs": "Back to Jobs",
+    "share": "Share",
+    "jobOverview": "Job Overview",
+    "datePosted": "Date Posted:",
+    "location": "Location:",
+    "jobType": "Job Type:",
+    "experience": "Experience:",
+    "salary": "Salary:",
+    "jobTitle": "Job Title:",
+    "remote": "Remote",
+    "unknownCompany": "Unknown Company",
+    "locationNotSpecified": "Location not specified",
+    "jobsFound": "{{count}} jobs found",
+    "sortBy": "Sort by",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "salaryHighToLow": "Salary: High to Low",
+    "salaryLowToHigh": "Salary: Low to High",
+    "noJobsFound": "No jobs found",
+    "adjustSearchCriteria": "Try adjusting your search criteria"
+  },
+  "business": {
+    "locale": "en-US",
+    "employeeCount": {
+      "none": "No employees",
+      "single": "1 employee",
+      "small": "{{count}} employees",
+      "medium": "{{count}} employees",
+      "large": "{{count}} employees",
+      "enterprise": "{{count}}+ employees"
+    },
+    "companySize": {
+      "startup": "Startup",
+      "small": "Small Company",
+      "medium": "Medium Company",
+      "large": "Large Company",
+      "enterprise": "Enterprise",
+      "unknown": "Unknown"
+    },
+    "date": {
+      "invalid": "Invalid date",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "daysAgo": "{{days}} days ago",
+      "weeksAgo": "{{weeks}} weeks ago",
+      "monthsAgo": "{{months}} months ago",
+      "yearsAgo": "{{years}} years ago"
+    },
+    "salary": {
+      "negotiable": "Negotiable",
+      "millions": "{{amount}} million",
+      "thousands": "{{amount}} thousand",
+      "exact": {
+        "month": "{{amount}}/month",
+        "year": "{{amount}}/year"
+      },
+      "range": {
+        "month": "{{min}} - {{max}}/month",
+        "year": "{{min}} - {{max}}/year"
+      },
+      "from": {
+        "month": "From {{amount}}/month",
+        "year": "From {{amount}}/year"
+      },
+      "upTo": {
+        "month": "Up to {{amount}}/month",
+        "year": "Up to {{amount}}/year"
+      }
+    },
+    "jobType": {
+      "fullTime": "Full-time",
+      "partTime": "Part-time",
+      "contract": "Contract",
+      "freelance": "Freelance",
+      "internship": "Internship",
+      "remote": "Remote",
+      "hybrid": "Hybrid",
+      "onsite": "On-site",
+      "unknown": "Unknown"
+    },
+    "experience": {
+      "entry": "Entry Level",
+      "junior": "Junior",
+      "mid": "Mid Level",
+      "senior": "Senior",
+      "lead": "Team Lead",
+      "manager": "Manager",
+      "director": "Director",
+      "executive": "Executive",
+      "unknown": "Unknown"
+    },
+    "applicationStatus": {
+      "pending": "Pending",
+      "reviewing": "Under Review",
+      "shortlisted": "Shortlisted",
+      "interview": "Interview",
+      "offered": "Offered",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "withdrawn": "Withdrawn",
+      "unknown": "Unknown"
+    },
+    "fileSize": {
+      "zero": "0 bytes",
+      "bytes": "{{size}} bytes",
+      "kb": "{{size}} KB",
+      "mb": "{{size}} MB",
+      "gb": "{{size}} GB"
+    }
+  }
+}

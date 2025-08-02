@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components";
+import { FullScreenErrorState, Button } from "@/components";
 import { JobListings } from "@/features/jobs/components/JobListings";
 import {
   StickySearchBar,
@@ -61,6 +61,9 @@ export function JobsPage() {
       searchParams.get("category") && searchParams.get("category") !== "all"
         ? searchParams.get("category") || undefined
         : undefined,
+    company_id: searchParams.get("company")
+      ? parseInt(searchParams.get("company")!, 10)
+      : undefined,
     page: 1,
     limit: 20,
     sortBy: "posted_date",
@@ -158,14 +161,15 @@ export function JobsPage() {
     description: apiJob.description || "",
     summary: apiJob.description?.substring(0, 150) + "..." || "",
     companyId: apiJob.company_id.toString(),
-    companyName: apiJob.company?.company_name || "Unknown Company",
+    companyName:
+      apiJob.company?.company_name || t("common:jobs.unknownCompany"),
     companyLogo: apiJob.company?.company_image,
     type:
       (apiJob.job_type === "temporary" ? "full_time" : apiJob.job_type) ||
       "full_time",
     experienceLevel: "entry", // Default value since API doesn't provide this
     location: {
-      city: apiJob.location || "Remote",
+      city: apiJob.location || t("common:jobs.remote"),
       state: "",
       country: "",
       isRemote: apiJob.location?.toLowerCase().includes("remote") || false,
@@ -205,6 +209,9 @@ export function JobsPage() {
       job_type: compactFilters.jobType?.[0] as any, // API expects single job type
       salary_min: compactFilters.salaryRange?.[0] || undefined,
       salary_max: compactFilters.salaryRange?.[1] || undefined,
+      company_id: searchParams.get("company")
+        ? parseInt(searchParams.get("company")!, 10)
+        : undefined,
       page: currentPage,
       sortBy: sortBy === "relevance" ? "posted_date" : sortBy,
       sortOrder: "DESC" as const,
@@ -220,6 +227,7 @@ export function JobsPage() {
     compactFilters.salaryRange,
     currentPage,
     sortBy,
+    searchParams,
   ]);
 
   // Use centralized save job logic
@@ -235,15 +243,12 @@ export function JobsPage() {
   // Error handling
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Failed to load jobs
-          </h1>
-          <p className="text-gray-600 mb-4">Please try again later</p>
-          <Button onClick={() => refetch()}>Retry</Button>
-        </div>
-      </div>
+      <FullScreenErrorState
+        type="server"
+        title="Failed to load jobs"
+        message="Please try again later"
+        onRetry={() => refetch()}
+      />
     );
   }
 

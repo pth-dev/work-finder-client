@@ -96,6 +96,15 @@
       "createAccount": "Create Account",
       "hasAccount": "Already have an account?",
       "signIn": "Sign in here"
+    },
+    "placeholders": {
+      "firstName": "Enter your first name",
+      "lastName": "Enter your last name",
+      "phoneNumber": "Enter your phone number"
+    },
+    "labels": {
+      "termsAccepted": "I agree to the Terms of Service and Privacy Policy",
+      "marketingEmails": "I want to receive emails about job opportunities and news from WorkFinder"
     }
   },
   "jobs": {

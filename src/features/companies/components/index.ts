@@ -2,3 +2,4 @@
 export { FeaturedCompanies } from "./FeaturedCompanies";
 export { CompaniesPage } from "./CompaniesPage";
 export { CompanyDetailPage } from "./CompanyDetailPage";
+export { CompanyHeader } from "./CompanyHeader";

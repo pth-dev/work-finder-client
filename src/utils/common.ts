@@ -10,7 +10,7 @@ export const formatTimeAgo = (dateStr: string, t: TFunction): string => {
   const date = new Date(dateStr);
   const now = new Date();
   const diffInMs = now.getTime() - date.getTime();
-  
+
   // Convert to different time units
   const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
   const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
@@ -38,19 +38,35 @@ export const formatTimeAgo = (dateStr: string, t: TFunction): string => {
 };
 
 /**
- * Format salary range or single salary using i18n
+ * Format a single salary amount to Vietnamese format
+ */
+const formatSalaryAmount = (amount: number): string => {
+  if (amount >= 1000000000) {
+    // Billions - format as "X.X tỷ"
+    const billions = amount / 1000000000;
+    return `${billions.toFixed(1).replace(".0", "")} tỷ`;
+  } else if (amount >= 1000000) {
+    // Millions - format as "X triệu" or "XX triệu"
+    const millions = amount / 1000000;
+    return `${millions.toFixed(0)} triệu`;
+  } else if (amount >= 1000) {
+    // Thousands - format as "X.XXX"
+    return amount.toLocaleString("vi-VN");
+  } else {
+    return amount.toString();
+  }
+};
+
+/**
+ * Format salary range or single salary
  * @param job - Job object with salary information
- * @param t - i18n translation function
  * @returns Formatted salary string
  */
-export const formatSalary = (
-  job: {
-    salary?: string;
-    salary_min?: number;
-    salary_max?: number;
-  },
-  t: TFunction
-): string => {
+export const formatSalary = (job: {
+  salary?: string;
+  salary_min?: number;
+  salary_max?: number;
+}): string => {
   // If there's a pre-formatted salary string, use it
   if (job.salary) {
     return job.salary;
@@ -58,29 +74,30 @@ export const formatSalary = (
 
   // If there's a salary range
   if (job.salary_min && job.salary_max) {
-    const minInMillions = job.salary_min / 1000000;
-    const maxInMillions = job.salary_max / 1000000;
-    
-    return t("common.salary.range", {
-      min: minInMillions,
-      max: maxInMillions,
-    });
+    const formattedMin = formatSalaryAmount(job.salary_min);
+    const formattedMax = formatSalaryAmount(job.salary_max);
+
+    if (job.salary_min === job.salary_max) {
+      return `${formattedMin}`;
+    }
+
+    return `${formattedMin} - ${formattedMax}`;
   }
 
   // If there's only minimum salary
   if (job.salary_min) {
-    const minInMillions = job.salary_min / 1000000;
-    return t("common.salary.from", { amount: minInMillions });
+    const formattedMin = formatSalaryAmount(job.salary_min);
+    return `Từ ${formattedMin}`;
   }
 
   // If there's only maximum salary
   if (job.salary_max) {
-    const maxInMillions = job.salary_max / 1000000;
-    return t("common.salary.upTo", { amount: maxInMillions });
+    const formattedMax = formatSalaryAmount(job.salary_max);
+    return `Lên đến ${formattedMax}`;
   }
 
   // Default case - negotiable
-  return t("common.salary.negotiable");
+  return "Thỏa thuận";
 };
 
 /**

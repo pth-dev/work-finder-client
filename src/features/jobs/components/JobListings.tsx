@@ -18,6 +18,7 @@ import { type Job } from "@/types";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { formatTimeAgo, formatSalary } from "@/utils/common";
+import { generateJobSlug } from "@/utils/slug-utils";
 
 interface JobListingsProps {
   jobs: Job[];
@@ -35,7 +36,7 @@ interface JobListingsProps {
 const JobListingCard: React.FC<{
   job: Job;
   onSaveJob?: (jobId: string) => void;
-  onViewJob: (jobId: string) => void;
+  onViewJob: (job: Job) => void;
 }> = ({ job, onSaveJob, onViewJob }) => {
   const { t } = useTranslation();
   const getLocationDisplay = (job: Job) => {
@@ -43,7 +44,9 @@ const JobListingCard: React.FC<{
       return `${job.location.city}, ${job.location.country}`;
     }
     return (
-      job.location?.city || job.location?.country || "Location not specified"
+      job.location?.city ||
+      job.location?.country ||
+      t("common:jobs.locationNotSpecified")
     );
   };
 
@@ -83,16 +86,13 @@ const JobListingCard: React.FC<{
       company={job.companyName}
       location={getLocationDisplay(job)}
       timeAgo={formatTimeAgo(job.postedAt, t)}
-      salary={formatSalary(
-        {
-          salary_min: job.salary?.min,
-          salary_max: job.salary?.max,
-        },
-        t
-      )}
+      salary={formatSalary({
+        salary_min: job.salary?.min,
+        salary_max: job.salary?.max,
+      })}
       tags={getJobTags(job)}
       onBookmark={() => onSaveJob?.(job.id)}
-      onClick={() => onViewJob(job.id)}
+      onClick={() => onViewJob(job)}
       logo={
         <div className="w-12 h-12 bg-[#ECEDF2] rounded-lg flex items-center justify-center">
           <Building2 className="w-6 h-6 text-gray-400" />
@@ -134,9 +134,11 @@ export const JobListings: React.FC<JobListingsProps> = ({
   showFilters = false,
 }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
-  const handleViewJob = (jobId: string) => {
-    navigate(`/jobs/${jobId}`);
+  const handleViewJob = (job: Job) => {
+    const slug = generateJobSlug(job);
+    navigate(`/jobs/${slug}`);
   };
 
   if (isLoading) {
@@ -164,8 +166,7 @@ export const JobListings: React.FC<JobListingsProps> = ({
       {/* Header with Results Count and Sort */}
       <div className="flex items-center justify-between mb-6">
         <div className="text-gray-600">
-          <span className="font-medium text-gray-900">{totalJobs}</span> jobs
-          found
+          {t("common:jobs.jobsFound", { count: totalJobs })}
         </div>
 
         {/* Sort Dropdown */}
@@ -173,13 +174,19 @@ export const JobListings: React.FC<JobListingsProps> = ({
           <ArrowUpDown className="h-4 w-4 text-gray-500" />
           <Select value={sortBy} onValueChange={onSortChange}>
             <SelectTrigger className="w-48">
-              <SelectValue placeholder="Sort by" />
+              <SelectValue placeholder={t("common:jobs.sortBy")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="posted_date">Newest First</SelectItem>
-              <SelectItem value="oldest">Oldest First</SelectItem>
-              <SelectItem value="salary_high">Salary: High to Low</SelectItem>
-              <SelectItem value="salary_low">Salary: Low to High</SelectItem>
+              <SelectItem value="posted_date">
+                {t("common:jobs.newest")}
+              </SelectItem>
+              <SelectItem value="oldest">{t("common:jobs.oldest")}</SelectItem>
+              <SelectItem value="salary_high">
+                {t("common:jobs.salaryHighToLow")}
+              </SelectItem>
+              <SelectItem value="salary_low">
+                {t("common:jobs.salaryLowToHigh")}
+              </SelectItem>
               <SelectItem value="relevance">Most Relevant</SelectItem>
             </SelectContent>
           </Select>
@@ -194,9 +201,11 @@ export const JobListings: React.FC<JobListingsProps> = ({
       >
         {jobs.length === 0 ? (
           <div className="col-span-full text-center py-12">
-            <div className="text-gray-500 text-lg mb-2">No jobs found</div>
+            <div className="text-gray-500 text-lg mb-2">
+              {t("common:jobs.noJobsFound")}
+            </div>
             <div className="text-gray-400">
-              Try adjusting your search criteria
+              {t("common:jobs.adjustSearchCriteria")}
             </div>
           </div>
         ) : (

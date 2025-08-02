@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Search, Filter, Grid3X3, List, ArrowUpDown } from "lucide-react";
+import { Search, Grid3X3, List } from "lucide-react";
 import {
   Input,
   Button,
@@ -10,153 +10,102 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Card,
-  CardContent,
   Badge,
+  CompanyCard,
+  CompanyCardSkeleton,
+  CompanyLogo,
 } from "@/components";
-import { FeaturedCompanies } from "@/features/companies/components/FeaturedCompanies";
-import { useFeaturedCompanies } from "@/features/companies/hooks";
-import { Company, CompanyFilter, CompanySize } from "@/types";
+import { useCompanies, useFollowCompany, useUnfollowCompany } from "../hooks";
+import { CompanySearchFilters, ApiCompany } from "../types";
+import { useAuthStore } from "@/stores/auth-store";
+import { paths } from "@/config/paths";
 
 export function CompaniesPage() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
-  const [filters, setFilters] = useState<CompanyFilter>({
-    query: searchParams.get("q") || undefined,
-    industry: searchParams.get("industry")
-      ? [searchParams.get("industry")!]
-      : undefined,
-    page: 1,
-    limit: 12,
-    sortBy: "name",
-    sortOrder: "asc",
-  });
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("search") || ""
+  );
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [sortBy, setSortBy] = useState("name");
-  const [isLoading] = useState(false);
+  const { isAuthenticated } = useAuthStore();
 
-  // Mock data filtering
-  const [filteredCompanies, setFilteredCompanies] =
-    useState<Company[]>(mockCompanies);
-  const [totalCompanies, setTotalCompanies] = useState(mockCompanies.length);
-  const [currentPage, setCurrentPage] = useState(1);
+  // API filters state
+  const [filters, setFilters] = useState<CompanySearchFilters>({
+    search: searchParams.get("search") || undefined,
+    industry: searchParams.get("industry") || undefined,
+    page: parseInt(searchParams.get("page") || "1"),
+    limit: 12,
+    sortBy: searchParams.get("sortBy") || "company_name",
+    sortOrder: (searchParams.get("sortOrder") as "ASC" | "DESC") || "ASC",
+  });
 
-  // Available industries from mock data
-  const industries = Array.from(
-    new Set(mockCompanies.map((c) => c.industry))
-  ).sort();
-  const companySizes: { value: CompanySize; label: string }[] = [
-    { value: "startup", label: "Startup (1-50)" },
-    { value: "small", label: "Small (51-200)" },
-    { value: "medium", label: "Medium (201-500)" },
-    { value: "large", label: "Large (501-1000)" },
-    { value: "enterprise", label: "Enterprise (1000+)" },
+  // Fetch companies data
+  const { data: companiesResponse, isLoading, error } = useCompanies(filters);
+  const companies = companiesResponse?.data?.companies || [];
+  const totalCompanies = companiesResponse?.data?.total || 0;
+  const totalPages = companiesResponse?.data?.totalPages || 1;
+  const currentPage = companiesResponse?.data?.page || 1;
+
+  // Follow/unfollow mutations
+  const followMutation = useFollowCompany();
+  const unfollowMutation = useUnfollowCompany();
+
+  // Available industries (you can expand this list based on your data)
+  const industries = [
+    "Technology",
+    "Healthcare",
+    "Finance",
+    "Education",
+    "Manufacturing",
+    "Retail",
+    "Consulting",
+    "Media",
+    "Real Estate",
+    "Transportation",
   ];
 
-  useEffect(() => {
-    // Filter companies based on current filters
-    let companies = [...mockCompanies];
-
-    // Text search
-    if (filters.query) {
-      const query = filters.query.toLowerCase();
-      companies = companies.filter(
-        (company) =>
-          company.name.toLowerCase().includes(query) ||
-          company.description.toLowerCase().includes(query) ||
-          company.industry.toLowerCase().includes(query) ||
-          company.specialties.some((specialty) =>
-            specialty.toLowerCase().includes(query)
-          )
-      );
-    }
-
-    // Industry filter
-    if (filters.industry?.length) {
-      companies = companies.filter((company) =>
-        filters.industry!.includes(company.industry)
-      );
-    }
-
-    // Size filter
-    if (filters.size?.length) {
-      companies = companies.filter((company) =>
-        filters.size!.includes(company.size)
-      );
-    }
-
-    // Type filter
-    if (filters.type?.length) {
-      companies = companies.filter((company) =>
-        filters.type!.includes(company.type)
-      );
-    }
-
-    // Minimum rating filter
-    if (filters.minRating) {
-      companies = companies.filter(
-        (company) => company.stats.averageRating >= filters.minRating!
-      );
-    }
-
-    // Has jobs filter
-    if (filters.hasJobs) {
-      companies = companies.filter((company) => company.stats.totalJobs > 0);
-    }
-
-    // Verified filter
-    if (filters.isVerified) {
-      companies = companies.filter((company) => company.isVerified);
-    }
-
-    // Sort companies
-    switch (sortBy) {
-      case "rating":
-        companies.sort((a, b) => b.stats.averageRating - a.stats.averageRating);
-        break;
-      case "jobs":
-        companies.sort((a, b) => b.stats.totalJobs - a.stats.totalJobs);
-        break;
-      case "employees":
-        companies.sort(
-          (a, b) => b.stats.totalEmployees - a.stats.totalEmployees
-        );
-        break;
-      case "founded":
-        companies.sort((a, b) => (b.foundedYear || 0) - (a.foundedYear || 0));
-        break;
-      default: // name
-        companies.sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    setFilteredCompanies(companies);
-    setTotalCompanies(companies.length);
-  }, [filters, sortBy]);
+  // Helper function to update URL params
+  const updateUrlParams = (newFilters: CompanySearchFilters) => {
+    const params = new URLSearchParams();
+    if (newFilters.search) params.set("search", newFilters.search);
+    if (newFilters.industry) params.set("industry", newFilters.industry);
+    if (newFilters.page && newFilters.page > 1)
+      params.set("page", newFilters.page.toString());
+    if (newFilters.sortBy && newFilters.sortBy !== "company_name")
+      params.set("sortBy", newFilters.sortBy);
+    if (newFilters.sortOrder && newFilters.sortOrder !== "ASC")
+      params.set("sortOrder", newFilters.sortOrder);
+    setSearchParams(params);
+  };
 
   const handleSearch = () => {
     const newFilters = {
       ...filters,
-      query: searchQuery || undefined,
+      search: searchQuery || undefined,
       page: 1,
     };
     setFilters(newFilters);
-    setCurrentPage(1);
-
-    // Update URL params
-    const params = new URLSearchParams();
-    if (searchQuery) params.set("q", searchQuery);
-    setSearchParams(params);
+    updateUrlParams(newFilters);
   };
 
-  const handleFilterChange = (key: keyof CompanyFilter, value: any) => {
+  const handleFilterChange = (key: keyof CompanySearchFilters, value: any) => {
     const newFilters = {
       ...filters,
       [key]: value,
       page: 1,
     };
     setFilters(newFilters);
-    setCurrentPage(1);
+    updateUrlParams(newFilters);
+  };
+
+  const handlePageChange = (page: number) => {
+    const newFilters = {
+      ...filters,
+      page,
+    };
+    setFilters(newFilters);
+    updateUrlParams(newFilters);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -165,177 +114,124 @@ export function CompaniesPage() {
     }
   };
 
-  const sortOptions = [
-    { value: "name", label: "Company Name" },
-    { value: "rating", label: "Highest Rated" },
-    { value: "jobs", label: "Most Jobs" },
-    { value: "employees", label: "Most Employees" },
-    { value: "founded", label: "Recently Founded" },
-  ];
+  // Follow/unfollow handlers
+  const handleFollowCompany = (companyId: number, isFollowed: boolean) => {
+    if (!isAuthenticated) {
+      navigate(paths.auth.login.getHref(window.location.pathname));
+      return;
+    }
 
-  // Get current page companies
-  const startIndex = (currentPage - 1) * 12;
-  const endIndex = startIndex + 12;
-  const currentCompanies = filteredCompanies.slice(startIndex, endIndex);
+    if (isFollowed) {
+      unfollowMutation.mutate(companyId);
+    } else {
+      followMutation.mutate(companyId);
+    }
+  };
+
+  // Transform API company to CompanyCard props
+  const transformCompanyToCardProps = (company: ApiCompany) => ({
+    name: company.company_name,
+    industry: company.industry || undefined,
+    location: company.location || undefined,
+    jobCount: company.job_count || 0,
+    followerCount: company.follower_count || 0,
+    employeeCount: company.employee_count || undefined,
+    isVerified: company.is_verified || false,
+    isFollowed: company.is_followed || false,
+    logo: (
+      <CompanyLogo
+        src={company.company_image || undefined}
+        alt={`${company.company_name} logo`}
+        fallbackText={company.company_name}
+        size="md"
+      />
+    ),
+    onFollow: () =>
+      handleFollowCompany(company.company_id, company.is_followed || false),
+    href: `/companies/${company.company_name
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .substring(0, 50)}-${company.company_id}`,
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            {t("companies.title")}
-          </h1>
-          <p className="text-lg text-gray-600">
-            {t("companies.exploreCompanies")}
-          </p>
-        </div>
-
-        {/* Search and Filters */}
-        <Card className="shadow-sm border-0 mb-8">
-          <CardContent className="p-6">
-            {/* Search Bar */}
-            <div className="flex flex-col lg:flex-row gap-4 mb-6">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                <Input
-                  placeholder="Search companies, industries, or technologies"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  className="pl-10 h-12"
-                />
-              </div>
-              <Button
-                onClick={handleSearch}
-                className="h-12 px-8 font-semibold"
-              >
-                Search Companies
-              </Button>
+        {/* Search Bar - Single Row */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+          <div className="flex flex-col lg:flex-row gap-4">
+            {/* Search Input */}
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Input
+                placeholder={t("common:companies.searchPlaceholder")}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyDown={handleKeyPress}
+                className="pl-10 h-12 bg-white border border-gray-200 rounded-lg shadow-sm text-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
             </div>
 
-            {/* Quick Filters */}
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1">
-                <Select
-                  value={filters.industry?.[0] || ""}
-                  onValueChange={(value) =>
-                    handleFilterChange("industry", value ? [value] : undefined)
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Industries" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">All Industries</SelectItem>
-                    {industries.map((industry) => (
-                      <SelectItem key={industry} value={industry}>
-                        {industry}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="flex-1">
-                <Select
-                  value={filters.size?.[0] || ""}
-                  onValueChange={(value) =>
-                    handleFilterChange("size", value ? [value] : undefined)
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Sizes" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">All Sizes</SelectItem>
-                    {companySizes.map((size) => (
-                      <SelectItem key={size.value} value={size.value}>
-                        {size.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="flex-1">
-                <Select
-                  value={filters.minRating?.toString() || ""}
-                  onValueChange={(value) =>
-                    handleFilterChange(
-                      "minRating",
-                      value ? parseFloat(value) : undefined
-                    )
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="All Ratings" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">All Ratings</SelectItem>
-                    <SelectItem value="4.5">4.5+ Stars</SelectItem>
-                    <SelectItem value="4.0">4.0+ Stars</SelectItem>
-                    <SelectItem value="3.5">3.5+ Stars</SelectItem>
-                    <SelectItem value="3.0">3.0+ Stars</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {/* Additional Filters */}
-            <div className="flex flex-wrap gap-3 mt-4">
-              <Button
-                variant={filters.hasJobs ? "default" : "outline"}
-                size="sm"
-                onClick={() => handleFilterChange("hasJobs", !filters.hasJobs)}
-              >
-                <Filter className="h-4 w-4 mr-2" />
-                Actively Hiring
-              </Button>
-              <Button
-                variant={filters.isVerified ? "default" : "outline"}
-                size="sm"
-                onClick={() =>
-                  handleFilterChange("isVerified", !filters.isVerified)
+            {/* Industry Filter */}
+            <div className="w-64">
+              <Select
+                value={filters.industry || "all"}
+                onValueChange={(value) =>
+                  handleFilterChange(
+                    "industry",
+                    value === "all" ? undefined : value
+                  )
                 }
               >
-                Verified Companies
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Results Header and Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">
-              {totalCompanies.toLocaleString()} Companies
-            </h2>
-            <p className="text-gray-600">
-              Showing {(currentPage - 1) * 12 + 1} -{" "}
-              {Math.min(currentPage * 12, totalCompanies)} of{" "}
-              {totalCompanies.toLocaleString()} results
-            </p>
-          </div>
-
-          <div className="flex items-center gap-4">
-            {/* Sort By */}
-            <div className="flex items-center gap-2">
-              <ArrowUpDown className="h-4 w-4 text-gray-500" />
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-40">
-                  <SelectValue />
+                <SelectTrigger className="h-12 bg-white border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                  <SelectValue placeholder="All Industries" />
                 </SelectTrigger>
                 <SelectContent>
-                  {sortOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
+                  <SelectItem value="all">All Industries</SelectItem>
+                  {industries.map((industry) => (
+                    <SelectItem key={industry} value={industry}>
+                      {industry}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
+            {/* Search Button */}
+            <Button
+              onClick={handleSearch}
+              className="h-12 px-8 bg-[#1967D2] hover:bg-[#1557B8] text-white font-medium"
+            >
+              Search
+            </Button>
+          </div>
+        </div>
+
+        {/* Results Header and Controls */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">
+              {String(
+                t("common:companies.companiesCount", {
+                  count: totalCompanies,
+                })
+              )}
+            </h2>
+            <p className="text-gray-600">
+              {isLoading ? (
+                t("common:companies.loadingCompanies")
+              ) : (
+                <>
+                  Showing {(currentPage - 1) * 12 + 1} -{" "}
+                  {Math.min(currentPage * 12, totalCompanies)} of{" "}
+                  {totalCompanies.toLocaleString()} results
+                </>
+              )}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-4">
             {/* View Toggle */}
             <div className="flex items-center bg-gray-100 rounded-lg p-1">
               <Button
@@ -359,10 +255,46 @@ export function CompaniesPage() {
         </div>
 
         {/* Companies Grid */}
-        <FeaturedCompanies companies={currentCompanies} isLoading={isLoading} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {isLoading
+            ? Array.from({ length: 12 }).map((_, index) => (
+                <CompanyCardSkeleton key={index} />
+              ))
+            : companies.map((company) => {
+                const cardProps = transformCompanyToCardProps(company);
+                return <CompanyCard key={company.company_id} {...cardProps} />;
+              })}
+        </div>
+
+        {/* Error State */}
+        {error && (
+          <div className="text-center py-16">
+            <div className="text-red-400 mb-4">
+              <svg
+                className="w-16 h-16 mx-auto"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1}
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <h3 className="text-xl font-medium text-gray-900 mb-2">
+              Error loading companies
+            </h3>
+            <p className="text-gray-600">
+              Please try again later or contact support if the problem persists.
+            </p>
+          </div>
+        )}
 
         {/* No Results */}
-        {!isLoading && currentCompanies.length === 0 && (
+        {!isLoading && !error && companies.length === 0 && (
           <div className="text-center py-16">
             <div className="text-gray-400 mb-4">
               <svg
@@ -389,12 +321,7 @@ export function CompaniesPage() {
         )}
 
         {/* Active Filters */}
-        {(filters.query ||
-          filters.industry?.length ||
-          filters.size?.length ||
-          filters.minRating ||
-          filters.hasJobs ||
-          filters.isVerified) && (
+        {(filters.search || filters.industry) && (
           <div className="mt-8">
             <div className="flex items-center gap-2 mb-4">
               <span className="text-sm font-medium text-gray-700">
@@ -404,14 +331,15 @@ export function CompaniesPage() {
                 variant="ghost"
                 size="sm"
                 onClick={() => {
-                  setFilters({
+                  const newFilters = {
                     page: 1,
                     limit: 12,
-                    sortBy: "name",
-                    sortOrder: "asc",
-                  });
+                    sortBy: "company_name",
+                    sortOrder: "ASC" as const,
+                  };
+                  setFilters(newFilters);
                   setSearchQuery("");
-                  setSearchParams(new URLSearchParams());
+                  updateUrlParams(newFilters);
                 }}
                 className="text-blue-600 hover:text-blue-700"
               >
@@ -419,36 +347,56 @@ export function CompaniesPage() {
               </Button>
             </div>
             <div className="flex flex-wrap gap-2">
-              {filters.query && (
+              {filters.search && (
                 <Badge variant="secondary" className="py-1 px-3">
-                  Search: "{filters.query}"
+                  Search: "{filters.search}"
                 </Badge>
               )}
-              {filters.industry?.map((industry) => (
-                <Badge key={industry} variant="secondary" className="py-1 px-3">
-                  Industry: {industry}
-                </Badge>
-              ))}
-              {filters.size?.map((size) => (
-                <Badge key={size} variant="secondary" className="py-1 px-3">
-                  Size: {companySizes.find((s) => s.value === size)?.label}
-                </Badge>
-              ))}
-              {filters.minRating && (
+              {filters.industry && (
                 <Badge variant="secondary" className="py-1 px-3">
-                  Rating: {filters.minRating}+ Stars
+                  Industry: {filters.industry}
                 </Badge>
               )}
-              {filters.hasJobs && (
-                <Badge variant="secondary" className="py-1 px-3">
-                  Actively Hiring
-                </Badge>
-              )}
-              {filters.isVerified && (
-                <Badge variant="secondary" className="py-1 px-3">
-                  Verified Only
-                </Badge>
-              )}
+            </div>
+          </div>
+        )}
+
+        {/* Pagination */}
+        {!isLoading && !error && totalPages > 1 && (
+          <div className="flex justify-center mt-8">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage <= 1}
+              >
+                Previous
+              </Button>
+
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                const pageNum =
+                  Math.max(1, Math.min(totalPages - 4, currentPage - 2)) + i;
+                return (
+                  <Button
+                    key={pageNum}
+                    variant={pageNum === currentPage ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => handlePageChange(pageNum)}
+                  >
+                    {pageNum}
+                  </Button>
+                );
+              })}
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage >= totalPages}
+              >
+                Next
+              </Button>
             </div>
           </div>
         )}

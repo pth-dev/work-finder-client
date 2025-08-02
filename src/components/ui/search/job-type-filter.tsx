@@ -1,7 +1,13 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { Control } from "react-hook-form";
 import { IFilterOption } from "@/types/common";
 
@@ -40,6 +46,7 @@ export const JobTypeFilter: React.FC<JobTypeFilterProps> = ({
   showCounts = false,
   maxHeight = "max-h-48",
 }) => {
+  const { t } = useTranslation();
   const handleCheckboxChange = (jobTypeValue: string, checked: boolean) => {
     if (onChange) {
       const newValue = checked
@@ -61,7 +68,10 @@ export const JobTypeFilter: React.FC<JobTypeFilterProps> = ({
             <FormControl>
               <div className={`space-y-3 ${maxHeight} overflow-y-auto`}>
                 {jobTypes.map((jobType) => (
-                  <div key={jobType.value} className="flex items-center space-x-2">
+                  <div
+                    key={jobType.value}
+                    className="flex items-center space-x-2"
+                  >
                     <Checkbox
                       id={`jobtype-${jobType.value}`}
                       checked={field.value?.includes(jobType.value) || false}
@@ -69,7 +79,9 @@ export const JobTypeFilter: React.FC<JobTypeFilterProps> = ({
                         const currentValue = field.value || [];
                         const newValue = checked
                           ? [...currentValue, jobType.value]
-                          : currentValue.filter((v: string) => v !== jobType.value);
+                          : currentValue.filter(
+                              (v: string) => v !== jobType.value
+                            );
                         field.onChange(newValue);
                       }}
                     />

@@ -5,6 +5,8 @@ import LanguageDetector from "i18next-browser-languagedetector";
 // Import translation files
 import enTranslations from "./locales/en.json";
 import viTranslations from "./locales/vi.json";
+import enCommon from "./locales/common-en.json";
+import viCommon from "./locales/common-vi.json";
 
 // Define supported languages
 export const SUPPORTED_LANGUAGES = {
@@ -23,9 +25,11 @@ i18n
     resources: {
       en: {
         translation: enTranslations,
+        common: enCommon,
       },
       vi: {
         translation: viTranslations,
+        common: viCommon,
       },
     },
 

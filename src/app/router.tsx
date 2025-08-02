@@ -39,8 +39,17 @@ export const createAppRouter = (queryClient: QueryClient) =>
     },
     {
       path: paths.auth.verifyOTP.path,
+      lazy: () => import("./routes/auth/verify-otp").then(convert(queryClient)),
+    },
+    {
+      path: paths.auth.verifyResetOtp.path,
       lazy: () =>
-        import("./routes/auth/verify-otp").then(convert(queryClient)),
+        import("./routes/auth/verify-reset-otp").then(convert(queryClient)),
+    },
+    {
+      path: paths.auth.setNewPassword.path,
+      lazy: () =>
+        import("./routes/auth/set-new-password").then(convert(queryClient)),
     },
 
     // Main app với AppLayout wrapper
@@ -112,6 +121,16 @@ export const createAppRouter = (queryClient: QueryClient) =>
               path: paths.app.savedJobs.path,
               lazy: () =>
                 import("./routes/app/saved-jobs").then(convert(queryClient)),
+            },
+            {
+              path: paths.app.jobs.path,
+              lazy: () =>
+                import("./routes/app/jobs").then(convert(queryClient)),
+            },
+            {
+              path: paths.app.companies.path,
+              lazy: () =>
+                import("./routes/app/companies").then(convert(queryClient)),
             },
           ],
         },

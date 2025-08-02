@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { useFeaturedJobs, useSaveJob, useSavedJobStatus } from "../hooks";
 import { ApiJobPost } from "../types";
 import { formatTimeAgo, formatSalary } from "@/utils/common";
+import { generateJobSlug } from "@/utils/slug-utils";
 import {
   JobCard,
   JobCardSkeleton,
@@ -24,7 +25,7 @@ interface FeaturedJobsProps {
 const transformJobToCardProps = (
   job: ApiJobPost,
   onBookmark: (jobId: string) => void,
-  onClick: (jobId: string) => void,
+  onClick: (job: ApiJobPost) => void,
   isBookmarked: boolean,
   t: any // i18n translation function
 ) => {
@@ -58,13 +59,13 @@ const transformJobToCardProps = (
       />
     ) : undefined,
     title: job.job_title,
-    company: job.company?.company_name || "Unknown Company",
-    location: job.location || "Remote",
+    company: job.company?.company_name || t("common:jobs.unknownCompany"),
+    location: job.location || t("common:jobs.remote"),
     timeAgo: formatTimeAgo(job.posted_date, t),
-    salary: formatSalary(job, t),
+    salary: formatSalary(job),
     tags,
     onBookmark: () => onBookmark(job.job_id.toString()),
-    onClick: () => onClick(job.job_id.toString()),
+    onClick: () => onClick(job),
     isBookmarked,
   };
 };
@@ -82,8 +83,15 @@ export const FeaturedJobs: React.FC<FeaturedJobsProps> = ({
   const { data: apiResponse, isLoading, error } = useFeaturedJobs(limit);
   const jobs = apiResponse?.data?.jobs || [];
 
-  const handleViewJob = (jobId: string) => {
-    navigate(`/jobs/${jobId}`);
+  const handleViewJob = (job: ApiJobPost) => {
+    // Transform ApiJobPost to Job format for slug generation
+    const jobForSlug = {
+      id: job.job_id.toString(),
+      title: job.job_title,
+      companyName: job.company?.company_name || "Unknown Company",
+    };
+    const slug = generateJobSlug(jobForSlug);
+    navigate(`/jobs/${slug}`);
   };
 
   const handleSaveJob = (jobId: string) => {

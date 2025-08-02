@@ -1,4 +1,5 @@
 import { api } from "@/lib/api-client";
+import { ApiJobsResponse } from "@/features/jobs/types";
 import {
   CompanySearchFilters,
   ApiCompaniesResponse,
@@ -6,6 +7,8 @@ import {
   CreateCompanyRequest,
   UpdateCompanyRequest,
   JoinCompanyRequest,
+  FollowCompanyResponse,
+  CompanyJobsFilters,
 } from "../types";
 
 // ===== API FUNCTIONS =====
@@ -81,4 +84,32 @@ export const getFeaturedCompanies = (
       sortOrder: "DESC",
     },
   });
+};
+
+/**
+ * Follow a company
+ */
+export const followCompany = (
+  companyId: number
+): Promise<FollowCompanyResponse> => {
+  return api.post(`/companies/${companyId}/follow`);
+};
+
+/**
+ * Unfollow a company
+ */
+export const unfollowCompany = (
+  companyId: number
+): Promise<FollowCompanyResponse> => {
+  return api.delete(`/companies/${companyId}/follow`);
+};
+
+/**
+ * Get jobs from a specific company
+ */
+export const getCompanyJobs = (
+  companyId: number,
+  filters: CompanyJobsFilters = {}
+): Promise<ApiJobsResponse> => {
+  return api.get(`/companies/${companyId}/jobs`, { params: filters });
 };

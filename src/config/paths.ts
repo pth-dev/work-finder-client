@@ -33,6 +33,14 @@ export const paths = {
       getHref: (email?: string) =>
         `/auth/verify-otp${email ? `?email=${encodeURIComponent(email)}` : ""}`,
     },
+    verifyResetOtp: {
+      path: "/auth/verify-reset-otp",
+      getHref: () => "/auth/verify-reset-otp",
+    },
+    setNewPassword: {
+      path: "/auth/set-new-password",
+      getHref: () => "/auth/set-new-password",
+    },
   },
 
   app: {
@@ -76,8 +84,8 @@ export const paths = {
       getHref: () => "/jobs",
     },
     detail: {
-      path: "/jobs/:id",
-      getHref: (id: string) => `/jobs/${id}`,
+      path: "/jobs/:identifier",
+      getHref: (identifier: string) => `/jobs/${identifier}`,
     },
   },
 
@@ -87,8 +95,8 @@ export const paths = {
       getHref: () => "/companies",
     },
     detail: {
-      path: "/companies/:id",
-      getHref: (id: string) => `/companies/${id}`,
+      path: "/companies/:identifier",
+      getHref: (identifier: string) => `/companies/${identifier}`,
     },
   },
 

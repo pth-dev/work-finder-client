@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EyeOff, Eye } from "lucide-react";
 import { z } from "zod";
+import { EyeOff, Eye } from "lucide-react";
+
+import { useTranslation } from "react-i18next";
 import {
   Form,
   FormControl,
@@ -18,30 +20,31 @@ import { paths } from "@/config/paths";
 import { useLogin } from "../api/login";
 import { useMutationLoading } from "@/hooks/use-loading";
 import { useToast } from "@/services/toast-service";
+import { getFieldLabel, getAuthError } from "@/i18n/helpers";
 
-const loginSchema = z.object({
-  email: z.string().email({ message: "Vui lòng nhập email hợp lệ" }),
-  password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
-});
+import { createLoginSchema } from "@/utils/validations/auth.schemas";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const { t } = useTranslation();
   const { setUser } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
   const toast = useToast();
 
+  const loginSchema = createLoginSchema(t);
+
   // Get appropriate redirect path based on user role and 'from' state
   const getRedirectPath = (user: any) => {
     const from = (location.state as any)?.from;
-    
+
     // If there's a specific 'from' path, use it
     if (from && from !== "/") {
       return from;
     }
-    
+
     // Default redirect based on user role
-    if (user?.role === 'job_seeker') {
+    if (user?.role === "job_seeker") {
       return paths.home.getHref();
     } else {
       return paths.app.dashboard.getHref();
@@ -53,9 +56,8 @@ export function LoginForm() {
       mutationConfig: {
         onSuccess: (response) => {
           // Show success toast
-          const messageKey = response.message || 'auth.messages.login.success';
-          toast.success(messageKey);
-          
+          toast.success(t("common:auth.login.success"));
+
           // Store user data (tokens are stored in HTTP-only cookies)
           setUser(response.data.user);
           // Navigate to appropriate page based on user role
@@ -64,22 +66,27 @@ export function LoginForm() {
         },
         onError: (error: any) => {
           // Show error toast based on error message/key from backend
-          const messageKey = error?.response?.data?.message || 'auth.messages.login.failed';
-          toast.error(messageKey);
+          const message = error?.response?.data?.message;
+          if (message === "auth.messages.login.invalidCredentials") {
+            toast.error(getAuthError(t, "invalidCredentials"));
+          } else {
+            toast.error(t("common:auth.login.failed"));
+          }
         },
       },
     }),
-    'login',
+    "login",
     {
       globalLoading: true,
     }
   );
 
-  const form = useForm<z.infer<typeof loginSchema>>({
+  const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
+      rememberMe: false,
     },
   });
 
@@ -107,10 +114,13 @@ export function LoginForm() {
             </div>
             <div className="ml-3">
               <h3 className="text-sm font-medium text-red-800">
-                Lỗi đăng nhập
+                {t("common:auth.login.error")}
               </h3>
               <div className="mt-2 text-sm text-red-700">
-                <p>{loginMutation.error?.message || 'Đăng nhập thất bại'}</p>
+                <p>
+                  {loginMutation.error?.message ||
+                    t("common:auth.login.failed")}
+                </p>
               </div>
             </div>
           </div>
@@ -133,7 +143,7 @@ export function LoginForm() {
                     <Input
                       {...field}
                       type="email"
-                      placeholder="Email"
+                      placeholder={getFieldLabel(t, "email")}
                       autoComplete="email"
                       className="h-12 lg:h-14 border-[#c6c6c9] text-[#56575d] text-sm lg:text-base font-medium bg-transparent"
                     />
@@ -156,7 +166,7 @@ export function LoginForm() {
                       <Input
                         {...field}
                         type={showPassword ? "text" : "password"}
-                        placeholder="Mật khẩu"
+                        placeholder={getFieldLabel(t, "password")}
                         autoComplete="current-password"
                         className="h-12 lg:h-14 border-[#c6c6c9] text-[#56575d] text-sm lg:text-base font-medium bg-transparent pr-12"
                       />
@@ -207,10 +217,10 @@ export function LoginForm() {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                Đang đăng nhập...
+                {t("common:auth.login.signing")}
               </div>
             ) : (
-              "Đăng nhập"
+              t("common:auth.login.signIn")
             )}
           </Button>
 
@@ -220,15 +230,17 @@ export function LoginForm() {
               to={paths.auth.forgotPassword.getHref()}
               className="text-[#2971ff] hover:text-[#1967d2] font-medium"
             >
-              Quên mật khẩu?
+              {t("common:auth.login.forgotPassword")}
             </Link>
             <div>
-              <span className="text-[#56575d]">Chưa có tài khoản? </span>
+              <span className="text-[#56575d]">
+                {t("common:auth.login.noAccount")}{" "}
+              </span>
               <Link
                 to={paths.auth.register.getHref()}
                 className="text-[#2971ff] hover:text-[#1967d2] font-medium"
               >
-                Đăng ký ngay
+                {t("common:auth.login.signUp")}
               </Link>
             </div>
           </div>

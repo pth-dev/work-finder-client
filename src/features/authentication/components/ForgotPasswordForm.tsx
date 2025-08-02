@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+
+import { useTranslation } from "react-i18next";
 import {
   Form,
   FormControl,
@@ -13,40 +14,70 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { paths } from "@/config/paths";
+import { useForgotPassword } from "../api/forgot-password";
+import { toast } from "sonner";
+import { getFieldLabel, getAuthError } from "@/i18n/helpers";
 
-const forgotPasswordSchema = z.object({
-  email: z.string().email("Vui lòng nhập email hợp lệ"),
-});
+import {
+  createForgotPasswordSchema,
+  type ForgotPasswordFormData,
+} from "@/utils/validations/auth.schemas";
 
 export function ForgotPasswordForm() {
-  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const form = useForm<z.infer<typeof forgotPasswordSchema>>({
+  const forgotPasswordSchema = createForgotPasswordSchema(t);
+
+  const forgotPasswordMutation = useForgotPassword({
+    mutationConfig: {
+      onSuccess: () => {
+        setIsSuccess(true);
+        toast.success(t("common:auth.forgotPassword.otpSent"));
+        // Navigate to verify reset OTP page after 2 seconds
+        setTimeout(() => {
+          navigate(paths.auth.verifyResetOtp.getHref(), {
+            state: { email: form.getValues("email") },
+          });
+        }, 2000);
+      },
+      onError: (error: any) => {
+        const message = error?.response?.data?.message;
+
+        // Check if email not found
+        if (message === "auth.messages.forgotPassword.emailNotFound") {
+          const errorMsg = getAuthError(t, "emailNotFound");
+          setError(errorMsg);
+          toast.error(errorMsg, {
+            action: {
+              label: t("auth.register.signUp"),
+              onClick: () =>
+                navigate("/auth/register", {
+                  state: { email: form.getValues("email") },
+                }),
+            },
+          });
+        } else {
+          const errorMsg = t("common:errors.api.serverError");
+          setError(errorMsg);
+          toast.error(errorMsg);
+        }
+      },
+    },
+  });
+
+  const form = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
       email: "",
     },
   });
 
-  const onSubmit = async (_values: z.infer<typeof forgotPasswordSchema>) => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      
-      // TODO: Implement forgot password API call
-      // await forgotPasswordAPI(values.email);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      setIsSuccess(true);
-    } catch (err: any) {
-      setError(err.message || "Có lỗi xảy ra, vui lòng thử lại");
-    } finally {
-      setIsLoading(false);
-    }
+  const onSubmit = async (values: ForgotPasswordFormData) => {
+    setError(null);
+    forgotPasswordMutation.mutate({ email: values.email });
   };
 
   if (isSuccess) {
@@ -69,13 +100,10 @@ export function ForgotPasswordForm() {
             </div>
             <div className="ml-3">
               <h3 className="text-sm font-medium text-green-800">
-                Email đã được gửi
+                {t("common:auth.forgotPassword.emailSent")}
               </h3>
               <div className="mt-2 text-sm text-green-700">
-                <p>
-                  Chúng tôi đã gửi hướng dẫn đặt lại mật khẩu đến email của bạn. 
-                  Vui lòng kiểm tra hộp thư và làm theo hướng dẫn.
-                </p>
+                <p>{t("common:auth.forgotPassword.emailSentDescription")}</p>
               </div>
             </div>
           </div>
@@ -86,7 +114,7 @@ export function ForgotPasswordForm() {
             to={paths.auth.login.getHref()}
             className="text-[#2971ff] hover:text-[#1967d2] font-medium"
           >
-            Quay lại đăng nhập
+            {t("common:auth.forgotPassword.backToLogin")}
           </Link>
         </div>
       </div>
@@ -112,7 +140,9 @@ export function ForgotPasswordForm() {
               </svg>
             </div>
             <div className="ml-3">
-              <h3 className="text-sm font-medium text-red-800">Lỗi</h3>
+              <h3 className="text-sm font-medium text-red-800">
+                {t("common:ui.error")}
+              </h3>
               <div className="mt-2 text-sm text-red-700">
                 <p>{error}</p>
               </div>
@@ -137,7 +167,7 @@ export function ForgotPasswordForm() {
                     <Input
                       {...field}
                       type="email"
-                      placeholder="Email"
+                      placeholder={getFieldLabel(t, "email")}
                       autoComplete="email"
                       className="h-[50px] border-[#c6c6c9] text-[#56575d] text-[15px] font-medium bg-transparent"
                     />
@@ -151,10 +181,10 @@ export function ForgotPasswordForm() {
           {/* Submit Button */}
           <Button
             type="submit"
-            disabled={isLoading}
+            disabled={forgotPasswordMutation.isPending}
             className="w-full h-[50px] bg-[#2971ff] hover:bg-[#1967d2] text-white font-semibold text-[16px] rounded-lg"
           >
-            {isLoading ? (
+            {forgotPasswordMutation.isPending ? (
               <div className="flex items-center">
                 <svg
                   className="animate-spin -ml-1 mr-3 h-4 w-4 text-white"
@@ -176,10 +206,10 @@ export function ForgotPasswordForm() {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                Đang gửi...
+                {t("common:auth.forgotPassword.sending")}
               </div>
             ) : (
-              "Gửi hướng dẫn đặt lại mật khẩu"
+              t("common:auth.forgotPassword.sendInstructions")
             )}
           </Button>
 
@@ -189,7 +219,7 @@ export function ForgotPasswordForm() {
               to={paths.auth.login.getHref()}
               className="text-[#2971ff] hover:text-[#1967d2] font-medium"
             >
-              Quay lại đăng nhập
+              {t("common:auth.forgotPassword.backToLogin")}
             </Link>
           </div>
         </form>

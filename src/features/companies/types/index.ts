@@ -5,6 +5,8 @@ export interface CompanySearchFilters {
   limit?: number;
   search?: string;
   industry?: string;
+  sortBy?: string;
+  sortOrder?: "ASC" | "DESC";
 }
 
 export interface ApiCompany {
@@ -21,6 +23,8 @@ export interface ApiCompany {
   employee_count?: number | null;
   is_verified?: boolean; // ← API có field "is_verified"
   job_count?: number; // ← API trả về job_count từ backend optimization
+  follower_count?: number; // ← Number of followers
+  is_followed?: boolean; // ← Whether current user follows this company
   created_at: string;
   updated_at: string;
 }
@@ -64,4 +68,24 @@ export interface UpdateCompanyRequest extends Partial<CreateCompanyRequest> {}
 export interface JoinCompanyRequest {
   company_id: number;
   message?: string;
+}
+
+// ===== FOLLOW COMPANY TYPES =====
+
+export interface FollowCompanyResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    is_followed: boolean;
+    follower_count: number;
+  };
+}
+
+// ===== COMPANY JOBS TYPES =====
+
+export interface CompanyJobsFilters {
+  page?: number;
+  limit?: number;
+  sortBy?: string;
+  sortOrder?: "ASC" | "DESC";
 }

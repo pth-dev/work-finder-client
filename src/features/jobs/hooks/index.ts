@@ -59,20 +59,20 @@ export const useFeaturedJobs = (
 };
 
 /**
- * Hook to fetch single job by ID
+ * Hook to fetch single job by ID or slug
  */
 export const useJob = (
-  id: number,
+  identifier: string | number,
   options: {
     enabled?: boolean;
   } = {}
 ) => {
   return useQuery({
-    queryKey: ["job", id],
-    queryFn: () => getJob(id),
+    queryKey: ["job", identifier],
+    queryFn: () => getJob(identifier),
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 15 * 60 * 1000, // 15 minutes
-    enabled: options.enabled ?? !!id,
+    enabled: options.enabled ?? !!identifier,
     refetchOnWindowFocus: false,
     retry: 2,
   });

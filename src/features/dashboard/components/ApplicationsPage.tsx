@@ -10,6 +10,7 @@ import {
   Users,
   CheckCircle,
 } from "lucide-react";
+import { generateJobSlug } from "@/utils/slug-utils";
 
 import {
   Button,
@@ -129,8 +130,9 @@ export function ApplicationsPage() {
     console.log("View application:", appId);
   };
 
-  const handleViewJob = (jobId: string) => {
-    navigate(`/jobs/${jobId}`);
+  const handleViewJob = (job: Job) => {
+    const slug = generateJobSlug(job);
+    navigate(`/jobs/${slug}`);
   };
 
   const handleWithdrawApplication = (appId: string) => {
@@ -263,7 +265,7 @@ export function ApplicationsPage() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => handleViewJob(application.jobId)}
+              onClick={() => handleViewJob(application.job)}
             >
               <ExternalLink className="h-4 w-4 mr-1" />
               View Job

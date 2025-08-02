@@ -1,0 +1,371 @@
+{
+  "actions": {
+    "loading": "Đang tải...",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "submit": "Gửi",
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa",
+    "search": "Tìm kiếm",
+    "filter": "Lọc",
+    "sort": "Sắp xếp",
+    "apply": "Áp dụng",
+    "close": "Đóng",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "previous": "Trước đó",
+    "reset": "Đặt lại",
+    "confirm": "Xác nhận",
+    "retry": "Thử lại",
+    "refresh": "Làm mới",
+    "continue": "Tiếp tục",
+    "skip": "Bỏ qua"
+  },
+  "statuses": {
+    "loading": "Đang tải...",
+    "success": "Thành công",
+    "error": "Lỗi",
+    "pending": "Đang xử lý",
+    "completed": "Hoàn thành",
+    "failed": "Thất bại",
+    "processing": "Đang xử lý",
+    "waiting": "Đang chờ",
+    "ready": "Sẵn sàng"
+  },
+  "errors": {
+    "validation": {
+      "required": "{{field}} là bắt buộc",
+      "email": "{{field}} phải là email hợp lệ",
+      "minLength": "{{field}} phải có ít nhất {{min}} ký tự",
+      "maxLength": "{{field}} không được vượt quá {{max}} ký tự",
+      "passwordMismatch": "Mật khẩu xác nhận không khớp",
+      "invalidFormat": "{{field}} không đúng định dạng",
+      "strongPassword": "Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt",
+      "numeric": "{{field}} phải là số",
+      "positive": "{{field}} phải là số dương",
+      "range": "{{field}} phải từ {{min}} đến {{max}}",
+      "unique": "{{field}} đã tồn tại",
+      "match": "{{field}} không khớp với {{target}}",
+      "url": "{{field}} phải là URL hợp lệ",
+      "phoneNumber": "{{field}} phải là số điện thoại hợp lệ",
+      "fileSize": "{{field}} phải nhỏ hơn {{size}}MB",
+      "fileType": "{{field}} phải là file {{types}}",
+      "dateInPast": "{{field}} không thể là ngày trong quá khứ",
+      "dateInFuture": "{{field}} không thể là ngày trong tương lai",
+      "startBeforeEnd": "{{field}} không thể trước {{startField}}",
+      "endAfterStart": "{{field}} không thể sau {{endField}}",
+      "termsAccepted": "Bạn phải chấp nhận điều khoản và điều kiện",
+      "currentJobRequired": "{{field}} là bắt buộc trừ khi đây là công việc hiện tại",
+      "currentStudyRequired": "{{field}} là bắt buộc trừ khi bạn đang học",
+      "salaryRange": "Lương tối thiểu không thể lớn hơn lương tối đa",
+      "nameFormat": "{{field}} chỉ có thể chứa chữ cái và khoảng trắng",
+      "passwordStrength": {
+        "uppercase": "{{field}} phải chứa ít nhất một chữ hoa",
+        "lowercase": "{{field}} phải chứa ít nhất một chữ thường",
+        "number": "{{field}} phải chứa ít nhất một số",
+        "special": "{{field}} phải chứa ít nhất một ký tự đặc biệt"
+      }
+    },
+    "api": {
+      "networkError": "Lỗi kết nối. Vui lòng kiểm tra internet và thử lại",
+      "serverError": "Lỗi server. Vui lòng thử lại sau",
+      "unauthorized": "Bạn không có quyền truy cập",
+      "forbidden": "Truy cập bị từ chối",
+      "notFound": "Không tìm thấy dữ liệu",
+      "timeout": "Yêu cầu quá thời gian chờ",
+      "badRequest": "Yêu cầu không hợp lệ",
+      "conflict": "Dữ liệu bị xung đột",
+      "tooManyRequests": "Quá nhiều yêu cầu. Vui lòng thử lại sau",
+      "serviceUnavailable": "Dịch vụ tạm thời không khả dụng"
+    },
+    "auth": {
+      "emailNotFound": "Email này chưa được đăng ký trong hệ thống",
+      "invalidCredentials": "Email hoặc mật khẩu không chính xác",
+      "emailExists": "Email này đã được đăng ký",
+      "accountNotVerified": "Tài khoản chưa được xác thực",
+      "otpInvalid": "OTP không hợp lệ hoặc đã hết hạn",
+      "otpExpired": "OTP đã hết hạn",
+      "tokenInvalid": "Token không hợp lệ hoặc đã hết hạn",
+      "sessionExpired": "Phiên đăng nhập đã hết hạn",
+      "passwordWeak": "Mật khẩu quá yếu",
+      "accountLocked": "Tài khoản đã bị khóa",
+      "loginAttempts": "Quá nhiều lần đăng nhập sai. Vui lòng thử lại sau"
+    },
+    "form": {
+      "invalidData": "Dữ liệu không hợp lệ",
+      "missingFields": "Vui lòng điền đầy đủ thông tin",
+      "saveError": "Không thể lưu dữ liệu",
+      "loadError": "Không thể tải dữ liệu"
+    }
+  },
+  "notifications": {
+    "success": {
+      "saved": "Đã lưu thành công",
+      "updated": "Đã cập nhật thành công",
+      "deleted": "Đã xóa thành công",
+      "created": "Đã tạo thành công",
+      "sent": "Đã gửi thành công",
+      "uploaded": "Đã tải lên thành công",
+      "downloaded": "Đã tải xuống thành công",
+      "copied": "Đã sao chép thành công"
+    },
+    "info": {
+      "processing": "Đang xử lý...",
+      "noData": "Không có dữ liệu",
+      "comingSoon": "Tính năng sắp ra mắt",
+      "maintenance": "Hệ thống đang bảo trì",
+      "updating": "Đang cập nhật dữ liệu"
+    },
+    "warning": {
+      "unsavedChanges": "Bạn có thay đổi chưa lưu",
+      "dataLoss": "Dữ liệu có thể bị mất",
+      "irreversible": "Hành động này không thể hoàn tác"
+    }
+  },
+  "auth": {
+    "forgotPassword": {
+      "otpSent": "OTP đã được gửi đến email của bạn",
+      "checkEmail": "Vui lòng kiểm tra email để nhận OTP",
+      "emailSent": "Email đã được gửi",
+      "emailSentDescription": "Chúng tôi đã gửi hướng dẫn đặt lại mật khẩu đến email của bạn. Vui lòng kiểm tra hộp thư và làm theo hướng dẫn.",
+      "backToLogin": "Quay lại đăng nhập",
+      "sendInstructions": "Gửi hướng dẫn đặt lại mật khẩu",
+      "sending": "Đang gửi..."
+    },
+    "login": {
+      "success": "Đăng nhập thành công! Chào mừng bạn trở lại",
+      "failed": "Đăng nhập thất bại. Vui lòng thử lại",
+      "error": "Lỗi đăng nhập",
+      "signIn": "Đăng nhập",
+      "signing": "Đang đăng nhập...",
+      "forgotPassword": "Quên mật khẩu?",
+      "noAccount": "Chưa có tài khoản?",
+      "signUp": "Đăng ký ngay"
+    },
+    "register": {
+      "success": "Đăng ký thành công! Vui lòng kiểm tra email để xác thực",
+      "failed": "Đăng ký thất bại. Vui lòng thử lại",
+      "signUp": "Đăng ký",
+      "signing": "Đang đăng ký...",
+      "haveAccount": "Đã có tài khoản?",
+      "signIn": "Đăng nhập ngay",
+      "jobSeeker": "Người tìm việc",
+      "recruiter": "Nhà tuyển dụng",
+      "selectRole": "Chọn vai trò của bạn"
+    }
+  },
+  "fields": {
+    "email": "Email",
+    "password": "Mật khẩu",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "currentPassword": "Mật khẩu hiện tại",
+    "newPassword": "Mật khẩu mới",
+    "fullName": "Họ và tên",
+    "firstName": "Tên",
+    "lastName": "Họ",
+    "phone": "Số điện thoại",
+    "phoneNumber": "Số điện thoại",
+    "termsAccepted": "Điều khoản và điều kiện",
+    "marketingEmails": "Nhận email marketing",
+    "token": "Mã xác thực",
+    "address": "Địa chỉ",
+    "city": "Thành phố",
+    "country": "Quốc gia",
+    "company": "Công ty",
+    "position": "Vị trí",
+    "description": "Mô tả",
+    "title": "Tiêu đề",
+    "content": "Nội dung",
+    "category": "Danh mục",
+    "tags": "Thẻ",
+    "date": "Ngày",
+    "time": "Thời gian",
+    "status": "Trạng thái",
+    "type": "Loại",
+    "priority": "Độ ưu tiên"
+  },
+  "ui": {
+    "error": "Lỗi",
+    "loading": "Đang tải...",
+    "submit": "Gửi",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "view": "Xem",
+    "search": "Tìm kiếm",
+    "filter": "Lọc",
+    "sort": "Sắp xếp",
+    "reset": "Đặt lại",
+    "confirm": "Xác nhận",
+    "close": "Đóng",
+    "retry": "Thử lại"
+  },
+  "errorStates": {
+    "network": {
+      "title": "Không thể kết nối",
+      "message": "Vui lòng kiểm tra kết nối mạng và thử lại."
+    },
+    "server": {
+      "title": "Lỗi máy chủ",
+      "message": "Đã xảy ra lỗi từ phía máy chủ. Vui lòng thử lại sau."
+    },
+    "notFound": {
+      "title": "Không tìm thấy dữ liệu",
+      "message": "Không có dữ liệu để hiển thị."
+    },
+    "invalidId": {
+      "title": "ID không hợp lệ",
+      "message": "Vui lòng kiểm tra URL và thử lại."
+    },
+    "generic": {
+      "title": "Đã xảy ra lỗi",
+      "message": "Vui lòng thử lại sau hoặc liên hệ hỗ trợ."
+    }
+  },
+  "companies": {
+    "unknown": "Không rõ",
+    "unknownCompany": "Công ty không rõ",
+    "multipleLocations": "Nhiều địa điểm",
+    "verified": "Đã xác minh",
+    "employees": "nhân viên",
+    "openPositions": "vị trí đang tuyển",
+    "follow": "Theo dõi",
+    "unfollow": "Bỏ theo dõi",
+    "viewJobs": "Xem việc làm",
+    "backToCompanies": "Quay lại danh sách công ty",
+    "defaultDescription": "Công ty công nghệ hàng đầu tập trung vào đổi mới và phát triển.",
+    "foundedIn": "Thành lập năm {{year}}",
+    "employeeCount": "{{count}} nhân viên",
+    "employeeCountK": "{{count}}k+ nhân viên",
+    "na": "N/A",
+    "companiesCount": "{{count}} Công ty",
+    "loadingCompanies": "Đang tải công ty...",
+    "showingResults": "Hiển thị {{start}} - {{end}} trong tổng số {{total}} kết quả",
+    "activeFilters": "Bộ lọc đang áp dụng:",
+    "clearAll": "Xóa tất cả",
+    "searchFilter": "Tìm kiếm: \"{{query}}\"",
+    "job": "việc làm",
+    "jobs": "việc làm",
+    "followers": "người theo dõi",
+    "viewCompanyProfile": "Xem hồ sơ công ty",
+    "companyProfile": "Hồ sơ công ty",
+    "about": "Về {{companyName}}",
+    "noDescriptionAvailable": "Không có mô tả.",
+    "errorLoadingCompany": "Lỗi tải thông tin công ty",
+    "couldNotLoadCompany": "Chúng tôi không thể tải thông tin công ty. Vui lòng thử lại sau.",
+    "tryAgain": "Thử lại",
+    "searchPlaceholder": "Tìm kiếm công ty, ngành nghề hoặc công nghệ"
+  },
+  "jobs": {
+    "backToJobs": "Quay lại danh sách việc làm",
+    "share": "Chia sẻ",
+    "jobOverview": "Tổng quan công việc",
+    "datePosted": "Ngày đăng:",
+    "location": "Địa điểm:",
+    "jobType": "Loại công việc:",
+    "experience": "Kinh nghiệm:",
+    "salary": "Mức lương:",
+    "jobTitle": "Chức danh:",
+    "remote": "Làm việc từ xa",
+    "unknownCompany": "Công ty không rõ",
+    "locationNotSpecified": "Địa điểm chưa xác định",
+    "jobsFound": "{{count}} việc làm được tìm thấy",
+    "sortBy": "Sắp xếp theo",
+    "newest": "Mới nhất",
+    "oldest": "Cũ nhất",
+    "salaryHighToLow": "Lương cao đến thấp",
+    "salaryLowToHigh": "Lương thấp đến cao",
+    "noJobsFound": "Không tìm thấy việc làm",
+    "adjustSearchCriteria": "Thử điều chỉnh tiêu chí tìm kiếm của bạn"
+  },
+  "business": {
+    "locale": "vi-VN",
+    "employeeCount": {
+      "none": "Chưa có nhân viên",
+      "single": "1 nhân viên",
+      "small": "{{count}} nhân viên",
+      "medium": "{{count}} nhân viên",
+      "large": "{{count}} nhân viên",
+      "enterprise": "{{count}}+ nhân viên"
+    },
+    "companySize": {
+      "startup": "Startup",
+      "small": "Công ty nhỏ",
+      "medium": "Công ty vừa",
+      "large": "Công ty lớn",
+      "enterprise": "Tập đoàn",
+      "unknown": "Không xác định"
+    },
+    "date": {
+      "invalid": "Ngày không hợp lệ",
+      "today": "Hôm nay",
+      "yesterday": "Hôm qua",
+      "daysAgo": "{{days}} ngày trước",
+      "weeksAgo": "{{weeks}} tuần trước",
+      "monthsAgo": "{{months}} tháng trước",
+      "yearsAgo": "{{years}} năm trước"
+    },
+    "salary": {
+      "negotiable": "Thỏa thuận",
+      "millions": "{{amount}} triệu",
+      "thousands": "{{amount}} nghìn",
+      "exact": {
+        "month": "{{amount}}/tháng",
+        "year": "{{amount}}/năm"
+      },
+      "range": {
+        "month": "{{min}} - {{max}}/tháng",
+        "year": "{{min}} - {{max}}/năm"
+      },
+      "from": {
+        "month": "Từ {{amount}}/tháng",
+        "year": "Từ {{amount}}/năm"
+      },
+      "upTo": {
+        "month": "Lên đến {{amount}}/tháng",
+        "year": "Lên đến {{amount}}/năm"
+      }
+    },
+    "jobType": {
+      "fullTime": "Toàn thời gian",
+      "partTime": "Bán thời gian",
+      "contract": "Hợp đồng",
+      "freelance": "Freelance",
+      "internship": "Thực tập",
+      "remote": "Làm việc từ xa",
+      "hybrid": "Hybrid",
+      "onsite": "Tại văn phòng",
+      "unknown": "Không xác định"
+    },
+    "experience": {
+      "entry": "Mới ra trường",
+      "junior": "Junior",
+      "mid": "Middle",
+      "senior": "Senior",
+      "lead": "Team Lead",
+      "manager": "Manager",
+      "director": "Director",
+      "executive": "Executive",
+      "unknown": "Không xác định"
+    },
+    "applicationStatus": {
+      "pending": "Đang chờ",
+      "reviewing": "Đang xem xét",
+      "shortlisted": "Được chọn",
+      "interview": "Phỏng vấn",
+      "offered": "Được nhận",
+      "accepted": "Đã chấp nhận",
+      "rejected": "Bị từ chối",
+      "withdrawn": "Đã rút",
+      "unknown": "Không xác định"
+    },
+    "fileSize": {
+      "zero": "0 bytes",
+      "bytes": "{{size}} bytes",
+      "kb": "{{size}} KB",
+      "mb": "{{size}} MB",
+      "gb": "{{size}} GB"
+    }
+  }
+}
