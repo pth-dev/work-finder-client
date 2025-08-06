@@ -5,6 +5,8 @@
       "findJobs": "Tìm việc làm",
       "employers": "Nhà tuyển dụng",
       "candidates": "Ứng viên",
+      "postJob": "Đăng tin tuyển dụng",
+      "myApplications": "Đơn ứng tuyển của tôi",
       "blog": "Blog"
     },
     "actions": {
@@ -20,6 +22,18 @@
       "savedJobs": "Việc làm đã lưu",
       "settings": "Cài đặt",
       "signOut": "Đăng xuất"
+    },
+    "notifications": {
+      "title": "Thông báo",
+      "markAllRead": "Đánh dấu tất cả đã đọc",
+      "noNotifications": "Không có thông báo",
+      "newNotification": "Thông báo mới",
+      "viewAll": "Xem tất cả thông báo",
+      "markAsRead": "Đánh dấu đã đọc",
+      "markAsUnread": "Đánh dấu chưa đọc",
+      "delete": "Xóa thông báo",
+      "loading": "Đang tải...",
+      "unreadCount": "{{count}}+"
     },
     "language": {
       "switchLanguage": "Chuyển đổi ngôn ngữ",
@@ -45,6 +59,9 @@
     "previous": "Trước đó",
     "submit": "Gửi",
     "reset": "Đặt lại",
+    "companies": {
+      "viewCompanyProfile": "Xem hồ sơ công ty"
+    },
     "time": {
       "justNow": "Vừa xong",
       "minutesAgo": "{{count}} phút trước",
@@ -81,24 +98,30 @@
     "register": {
       "title": "Tạo tài khoản",
       "subtitle": "Tham gia WorkFinder để tìm công việc mơ ước của bạn",
-      "firstName": "Tên",
-      "lastName": "Họ",
+      "fullName": "Họ và tên",
       "email": "Địa chỉ email",
       "password": "Mật khẩu",
       "confirmPassword": "Xác nhận mật khẩu",
+      "role": "Tôi là",
+      "jobSeeker": "Người tìm việc",
+      "recruiter": "Nhà tuyển dụng",
       "agreeTerms": "Tôi đồng ý với Điều khoản dịch vụ và Chính sách bảo mật",
       "createAccount": "Tạo tài khoản",
       "hasAccount": "Đã có tài khoản?",
       "signIn": "Đăng nhập tại đây"
     },
     "placeholders": {
-      "firstName": "Nhập tên của bạn",
-      "lastName": "Nhập họ của bạn",
-      "phoneNumber": "Nhập số điện thoại của bạn"
+      "fullName": "Nhập họ và tên của bạn",
+      "role": "Chọn vai trò của bạn"
     },
     "labels": {
-      "termsAccepted": "Tôi đồng ý với Điều khoản dịch vụ và Chính sách bảo mật",
-      "marketingEmails": "Tôi muốn nhận email về cơ hội việc làm và tin tức từ WorkFinder"
+      "fullName": "Họ và tên",
+      "role": "Vai trò",
+      "termsAccepted": "Tôi đồng ý với Điều khoản dịch vụ và Chính sách bảo mật"
+    },
+    "errors": {
+      "registrationError": "Lỗi đăng ký",
+      "registrationFailed": "Đăng ký thất bại"
     },
     "messages": {
       "registration": {
@@ -147,13 +170,305 @@
       }
     }
   },
+  "jobApplication": {
+    "modal": {
+      "title": "Ứng tuyển",
+      "companyPrefix": "tại",
+      "sections": {
+        "selectCV": "Chọn CV để ứng tuyển",
+        "coverLetter": "Thư giới thiệu"
+      },
+      "cvOptions": {
+        "latestCV": "CV ứng tuyển gần nhất:",
+        "otherCV": "Chọn CV khác trong thư viện CV của tôi",
+        "uploadNew": "Tải lên CV từ máy tính, chọn hoặc kéo thả",
+        "viewCV": "Xem"
+      },
+      "cvInfo": {
+        "name": "Họ và tên:",
+        "email": "Email:",
+        "phone": "Số điện thoại:"
+      },
+      "uploadArea": {
+        "title": "Tải lên CV từ máy tính, chọn hoặc kéo thả",
+        "subtitle": "Hỗ trợ định dạng .doc, .docx, pdf có kích thước dưới 5MB",
+        "button": "Chọn CV"
+      },
+      "coverLetterHint": {
+        "title": "Gợi ý:",
+        "content": "Một thư giới thiệu ngắn gọn, chính chủ sẽ giúp bạn trở nên chuyên nghiệp và gây ấn tượng hơn với nhà tuyển dụng."
+      },
+      "coverLetterPlaceholder": "Viết giới thiệu ngắn gọn về bản thân (điểm mạnh, điểm yếu) và nêu rõ mong muốn được làm việc tại công ty này...",
+      "buttons": {
+        "cancel": "Hủy",
+        "submit": "Nộp hồ sơ ứng tuyển",
+        "submitting": "Đang nộp..."
+      },
+      "validation": {
+        "coverLetterMin": "Thư giới thiệu ít nhất 50 ký tự",
+        "coverLetterMax": "Thư giới thiệu không quá 2000 ký tự",
+        "cvRequired": "Vui lòng chọn CV hoặc upload CV mới"
+      },
+      "messages": {
+        "uploadError": "Lỗi upload CV",
+        "submitError": "Lỗi khi nộp hồ sơ ứng tuyển",
+        "success": "Ứng tuyển thành công!",
+        "noResumeId": "Không thể xác định CV để ứng tuyển"
+      }
+    }
+  },
+  "dashboard": {
+    "greeting": {
+      "hello": "Xin chào, {{name}}!",
+      "subtitle": "Đây là hoạt động hàng ngày và thông báo việc làm của bạn",
+      "defaultName": "bạn"
+    },
+    "stats": {
+      "appliedJobs": "Việc đã ứng tuyển",
+      "favoriteJobs": "Việc yêu thích",
+      "jobAlerts": "Thông báo việc làm"
+    },
+    "profileCompletion": {
+      "title": "Hồ sơ của bạn chưa hoàn thiện.",
+      "subtitle": "Hoàn thiện hồ sơ và tạo CV tùy chỉnh của bạn",
+      "action": "Chỉnh sửa hồ sơ"
+    },
+    "recentlyApplied": {
+      "title": "Ứng tuyển gần đây",
+      "empty": "Chưa có đơn ứng tuyển nào",
+      "emptySubtitle": "Bắt đầu ứng tuyển việc làm để xem chúng ở đây",
+      "viewAll": "Xem tất cả đơn ứng tuyển",
+      "unknownJob": "Tên công việc",
+      "unknownCompany": "Công ty"
+    },
+    "applications": {
+      "stats": {
+        "total": "Tổng đơn ứng tuyển",
+        "inReview": "Đang xem xét",
+        "interviews": "Phỏng vấn",
+        "offers": "Lời mời"
+      }
+    }
+  },
+  "sidebar": {
+    "dashboard": "Trang chủ",
+    "savedJobs": "Việc làm đã lưu",
+    "myApplications": "Đơn ứng tuyển",
+    "resumeManagement": "Quản lý CV",
+    "accountSettings": "Cài đặt tài khoản",
+    "logout": "Đăng xuất"
+  },
+  "savedJobs": {
+    "title": "Việc làm đã lưu",
+    "subtitle": "Quản lý các cơ hội việc làm đã lưu",
+    "searchPlaceholder": "Tìm kiếm việc làm đã lưu...",
+    "noSavedJobs": "Chưa có việc làm nào được lưu",
+    "noSavedJobsSubtitle": "Bắt đầu lưu những việc làm bạn quan tâm để xem chúng ở đây",
+    "noResultsFound": "Không tìm thấy việc làm nào",
+    "noResultsSubtitle": "Thử điều chỉnh bộ lọc để xem thêm kết quả",
+    "browseJobs": "Duyệt việc làm",
+    "showingResults": "Hiển thị {{start}}-{{end}} trong tổng số {{total}} việc làm đã lưu",
+    "viewJob": "Xem việc làm",
+    "removeJob": "Xóa khỏi danh sách"
+  },
+  "applications": {
+    "title": "Đơn ứng tuyển",
+    "subtitle": "Theo dõi và quản lý các đơn ứng tuyển của bạn",
+    "searchPlaceholder": "Tìm kiếm theo tên công việc hoặc công ty...",
+    "filterByStatus": "Lọc theo trạng thái",
+    "selectStatus": "Chọn trạng thái",
+    "noApplications": "Chưa có đơn ứng tuyển nào",
+    "noApplicationsSubtitle": "Bắt đầu ứng tuyển việc làm để xem các đơn ứng tuyển ở đây",
+    "noResultsFound": "Không tìm thấy đơn ứng tuyển nào",
+    "noResultsSubtitle": "Thử điều chỉnh bộ lọc để xem thêm kết quả",
+    "browseJobs": "Duyệt việc làm",
+    "showingResults": "Hiển thị {{start}}-{{end}} trong tổng số {{total}} đơn ứng tuyển",
+    "unknownJob": "Công việc không xác định",
+    "detail": {
+      "title": "Chi tiết đơn ứng tuyển",
+      "applicationInfo": "Thông tin đơn ứng tuyển",
+      "actions": "Hành động",
+      "viewJob": "Xem tin tuyển dụng",
+      "contactRecruiter": "Liên hệ nhà tuyển dụng",
+      "coverLetter": "Thư xin việc"
+    },
+    "timeline": {
+      "title": "Lịch sử đơn ứng tuyển",
+      "empty": "Chưa có sự kiện nào trong lịch sử"
+    }
+  },
+  "resume": {
+    "title": "Quản lý CV",
+    "subtitle": "Tải lên, quản lý và tổ chức CV của bạn",
+    "myResumes": "CV của tôi",
+    "uploadResume": "Tải lên CV",
+    "uploadNew": "Tải lên CV mới",
+    "uploadFirst": "Tải lên CV đầu tiên",
+    "default": "Mặc định",
+    "defaultResume": "CV mặc định",
+    "activeResume": "CV đang hoạt động",
+    "preview": "Xem trước",
+    "download": "Tải xuống",
+    "delete": "Xóa",
+    "setAsDefault": "Đặt làm mặc định",
+    "confirmDelete": "Bạn có chắc chắn muốn xóa CV này không?",
+    "fileSize": "Kích thước file",
+    "fileType": "Loại file",
+    "uploadDate": "Ngày tải lên",
+    "status": "Trạng thái",
+    "openInNewTab": "Mở trong tab mới",
+    "previewNotAvailable": "Không thể xem trước",
+    "previewNotAvailableSubtitle": "Chỉ có thể xem trước file PDF. Bạn có thể tải xuống để xem file.",
+    "noResumes": "Chưa có CV nào được tải lên",
+    "noResumesSubtitle": "Tải lên CV đầu tiên để bắt đầu ứng tuyển việc làm",
+    "upload": {
+      "title": "Tải lên CV của bạn",
+      "subtitle": "Kéo thả CV vào đây hoặc nhấp để duyệt",
+      "browse": "Duyệt file",
+      "fileTypes": "Định dạng hỗ trợ: PDF, DOC, DOCX (Tối đa 5MB)",
+      "queue": "Hàng đợi tải lên",
+      "uploadAll": "Tải lên tất cả",
+      "upload": "Tải lên"
+    }
+  },
+  "settings": {
+    "title": "Cài đặt tài khoản",
+    "subtitle": "Quản lý tùy chọn tài khoản và cài đặt quyền riêng tư",
+    "tabs": {
+      "profile": "Hồ sơ",
+      "password": "Mật khẩu",
+      "notifications": "Thông báo",
+      "privacy": "Quyền riêng tư",
+      "account": "Tài khoản"
+    },
+    "profile": {
+      "title": "Thông tin hồ sơ",
+      "fullName": "Họ và tên",
+      "phone": "Số điện thoại",
+      "dateOfBirth": "Ngày sinh",
+      "address": "Địa chỉ",
+      "bio": "Giới thiệu bản thân",
+      "bioPlaceholder": "Hãy kể về bản thân bạn...",
+      "uploadingAvatar": "Đang tải lên ảnh đại diện..."
+    },
+    "password": {
+      "title": "Đổi mật khẩu",
+      "currentPassword": "Mật khẩu hiện tại",
+      "newPassword": "Mật khẩu mới",
+      "confirmPassword": "Xác nhận mật khẩu mới",
+      "enterCurrentPassword": "Nhập mật khẩu hiện tại",
+      "enterNewPassword": "Nhập mật khẩu mới",
+      "confirmNewPassword": "Xác nhận mật khẩu mới",
+      "changePassword": "Đổi mật khẩu",
+      "requirements": "Yêu cầu mật khẩu",
+      "requirement1": "Ít nhất 6 ký tự",
+      "requirement2": "Chứa ít nhất một chữ hoa",
+      "requirement3": "Chứa ít nhất một chữ thường",
+      "requirement4": "Chứa ít nhất một số"
+    },
+    "notifications": {
+      "title": "Tùy chọn thông báo",
+      "emailNotifications": "Thông báo email",
+      "emailNotificationsDesc": "Nhận thông báo chung qua email",
+      "jobAlerts": "Cảnh báo việc làm",
+      "jobAlertsDesc": "Nhận thông báo về cơ hội việc làm phù hợp với hồ sơ của bạn",
+      "applicationUpdates": "Cập nhật đơn ứng tuyển",
+      "applicationUpdatesDesc": "Nhận cập nhật về các đơn ứng tuyển của bạn",
+      "marketingEmails": "Email tiếp thị",
+      "marketingEmailsDesc": "Nhận email khuyến mãi và bản tin",
+      "importantNote": "Lưu ý quan trọng",
+      "importantNoteDesc": "Bạn sẽ luôn nhận được thông báo quan trọng về bảo mật tài khoản và cập nhật đơn ứng tuyển quan trọng, bất kể cài đặt này."
+    },
+    "privacy": {
+      "title": "Cài đặt quyền riêng tư",
+      "profileVisibility": "Hiển thị hồ sơ",
+      "visibility": {
+        "public": "Công khai",
+        "publicDesc": "Mọi người có thể xem hồ sơ của bạn",
+        "recruitersOnly": "Chỉ nhà tuyển dụng",
+        "recruitersOnlyDesc": "Chỉ nhà tuyển dụng đã xác minh mới có thể xem hồ sơ",
+        "private": "Riêng tư",
+        "privateDesc": "Hồ sơ của bạn được ẩn khỏi kết quả tìm kiếm"
+      },
+      "showContactInfo": "Hiển thị thông tin liên hệ",
+      "showContactInfoDesc": "Cho phép người khác xem email và số điện thoại của bạn",
+      "allowMessages": "Cho phép tin nhắn",
+      "allowMessagesDesc": "Cho phép nhà tuyển dụng và nhà tuyển dụng gửi tin nhắn cho bạn",
+      "dataUsage": "Sử dụng dữ liệu",
+      "dataUsageDesc": "Chúng tôi sử dụng thông tin của bạn để kết nối bạn với cơ hội việc làm phù hợp và cải thiện dịch vụ. Dữ liệu của bạn không bao giờ được bán cho bên thứ ba."
+    },
+    "account": {
+      "dangerZone": "Vùng nguy hiểm",
+      "deleteAccount": "Xóa tài khoản",
+      "deleteAccountWarning": "Khi bạn xóa tài khoản, không thể hoàn tác. Hành động này không thể được hoàn tác.",
+      "whatWillBeDeleted": "Những gì sẽ bị xóa:",
+      "deleteItem1": "Hồ sơ và thông tin cá nhân của bạn",
+      "deleteItem2": "Tất cả đơn ứng tuyển và lịch sử của chúng",
+      "deleteItem3": "Việc làm đã lưu và tùy chọn",
+      "deleteItem4": "CV và tài liệu đã tải lên",
+      "deleteItem5": "Lịch sử tin nhắn với nhà tuyển dụng",
+      "deleteMyAccount": "Xóa tài khoản của tôi",
+      "confirmDeletion": "Xác nhận xóa tài khoản",
+      "confirmDeletionDesc": "Hành động này là vĩnh viễn và không thể hoàn tác. Tất cả dữ liệu của bạn sẽ bị xóa vĩnh viễn khỏi máy chủ của chúng tôi.",
+      "typeDelete": "Gõ 'DELETE' để xác nhận:",
+      "deleteAccountPermanently": "Xóa tài khoản vĩnh viễn",
+      "beforeYouGo": "Trước khi bạn rời đi",
+      "exportData": "Bạn có thể xuất dữ liệu trước khi xóa tài khoản.",
+      "exportMyData": "Xuất dữ liệu của tôi"
+    }
+  },
+  "applicationStatus": {
+    "pending": "Đang chờ",
+    "under_review": "Đang xem xét",
+    "interview_scheduled": "Đã lên lịch phỏng vấn",
+    "rejected": "Bị từ chối",
+    "accepted": "Được chấp nhận"
+  },
   "jobs": {
+    "unknownCompany": "Công ty không xác định",
+    "remote": "Làm việc từ xa",
     "title": "Tìm Việc Làm",
     "findJobs": "Tìm Việc Làm",
     "searchPlaceholder": "Tên công việc, từ khóa...",
     "locationPlaceholder": "Thành phố hoặc mã bưu điện",
     "searchButton": "Tìm Việc Làm",
     "discoverOpportunities": "Khám phá cơ hội nghề nghiệp tiếp theo của bạn từ hàng nghìn tin tuyển dụng",
+    "details": {
+      "jobDescription": "Mô tả công việc",
+      "requirements": "Yêu cầu",
+      "benefits": "Quyền lợi",
+      "requiredSkills": "Kỹ năng yêu cầu",
+      "skillsExperience": "Kỹ năng & Kinh nghiệm",
+      "relatedJobs": "Việc làm liên quan",
+      "shareJob": "Chia sẻ việc làm",
+      "shareOnSocialMedia": "Chia sẻ trên mạng xã hội",
+      "save": "Lưu",
+      "saved": "Đã lưu",
+      "saveJob": "Lưu việc làm",
+      "apply": "Ứng tuyển ngay",
+      "applying": "Đang ứng tuyển...",
+      "applied": "Đã ứng tuyển",
+      "copy": "Sao chép",
+      "copied": "Đã sao chép",
+      "salary": "Mức lương",
+      "location": "Địa điểm",
+      "jobType": "Loại hình",
+      "deadline": "Hạn nộp hồ sơ",
+      "jobTypes": {
+        "fullTime": "Toàn thời gian",
+        "partTime": "Bán thời gian",
+        "contract": "Hợp đồng",
+        "internship": "Thực tập"
+      }
+    },
+    "save": {
+      "success": "Việc làm đã được lưu thành công!",
+      "error": "Không thể lưu việc làm. Vui lòng thử lại!"
+    },
+    "unsave": {
+      "success": "Đã bỏ lưu việc làm!",
+      "error": "Không thể bỏ lưu việc làm. Vui lòng thử lại!"
+    },
     "filters": {
       "title": "Bộ lọc",
       "clearAll": "Xóa tất cả",
@@ -212,6 +527,7 @@
     "title": "Công Ty Hàng Đầu",
     "topCompanies": "Công Ty Hàng Đầu",
     "exploreCompanies": "Khám phá những công ty tuyệt vời đang tích cực tuyển dụng và xây dựng tương lai",
+    "viewAllCompanies": "Xem Tất Cả Công Ty",
     "follow": "Theo dõi",
     "unfollow": "Bỏ theo dõi",
     "viewJobs": "Xem Việc Làm",
@@ -233,5 +549,14 @@
       "button": "Tìm việc làm"
     },
     "popularSearches": "Tìm kiếm phổ biến"
+  },
+  "contact": {
+    "title": "Liên hệ với chúng tôi",
+    "form": {
+      "namePlaceholder": "Tên của bạn",
+      "emailPlaceholder": "Địa chỉ email",
+      "messagePlaceholder": "Tin nhắn",
+      "sendButton": "Gửi tin nhắn"
+    }
   }
 }

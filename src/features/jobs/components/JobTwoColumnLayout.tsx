@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Badge, Card } from "@/components";
 import { type Job } from "@/types";
 import { type ApiCompany, type ApiJobPost } from "../types";
@@ -15,6 +16,7 @@ interface JobTwoColumnLayoutProps {
   isSaved: boolean;
   isApplying: boolean;
   hasApplied: boolean;
+  appliedAt?: string; // Application date when user has applied
 }
 
 interface JobSections {
@@ -32,7 +34,9 @@ export function JobTwoColumnLayout({
   isSaved,
   isApplying,
   hasApplied,
+  appliedAt,
 }: JobTwoColumnLayoutProps) {
+  const { t } = useTranslation();
   // Memoized job sections using raw API data
   const jobSections = useMemo((): JobSections => {
     if (!rawJobData) {
@@ -73,6 +77,7 @@ export function JobTwoColumnLayout({
             isSaved={isSaved}
             isApplying={isApplying}
             hasApplied={hasApplied}
+            appliedAt={appliedAt}
           />
 
           {/* Two Column Content */}
@@ -83,11 +88,11 @@ export function JobTwoColumnLayout({
                 <div className="p-6 md:p-8 space-y-8">
                   {/* Job Description */}
                   <div>
-                    <h2 className="text-xl font-bold text-[#202124] mb-6 font-['Jost']">
-                      Job Description
+                    <h2 className="text-xl font-bold text-[#202124] mb-6">
+                      {t("jobs.details.jobDescription")}
                     </h2>
                     <div className="prose prose-gray max-w-none">
-                      <p className="text-[#696969] leading-relaxed text-base font-['Jost']">
+                      <p className="text-[#696969] leading-relaxed text-base">
                         {jobSections.description}
                       </p>
                     </div>
@@ -96,14 +101,14 @@ export function JobTwoColumnLayout({
                   {/* Requirements */}
                   {jobSections.requirements.length > 0 && (
                     <div>
-                      <h2 className="text-xl font-bold text-[#202124] mb-6 font-['Jost']">
-                        Requirements
+                      <h2 className="text-xl font-bold text-[#202124] mb-6">
+                        {t("jobs.details.requirements")}
                       </h2>
                       <div className="space-y-4">
                         {jobSections.requirements.map((requirement, index) => (
                           <div key={index} className="flex items-start gap-3">
                             <div className="w-2 h-2 bg-[#1967D2] rounded-full mt-2 flex-shrink-0" />
-                            <p className="text-[#696969] leading-relaxed text-base font-['Jost']">
+                            <p className="text-[#696969] leading-relaxed text-base">
                               {requirement}
                             </p>
                           </div>
@@ -115,14 +120,14 @@ export function JobTwoColumnLayout({
                   {/* Benefits */}
                   {jobSections.benefits.length > 0 && (
                     <div>
-                      <h2 className="text-xl font-bold text-[#202124] mb-6 font-['Jost']">
-                        Benefits
+                      <h2 className="text-xl font-bold text-[#202124] mb-6">
+                        {t("jobs.details.benefits")}
                       </h2>
                       <div className="space-y-4">
                         {jobSections.benefits.map((benefit, index) => (
                           <div key={index} className="flex items-start gap-3">
                             <div className="w-2 h-2 bg-[#34A853] rounded-full mt-2 flex-shrink-0" />
-                            <p className="text-[#696969] leading-relaxed text-base font-['Jost']">
+                            <p className="text-[#696969] leading-relaxed text-base">
                               {benefit}
                             </p>
                           </div>
@@ -134,8 +139,8 @@ export function JobTwoColumnLayout({
                   {/* Skills */}
                   {job.skills && job.skills.length > 0 && (
                     <div>
-                      <h2 className="text-xl font-bold text-[#202124] mb-6 font-['Jost']">
-                        Required Skills
+                      <h2 className="text-xl font-bold text-[#202124] mb-6">
+                        {t("jobs.details.requiredSkills")}
                       </h2>
                       <div className="flex flex-wrap gap-2">
                         {job.skills.map((skill, index) => (

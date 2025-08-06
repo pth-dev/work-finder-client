@@ -1,12 +1,6 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Calendar,
-  Clock,
-  MapPin,
-  Briefcase,
-  DollarSign,
-} from "lucide-react";
+import { Calendar, Clock, MapPin, Briefcase, DollarSign } from "lucide-react";
 import { type Job } from "@/types";
 import { formatSalary } from "@/utils/common";
 import { JobSection } from "./JobSection";
@@ -16,15 +10,13 @@ interface JobOverviewProps {
 }
 
 // Helper to convert Job salary to global formatSalary format
-const formatJobSalary = (job: Job, t: any) => {
-  if (!job.salary) return formatSalary({}, t);
-  return formatSalary(
-    {
-      salary_min: job.salary.min,
-      salary_max: job.salary.max,
-    },
-    t
-  );
+const formatJobSalary = (job: Job) => {
+  if (!job.salary) return formatSalary({});
+  return formatSalary({
+    min: job.salary.min,
+    max: job.salary.max,
+    text: job.salary.text, // ✅ Use pre-formatted text if available
+  });
 };
 
 export function JobOverview({ job }: JobOverviewProps) {
@@ -58,7 +50,7 @@ export function JobOverview({ job }: JobOverviewProps) {
       },
       {
         label: "Salary",
-        value: formatJobSalary(job, t),
+        value: formatJobSalary(job),
         icon: <DollarSign className="h-4 w-4 text-muted-foreground" />,
       },
     ],
@@ -70,9 +62,7 @@ export function JobOverview({ job }: JobOverviewProps) {
       <div className="space-y-4">
         {jobOverviewItems.map((item, index) => (
           <div key={index} className="flex items-start gap-3">
-            <div className="p-2 bg-[#F5F7FC] rounded-lg">
-              {item.icon}
-            </div>
+            <div className="p-2 bg-[#F5F7FC] rounded-lg">{item.icon}</div>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-medium text-[#202124] mb-1 font-['Jost']">
                 {item.label}

@@ -58,46 +58,92 @@ const formatSalaryAmount = (amount: number): string => {
 };
 
 /**
- * Format salary range or single salary
- * @param job - Job object with salary information
+ * Format salary range or single salary with i18n support
+ * @param job - Job object with salary information OR salary values
+ * @param t - Optional translation function for i18n
+ * @param currency - Currency code (default: VND)
+ * @param period - Salary period (default: month)
  * @returns Formatted salary string
  */
-export const formatSalary = (job: {
-  salary?: string;
-  salary_min?: number;
-  salary_max?: number;
-}): string => {
-  // If there's a pre-formatted salary string, use it
-  if (job.salary) {
-    return job.salary;
+export const formatSalary = (
+  job:
+    | {
+        salary?: string;
+        salary_min?: number | string;
+        salary_max?: number | string;
+      }
+    | {
+        min?: number;
+        max?: number;
+        text?: string; // ✅ Support text field from Job salary object
+      },
+  t?: TFunction
+): string => {
+  // Handle different input formats
+  let salaryString: string | undefined;
+  let minSalary: number | undefined;
+  let maxSalary: number | undefined;
+
+  if ("salary" in job) {
+    salaryString = job.salary;
+    // Convert string to number if needed
+    minSalary =
+      typeof job.salary_min === "string"
+        ? parseFloat(job.salary_min)
+        : job.salary_min;
+    maxSalary =
+      typeof job.salary_max === "string"
+        ? parseFloat(job.salary_max)
+        : job.salary_max;
+  } else {
+    const jobWithMinMax = job as { min?: number; max?: number; text?: string };
+    minSalary = jobWithMinMax.min;
+    maxSalary = jobWithMinMax.max;
+    salaryString = jobWithMinMax.text; // ✅ Use text field if available
   }
 
-  // If there's a salary range
-  if (job.salary_min && job.salary_max) {
-    const formattedMin = formatSalaryAmount(job.salary_min);
-    const formattedMax = formatSalaryAmount(job.salary_max);
+  // If there's a pre-formatted salary string, use it
+  if (salaryString) {
+    return salaryString;
+  }
 
-    if (job.salary_min === job.salary_max) {
+  // If there's a salary range (exclude dummy 0 values and NaN)
+  if (
+    minSalary &&
+    maxSalary &&
+    !isNaN(minSalary) &&
+    !isNaN(maxSalary) &&
+    minSalary > 0 &&
+    maxSalary > 0
+  ) {
+    const formattedMin = formatSalaryAmount(minSalary);
+    const formattedMax = formatSalaryAmount(maxSalary);
+
+    if (minSalary === maxSalary) {
       return `${formattedMin}`;
     }
 
     return `${formattedMin} - ${formattedMax}`;
   }
 
-  // If there's only minimum salary
-  if (job.salary_min) {
-    const formattedMin = formatSalaryAmount(job.salary_min);
-    return `Từ ${formattedMin}`;
+  // If there's only minimum salary (exclude dummy 0 values and NaN)
+  if (minSalary && !isNaN(minSalary) && minSalary > 0) {
+    const formattedMin = formatSalaryAmount(minSalary);
+    return t
+      ? t("business.salary.from", { amount: formattedMin })
+      : `Từ ${formattedMin}`;
   }
 
-  // If there's only maximum salary
-  if (job.salary_max) {
-    const formattedMax = formatSalaryAmount(job.salary_max);
-    return `Lên đến ${formattedMax}`;
+  // If there's only maximum salary (exclude dummy 0 values and NaN)
+  if (maxSalary && !isNaN(maxSalary) && maxSalary > 0) {
+    const formattedMax = formatSalaryAmount(maxSalary);
+    return t
+      ? t("business.salary.upTo", { amount: formattedMax })
+      : `Lên đến ${formattedMax}`;
   }
 
   // Default case - negotiable
-  return "Thỏa thuận";
+  return t ? t("business.salary.negotiable") : "Thỏa thuận";
 };
 
 /**

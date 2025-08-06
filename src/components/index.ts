@@ -3,3 +3,4 @@ export * from "./errors";
 export * from "./seo";
 export * from "./layouts";
 export * from "./ui";
+export { ScrollToTop } from "./ScrollToTop";

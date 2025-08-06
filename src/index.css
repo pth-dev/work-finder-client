@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 @import "tailwindcss";
 
 @layer base {
@@ -10,7 +9,7 @@
     --card-foreground: 224 71.4% 4.1%;
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
-    --primary: 220 79% 46%;
+    --primary: 142 71% 45%;
     --primary-foreground: 210 20% 98%;
     --secondary: 220 14.3% 95.9%;
     --secondary-foreground: 220.9 39.3% 11%;
@@ -50,7 +49,7 @@
 }
 
 :root {
-  font-family: "Jost", system-ui, sans-serif;
+  font-family: "Roboto", system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
@@ -64,7 +63,7 @@ body {
   min-height: 100vh;
   background-color: #ffffff;
   color: #1f2937;
-  font-family: "Jost", system-ui, sans-serif;
+  font-family: "Roboto", system-ui, sans-serif;
 }
 
 #root {
@@ -134,6 +133,6 @@ body {
 }
 
 /* Font utilities */
-.font-jost {
-  font-family: "Jost", sans-serif;
+.font-roboto {
+  font-family: "Roboto", sans-serif;
 }

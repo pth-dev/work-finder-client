@@ -61,6 +61,7 @@ export function CompanyDetailPage() {
     location: job.location || "Location not specified",
     timeAgo: formatTimeAgo(job.posted_date, t),
     salary: formatSalary({
+      salary: job.salary,
       salary_min: job.salary_min,
       salary_max: job.salary_max,
     }),

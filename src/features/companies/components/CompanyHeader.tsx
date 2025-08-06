@@ -102,7 +102,7 @@ export function CompanyHeader({
             <div className="flex-1 min-w-0">
               {/* Company Name and Verification */}
               <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-2xl md:text-3xl font-bold text-[#202124] font-['Jost']">
+                <h1 className="text-2xl md:text-3xl font-bold text-[#202124]">
                   {company.company_name}
                 </h1>
                 {company.is_verified && (

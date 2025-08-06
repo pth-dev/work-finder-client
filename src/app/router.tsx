@@ -52,13 +52,12 @@ export const createAppRouter = (queryClient: QueryClient) =>
         import("./routes/auth/set-new-password").then(convert(queryClient)),
     },
 
-    // Main app với AppLayout wrapper
+    // Public routes với AppLayout (header/footer)
     {
       path: "/",
       lazy: () =>
         import("@/components/layouts/app-layout").then(convert(queryClient)),
       children: [
-        // Public routes - SỬ DỤNG AppLayout header/footer
         {
           path: paths.home.path,
           lazy: () => import("./routes/landing").then(convert(queryClient)),
@@ -96,46 +95,55 @@ export const createAppRouter = (queryClient: QueryClient) =>
           path: paths.terms.path,
           lazy: () => import("./routes/terms").then(convert(queryClient)),
         },
+      ],
+    },
 
-        // Protected routes - DashboardLayout riêng
+    // Dashboard routes với DashboardLayout riêng (KHÔNG có AppLayout)
+    {
+      path: paths.app.root.path,
+      element: (
+        <ProtectedRoute>
+          <AppRoot />
+        </ProtectedRoute>
+      ),
+      ErrorBoundary: AppRootErrorBoundary,
+      children: [
         {
-          path: paths.app.root.path,
-          element: (
-            <ProtectedRoute>
-              <AppRoot />
-            </ProtectedRoute>
-          ),
-          ErrorBoundary: AppRootErrorBoundary,
-          children: [
-            {
-              path: paths.app.dashboard.path,
-              lazy: () =>
-                import("./routes/app/dashboard").then(convert(queryClient)),
-            },
-            {
-              path: paths.app.applications.path,
-              lazy: () =>
-                import("./routes/app/applications").then(convert(queryClient)),
-            },
-            {
-              path: paths.app.savedJobs.path,
-              lazy: () =>
-                import("./routes/app/saved-jobs").then(convert(queryClient)),
-            },
-            {
-              path: paths.app.jobs.path,
-              lazy: () =>
-                import("./routes/app/jobs").then(convert(queryClient)),
-            },
-            {
-              path: paths.app.companies.path,
-              lazy: () =>
-                import("./routes/app/companies").then(convert(queryClient)),
-            },
-          ],
+          path: paths.app.dashboard.path,
+          lazy: () =>
+            import("./routes/app/dashboard").then(convert(queryClient)),
+        },
+        {
+          path: paths.app.applications.path,
+          lazy: () =>
+            import("./routes/app/applications").then(convert(queryClient)),
+        },
+        {
+          path: paths.app.savedJobs.path,
+          lazy: () =>
+            import("./routes/app/saved-jobs").then(convert(queryClient)),
+        },
+        {
+          path: paths.app.resume.path,
+          lazy: () => import("./routes/app/resume").then(convert(queryClient)),
+        },
+        {
+          path: paths.app.settings.path,
+          lazy: () =>
+            import("./routes/app/settings").then(convert(queryClient)),
+        },
+        {
+          path: paths.app.jobs.path,
+          lazy: () => import("./routes/app/jobs").then(convert(queryClient)),
+        },
+        {
+          path: paths.app.companies.path,
+          lazy: () =>
+            import("./routes/app/companies").then(convert(queryClient)),
         },
       ],
     },
+
     {
       path: "*",
       lazy: () => import("./routes/not-found").then(convert(queryClient)),

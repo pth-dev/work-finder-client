@@ -40,7 +40,7 @@ export const LanguageSwitcher = () => {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-3 py-2 text-gray-700 hover:text-[#1967d2] transition-colors rounded-lg hover:bg-gray-50"
+        className="flex items-center space-x-1 md:space-x-2 px-2 md:px-3 py-2 text-gray-700 hover:text-[#1967d2] transition-colors rounded-lg hover:bg-gray-50"
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-label={t("header.language.switchLanguage")}
@@ -50,7 +50,7 @@ export const LanguageSwitcher = () => {
         </span>
         <ChevronDown
           className={cn(
-            "w-4 h-4 transition-transform duration-200",
+            "w-3 h-3 md:w-4 md:h-4 transition-transform duration-200",
             isOpen && "rotate-180"
           )}
         />

@@ -1,11 +1,10 @@
 import { z } from "zod";
-import { TFunction } from "react-i18next";
+import { TFunction } from "i18next";
 import {
   createEmailSchema,
   createPasswordSchema,
   createSimplePasswordSchema,
   createNameSchema,
-  createPhoneSchema,
   createBooleanSchema,
   createPasswordConfirmationRefine,
 } from "./schema-factories";
@@ -28,14 +27,16 @@ export type LoginFormData = {
 export const createRegisterSchema = (t: TFunction) =>
   z
     .object({
-      firstName: createNameSchema(t, "firstName"),
-      lastName: createNameSchema(t, "lastName"),
+      fullName: createNameSchema(t, "fullName"),
       email: createEmailSchema(t),
       password: createPasswordSchema(t),
       confirmPassword: createSimplePasswordSchema(t, 1),
-      phoneNumber: createPhoneSchema(t),
+      role: z.enum(["job_seeker", "recruiter"], {
+        message: t("validation.required", {
+          field: t("auth.labels.role"),
+        }),
+      }),
       termsAccepted: createBooleanSchema(t, "termsAccepted", true),
-      marketingEmails: z.boolean().optional().default(false),
     })
     .refine(
       (data) => data.password === data.confirmPassword,

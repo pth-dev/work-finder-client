@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Clock,
   Calendar,
@@ -35,6 +36,7 @@ import { formatDistanceToNow } from "date-fns";
 
 export function ApplicationsPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [applications, setApplications] = useState<Application[]>([]);
   const [activeTab, setActiveTab] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
@@ -341,7 +343,9 @@ export function ApplicationsPage() {
               <div className="text-3xl font-bold text-blue-600 mb-1">
                 {stats.total}
               </div>
-              <div className="text-gray-600">Total Applications</div>
+              <div className="text-gray-600">
+                {t("dashboard.applications.stats.total")}
+              </div>
             </CardContent>
           </Card>
           <Card className="shadow-sm border-0">
@@ -352,7 +356,9 @@ export function ApplicationsPage() {
               <div className="text-3xl font-bold text-yellow-600 mb-1">
                 {stats.inReview}
               </div>
-              <div className="text-gray-600">In Review</div>
+              <div className="text-gray-600">
+                {t("dashboard.applications.stats.inReview")}
+              </div>
             </CardContent>
           </Card>
           <Card className="shadow-sm border-0">
@@ -363,7 +369,9 @@ export function ApplicationsPage() {
               <div className="text-3xl font-bold text-purple-600 mb-1">
                 {stats.interviews}
               </div>
-              <div className="text-gray-600">Interviews</div>
+              <div className="text-gray-600">
+                {t("dashboard.applications.stats.interviews")}
+              </div>
             </CardContent>
           </Card>
           <Card className="shadow-sm border-0">
@@ -374,7 +382,9 @@ export function ApplicationsPage() {
               <div className="text-3xl font-bold text-green-600 mb-1">
                 {stats.offers}
               </div>
-              <div className="text-gray-600">Offers</div>
+              <div className="text-gray-600">
+                {t("dashboard.applications.stats.offers")}
+              </div>
             </CardContent>
           </Card>
         </div>

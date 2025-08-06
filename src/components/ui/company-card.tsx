@@ -98,7 +98,7 @@ export const CompanyCard = React.forwardRef<HTMLDivElement, CompanyCardProps>(
             <div className="flex-1 min-w-0 pr-6">
               {/* Company Name */}
               <div className="flex items-center gap-2 mb-2">
-                <h3 className="text-[18px] font-medium text-[#202124] line-clamp-1 font-['Jost']">
+                <h3 className="text-[18px] font-medium text-[#202124] line-clamp-1">
                   {name}
                 </h3>
                 {isVerified && (
@@ -219,7 +219,7 @@ export const CompanyTag = React.forwardRef<HTMLDivElement, CompanyTagProps>(
         ref={ref}
         variant={variant}
         className={cn(
-          "text-[13px] font-normal font-['Jost'] border rounded-full px-3 py-1 flex items-center gap-1.5",
+          "text-[13px] font-normal border rounded-full px-3 py-1 flex items-center gap-1.5",
           color && getColorClasses(),
           className
         )}

@@ -1,5 +1,12 @@
 import { Button, Card, Badge } from "@/components";
-import { Calendar, Clock, MapPin, User, DollarSign } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  MapPin,
+  User,
+  DollarSign,
+  Briefcase,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { type Job } from "@/types";
@@ -24,13 +31,13 @@ export function JobSidebar({ job, company }: JobSidebarProps) {
           <h3 className="text-lg font-bold text-[#202124] mb-6 font-['Jost']">
             {t("common:jobs.jobOverview")}
           </h3>
-          <div className="space-y-4">
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 bg-[#1967D2] bg-opacity-10 rounded-md flex items-center justify-center mt-0.5">
-                <Calendar className="h-4 w-4 text-[#1967D2]" />
+          <div className="space-y-5">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-[#1967D2] bg-opacity-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <Calendar className="h-4 w-4 text-white" />
               </div>
-              <div>
-                <p className="text-sm font-medium text-[#202124] font-['Jost']">
+              <div className="flex-1">
+                <p className="text-sm font-medium text-[#202124] font-['Jost'] mb-1">
                   {t("common:jobs.datePosted")}
                 </p>
                 <p className="text-sm text-[#696969] font-['Jost']">
@@ -40,12 +47,12 @@ export function JobSidebar({ job, company }: JobSidebarProps) {
             </div>
 
             {job.expiresAt && (
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-[#1967D2] bg-opacity-10 rounded-md flex items-center justify-center mt-0.5">
-                  <Clock className="h-4 w-4 text-[#1967D2]" />
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-[#1967D2] bg-opacity-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Clock className="h-4 w-4 text-white" />
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-[#202124] font-['Jost']">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-[#202124] font-['Jost'] mb-1">
                     Expiration date:
                   </p>
                   <p className="text-sm text-[#696969] font-['Jost']">
@@ -55,13 +62,13 @@ export function JobSidebar({ job, company }: JobSidebarProps) {
               </div>
             )}
 
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 bg-[#1967D2] bg-opacity-10 rounded-md flex items-center justify-center mt-0.5">
-                <MapPin className="h-4 w-4 text-[#1967D2]" />
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-[#1967D2] bg-opacity-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <MapPin className="h-4 w-4 text-white" />
               </div>
-              <div>
-                <p className="text-sm font-medium text-[#202124] font-['Jost']">
-                  {t("common:jobs.location")}
+              <div className="flex-1">
+                <p className="text-sm font-medium text-[#202124] font-['Jost'] mb-1">
+                  Địa điểm:
                 </p>
                 <p className="text-sm text-[#696969] font-['Jost']">
                   {job.location.isRemote
@@ -71,13 +78,13 @@ export function JobSidebar({ job, company }: JobSidebarProps) {
               </div>
             </div>
 
-            <div className="flex items-start gap-3">
-              <div className="w-6 h-6 bg-[#1967D2] bg-opacity-10 rounded-md flex items-center justify-center mt-0.5">
-                <User className="h-4 w-4 text-[#1967D2]" />
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-[#1967D2] bg-opacity-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <User className="h-4 w-4 text-white" />
               </div>
-              <div>
-                <p className="text-sm font-medium text-[#202124] font-['Jost']">
-                  {t("common:jobs.jobTitle")}
+              <div className="flex-1">
+                <p className="text-sm font-medium text-[#202124] font-['Jost'] mb-1">
+                  Chức danh:
                 </p>
                 <p className="text-sm text-[#696969] font-['Jost']">
                   {job.title}
@@ -86,18 +93,19 @@ export function JobSidebar({ job, company }: JobSidebarProps) {
             </div>
 
             {job.salary && (
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-[#1967D2] bg-opacity-10 rounded-md flex items-center justify-center mt-0.5">
-                  <DollarSign className="h-4 w-4 text-[#1967D2]" />
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-[#1967D2] bg-opacity-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <DollarSign className="h-4 w-4 text-white" />
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-[#202124] font-['Jost']">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-[#202124] font-['Jost'] mb-1">
                     Salary:
                   </p>
                   <p className="text-sm text-[#696969] font-['Jost']">
                     {formatSalary({
-                      salary_min: job.salary.min,
-                      salary_max: job.salary.max,
+                      min: job.salary.min,
+                      max: job.salary.max,
+                      text: job.salary.text, // ✅ Use pre-formatted text if available
                     })}
                   </p>
                 </div>
@@ -116,7 +124,7 @@ export function JobSidebar({ job, company }: JobSidebarProps) {
               {job.skills.map((skill, index) => (
                 <Badge
                   key={index}
-                  className="bg-[#F5F7FC] text-[#1967D2] border border-[#1967D2]/20 hover:bg-[#1967D2] hover:text-white px-3 py-2 rounded-md font-medium text-sm"
+                  className="bg-[#F5F7FC] text-white border border-[#1967D2]/20 hover:bg-[#1967D2] hover:text-white px-3 py-2 rounded-md font-medium text-sm"
                 >
                   {skill}
                 </Badge>
@@ -146,7 +154,7 @@ export function JobSidebar({ job, company }: JobSidebarProps) {
                   to={`/companies/${generateCompanySlug(company)}`}
                   className="text-white underline font-normal text-sm hover:text-white/80 transition-colors"
                 >
-                  View Company Profile
+                  {t("common:companies.viewCompanyProfile")}
                 </Link>
               </div>
             </div>
@@ -155,27 +163,27 @@ export function JobSidebar({ job, company }: JobSidebarProps) {
 
         {/* Contact Form */}
         <div>
-          <h3 className="text-lg font-bold text-[#202124] mb-6 font-['Jost']">
-            Contact Us
+          <h3 className="text-lg font-bold text-[#202124] mb-6">
+            {t("contact.title")}
           </h3>
           <div className="space-y-4">
             <input
               type="text"
-              placeholder="Your Name"
+              placeholder={t("contact.form.namePlaceholder")}
               className="w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1967D2] focus:border-transparent text-sm"
             />
             <input
               type="email"
-              placeholder="Email Address"
+              placeholder={t("contact.form.emailPlaceholder")}
               className="w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1967D2] focus:border-transparent text-sm"
             />
             <textarea
-              placeholder="Message"
+              placeholder={t("contact.form.messagePlaceholder")}
               rows={4}
               className="w-full px-4 py-3 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1967D2] focus:border-transparent text-sm resize-none"
             />
             <Button className="w-full bg-[#1967D2] hover:bg-[#1557B8] text-white font-medium py-3">
-              Send Message
+              {t("contact.form.sendButton")}
             </Button>
           </div>
         </div>

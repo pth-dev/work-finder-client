@@ -30,15 +30,22 @@ export const UserMenu = () => {
       },
       onError: (error) => {
         console.error("Logout failed:", error);
+        // Clear auth even if logout API fails
+        clearAuth();
+        setIsOpen(false);
+        navigate(paths.home.getHref());
       },
     },
   });
 
   const handleLogout = async () => {
     try {
+      // Clear auth state immediately to prevent API calls
+      clearAuth();
       await logoutMutation.mutateAsync();
     } catch (error) {
       console.error("Logout failed:", error);
+      // Auth already cleared above
     }
   };
 
@@ -126,12 +133,12 @@ export const UserMenu = () => {
 
           <div className="py-2">
             <Link
-              to={paths.app.profile.getHref()}
+              to={paths.app.dashboard.getHref()}
               className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
               onClick={() => setIsOpen(false)}
             >
               <User className="w-4 h-4 mr-3 text-gray-400" />
-              {t("header.userMenu.completeProfile")}
+              {t("sidebar.dashboard")}
             </Link>
             <Link
               to={paths.app.applications.getHref()}

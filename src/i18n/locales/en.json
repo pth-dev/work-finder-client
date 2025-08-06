@@ -5,6 +5,8 @@
       "findJobs": "Find Jobs",
       "employers": "Employers",
       "candidates": "Candidates",
+      "postJob": "Post Job",
+      "myApplications": "My Applications",
       "blog": "Blog"
     },
     "actions": {
@@ -20,6 +22,18 @@
       "savedJobs": "Saved Jobs",
       "settings": "Settings",
       "signOut": "Sign Out"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "markAllRead": "Mark all as read",
+      "noNotifications": "No notifications",
+      "newNotification": "New notification",
+      "viewAll": "View all notifications",
+      "markAsRead": "Mark as read",
+      "markAsUnread": "Mark as unread",
+      "delete": "Delete notification",
+      "loading": "Loading...",
+      "unreadCount": "{{count}}+"
     },
     "language": {
       "switchLanguage": "Switch Language",
@@ -45,6 +59,9 @@
     "previous": "Previous",
     "submit": "Submit",
     "reset": "Reset",
+    "companies": {
+      "viewCompanyProfile": "View Company Profile"
+    },
     "time": {
       "justNow": "Just now",
       "minutesAgo": "{{count}} minute ago",
@@ -87,33 +104,157 @@
     "register": {
       "title": "Create Account",
       "subtitle": "Join WorkFinder to find your dream job",
-      "firstName": "First Name",
-      "lastName": "Last Name",
+      "fullName": "Full Name",
       "email": "Email Address",
       "password": "Password",
       "confirmPassword": "Confirm Password",
+      "role": "I am a",
+      "jobSeeker": "Job Seeker",
+      "recruiter": "Recruiter",
       "agreeTerms": "I agree to the Terms of Service and Privacy Policy",
       "createAccount": "Create Account",
       "hasAccount": "Already have an account?",
       "signIn": "Sign in here"
     },
     "placeholders": {
-      "firstName": "Enter your first name",
-      "lastName": "Enter your last name",
-      "phoneNumber": "Enter your phone number"
+      "fullName": "Enter your full name",
+      "role": "Select your role"
     },
     "labels": {
-      "termsAccepted": "I agree to the Terms of Service and Privacy Policy",
-      "marketingEmails": "I want to receive emails about job opportunities and news from WorkFinder"
+      "fullName": "Full Name",
+      "role": "Role",
+      "termsAccepted": "I agree to the Terms of Service and Privacy Policy"
+    },
+    "errors": {
+      "registrationError": "Registration Error",
+      "registrationFailed": "Registration failed"
+    }
+  },
+  "jobApplication": {
+    "modal": {
+      "title": "Apply for",
+      "companyPrefix": "at",
+      "sections": {
+        "selectCV": "Choose CV to apply",
+        "coverLetter": "Cover Letter"
+      },
+      "cvOptions": {
+        "latestCV": "Latest CV for application:",
+        "otherCV": "Choose another CV from my CV library",
+        "uploadNew": "Upload CV from computer, select or drag and drop",
+        "viewCV": "View"
+      },
+      "cvInfo": {
+        "name": "Full name:",
+        "email": "Email:",
+        "phone": "Phone number:"
+      },
+      "uploadArea": {
+        "title": "Upload CV from computer, select or drag and drop",
+        "subtitle": "Supports .doc, .docx, pdf formats under 5MB",
+        "button": "Choose CV"
+      },
+      "coverLetterHint": {
+        "title": "Tip:",
+        "content": "A concise, professional cover letter will help you appear more professional and make a better impression on recruiters."
+      },
+      "coverLetterPlaceholder": "Write a brief introduction about yourself (strengths, weaknesses) and clearly state your desire to work at this company...",
+      "buttons": {
+        "cancel": "Cancel",
+        "submit": "Submit Application",
+        "submitting": "Submitting..."
+      },
+      "validation": {
+        "coverLetterMin": "Cover letter must be at least 50 characters",
+        "coverLetterMax": "Cover letter must not exceed 2000 characters",
+        "cvRequired": "Please select a CV or upload a new CV"
+      },
+      "messages": {
+        "uploadError": "CV upload error",
+        "submitError": "Error submitting application",
+        "success": "Application submitted successfully!",
+        "noResumeId": "Unable to identify CV for application"
+      }
+    }
+  },
+  "dashboard": {
+    "greeting": {
+      "hello": "Hello, {{name}}!",
+      "subtitle": "Here is your daily activities and job alerts",
+      "defaultName": "there"
+    },
+    "stats": {
+      "appliedJobs": "Applied Jobs",
+      "favoriteJobs": "Favorite Jobs",
+      "jobAlerts": "Job Alerts"
+    },
+    "profileCompletion": {
+      "title": "Your profile editing is not completed.",
+      "subtitle": "Complete your profile editing & build your custom Resume",
+      "action": "Edit Profile"
+    },
+    "recentlyApplied": {
+      "title": "Recently Applied",
+      "empty": "No applications yet",
+      "emptySubtitle": "Start applying to jobs to see them here",
+      "viewAll": "View all applications",
+      "unknownJob": "Job Title",
+      "unknownCompany": "Company"
+    },
+    "applications": {
+      "stats": {
+        "total": "Total Applications",
+        "inReview": "In Review",
+        "interviews": "Interviews",
+        "offers": "Offers"
+      }
     }
   },
   "jobs": {
+    "unknownCompany": "Unknown Company",
+    "remote": "Remote",
     "title": "Find Jobs",
     "findJobs": "Find Jobs",
     "searchPlaceholder": "Job title, keywords...",
     "locationPlaceholder": "City or postcode",
     "searchButton": "Search Jobs",
     "discoverOpportunities": "Discover your next career opportunity from thousands of job listings",
+    "details": {
+      "jobDescription": "Job Description",
+      "requirements": "Requirements",
+      "benefits": "Benefits",
+      "requiredSkills": "Required Skills",
+      "skillsExperience": "Skills & Experience",
+      "relatedJobs": "Related Jobs",
+      "shareJob": "Share Job",
+      "shareOnSocialMedia": "Share on Social Media",
+      "save": "Save",
+      "saved": "Saved",
+      "saveJob": "Save Job",
+      "apply": "Apply Now",
+      "applying": "Applying...",
+      "applied": "Applied",
+      "copy": "Copy",
+      "copied": "Copied",
+      "salary": "Salary",
+      "location": "Location",
+      "jobType": "Job Type",
+      "deadline": "Application Deadline",
+      "jobTypes": {
+        "fullTime": "Full Time",
+        "partTime": "Part Time",
+        "contract": "Contract",
+        "internship": "Internship"
+      }
+    },
+    "save": {
+      "success": "Job saved successfully!",
+      "error": "Unable to save job. Please try again!"
+    },
+    "unsave": {
+      "success": "Job removed from saved!",
+      "error": "Unable to remove job from saved. Please try again!"
+    },
     "filters": {
       "title": "Filters",
       "clearAll": "Clear all",
@@ -172,6 +313,7 @@
     "title": "Top Companies",
     "topCompanies": "Top Companies",
     "exploreCompanies": "Explore amazing companies that are actively hiring and building the future",
+    "viewAllCompanies": "View All Companies",
     "follow": "Follow",
     "unfollow": "Unfollow",
     "viewJobs": "View Jobs",
@@ -193,5 +335,14 @@
       "button": "Find Jobs"
     },
     "popularSearches": "Popular Searches"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "form": {
+      "namePlaceholder": "Your Name",
+      "emailPlaceholder": "Email Address",
+      "messagePlaceholder": "Message",
+      "sendButton": "Send Message"
+    }
   }
 }

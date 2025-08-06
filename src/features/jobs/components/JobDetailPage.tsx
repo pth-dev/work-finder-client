@@ -1,20 +1,24 @@
 import { useState, useMemo, lazy, Suspense } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useQueryClient } from "@tanstack/react-query";
 import { FullScreenErrorState, Spinner } from "@/components";
 import { type Job } from "@/types";
 import { useJob, useSaveJob } from "../hooks";
 
 import { JobTwoColumnLayout } from "./JobTwoColumnLayout";
 import { JobDetailSkeleton } from "./JobDetailSkeleton";
+import { JobApplicationModal } from "./JobApplicationModal";
 
 const RelatedJobs = lazy(() => import("./RelatedJobs"));
 
 export function JobDetailPage() {
   const { identifier } = useParams<{ identifier: string }>();
   const navigate = useNavigate();
-  const [isSaved, setIsSaved] = useState(false);
-  const [isApplying, setIsApplying] = useState(false);
-  const [hasApplied, setHasApplied] = useState(false);
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const [isApplying] = useState(false);
+  const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
 
   const {
     data: jobResponse,
@@ -23,6 +27,11 @@ export function JobDetailPage() {
   } = useJob(identifier!, {
     enabled: !!identifier,
   });
+
+  // ✅ Use is_saved and is_applied from API response instead of local state
+  const isSaved = jobResponse?.data?.is_saved || false;
+  const hasApplied = jobResponse?.data?.is_applied || false;
+  const appliedAt = jobResponse?.data?.applied_at;
 
   const job = useMemo(() => {
     if (!jobResponse?.data) return null;
@@ -34,25 +43,32 @@ export function JobDetailPage() {
       description: apiJob.description || "",
       summary: apiJob.description?.substring(0, 150) + "..." || "",
       companyId: apiJob.company_id.toString(),
-      companyName: apiJob.company?.company_name || "Unknown Company",
+      companyName: apiJob.company?.company_name || t("jobs.unknownCompany"),
       companyLogo: apiJob.company?.company_image,
       type:
         (apiJob.job_type === "temporary" ? "full_time" : apiJob.job_type) ||
         "full_time",
       experienceLevel: "entry" as const,
       location: {
-        city: apiJob.location || "Remote",
+        city: apiJob.location || t("jobs.remote"),
         state: "",
         country: "",
         isRemote: apiJob.location?.toLowerCase().includes("remote") || false,
       },
       salary:
-        apiJob.salary_min && apiJob.salary_max
+        apiJob.salary_min || apiJob.salary_max || apiJob.salary
           ? {
-              min: apiJob.salary_min,
-              max: apiJob.salary_max,
+              min:
+                typeof apiJob.salary_min === "string"
+                  ? parseFloat(apiJob.salary_min)
+                  : apiJob.salary_min || 0,
+              max:
+                typeof apiJob.salary_max === "string"
+                  ? parseFloat(apiJob.salary_max)
+                  : apiJob.salary_max || 0,
               currency: "VND",
               period: "monthly" as const,
+              text: apiJob.salary,
             }
           : undefined,
       skills: [],
@@ -78,16 +94,17 @@ export function JobDetailPage() {
         jobId: job.id,
         action: isSaved ? "unsave" : "save",
       });
-      setIsSaved(!isSaved);
     }
   };
 
   const handleApply = () => {
-    setIsApplying(true);
-    setTimeout(() => {
-      setIsApplying(false);
-      setHasApplied(true);
-    }, 2000);
+    if (hasApplied) return;
+    setIsApplicationModalOpen(true);
+  };
+
+  const handleApplicationSuccess = () => {
+    // Invalidate specific job query to update hasApplied status immediately
+    queryClient.invalidateQueries({ queryKey: ["job", identifier] });
   };
 
   // Handle loading states
@@ -158,6 +175,16 @@ export function JobDetailPage() {
         isSaved={isSaved}
         isApplying={isApplying}
         hasApplied={hasApplied}
+        appliedAt={appliedAt}
+      />
+
+      {/* Job Application Modal */}
+      <JobApplicationModal
+        isOpen={isApplicationModalOpen}
+        onClose={() => setIsApplicationModalOpen(false)}
+        job={job}
+        company={company}
+        onSuccess={handleApplicationSuccess}
       />
 
       {/* Related Jobs - Lazy loaded */}

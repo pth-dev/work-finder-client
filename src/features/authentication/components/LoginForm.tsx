@@ -30,7 +30,7 @@ export function LoginForm() {
   const { setUser } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
-  const toast = useToast();
+  const toastService = useToast();
 
   const loginSchema = createLoginSchema(t);
 
@@ -56,7 +56,7 @@ export function LoginForm() {
       mutationConfig: {
         onSuccess: (response) => {
           // Show success toast
-          toast.success(t("common:auth.login.success"));
+          toastService.success(t("common:auth.login.success"));
 
           // Store user data (tokens are stored in HTTP-only cookies)
           setUser(response.data.user);
@@ -68,9 +68,9 @@ export function LoginForm() {
           // Show error toast based on error message/key from backend
           const message = error?.response?.data?.message;
           if (message === "auth.messages.login.invalidCredentials") {
-            toast.error(getAuthError(t, "invalidCredentials"));
+            toastService.error(getAuthError(t, "invalidCredentials"));
           } else {
-            toast.error(t("common:auth.login.failed"));
+            toastService.error(t("common:auth.login.failed"));
           }
         },
       },

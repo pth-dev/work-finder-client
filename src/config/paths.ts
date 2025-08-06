@@ -60,6 +60,14 @@ export const paths = {
       path: "saved-jobs",
       getHref: () => "/app/saved-jobs",
     },
+    resume: {
+      path: "resume",
+      getHref: () => "/app/resume",
+    },
+    settings: {
+      path: "settings",
+      getHref: () => "/app/settings",
+    },
     jobs: {
       path: "jobs",
       getHref: () => "/app/jobs",
@@ -67,14 +75,6 @@ export const paths = {
     companies: {
       path: "companies",
       getHref: () => "/app/companies",
-    },
-    profile: {
-      path: "profile",
-      getHref: () => "/app/profile",
-    },
-    settings: {
-      path: "settings",
-      getHref: () => "/app/settings",
     },
   },
 

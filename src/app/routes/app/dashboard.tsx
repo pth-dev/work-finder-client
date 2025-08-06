@@ -1,7 +1,5 @@
-import { Navigate } from "react-router-dom";
-import { paths } from "@/config/paths";
+import { DashboardOverview } from "@/features/dashboard";
 
 export default function DashboardRoute() {
-  // Redirect to applications page as default dashboard
-  return <Navigate to={paths.app.applications.getHref()} replace />;
+  return <DashboardOverview />;
 }

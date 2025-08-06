@@ -1,5 +1,5 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
+// import { useTranslation } from "react-i18next";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import {
@@ -46,7 +46,7 @@ export const JobTypeFilter: React.FC<JobTypeFilterProps> = ({
   showCounts = false,
   maxHeight = "max-h-48",
 }) => {
-  const { t } = useTranslation();
+  // const { t } = useTranslation();
   const handleCheckboxChange = (jobTypeValue: string, checked: boolean) => {
     if (onChange) {
       const newValue = checked

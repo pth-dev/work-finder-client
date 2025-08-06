@@ -10,12 +10,7 @@ import {
   Share2,
   ChevronLeft,
 } from "lucide-react";
-import {
-  Button,
-  Card,
-  Badge,
-  Avatar,
-} from "@/components";
+import { Button, Card, Badge, Avatar } from "@/components";
 import { type Job } from "@/types";
 import { type ApiCompany } from "../types";
 import { formatSalary } from "@/utils/common";
@@ -38,15 +33,13 @@ interface JobSections {
 }
 
 // Helper to convert Job salary to global formatSalary format
-const formatJobSalary = (job: Job, t: any) => {
-  if (!job.salary) return formatSalary({}, t);
-  return formatSalary(
-    {
-      salary_min: job.salary.min,
-      salary_max: job.salary.max,
-    },
-    t
-  );
+const formatJobSalary = (job: Job) => {
+  if (!job.salary) return formatSalary({});
+  return formatSalary({
+    min: job.salary.min,
+    max: job.salary.max,
+    text: job.salary.text, // ✅ Use pre-formatted text if available
+  });
 };
 
 const getBadgeVariant = (type: string) => {
@@ -85,7 +78,7 @@ export function JobMainContent({
     }
   };
 
-  const salaryText = useMemo(() => formatJobSalary(job, t), [job.salary, t]);
+  const salaryText = useMemo(() => formatJobSalary(job), [job.salary]);
   const badgeVariant = useMemo(() => getBadgeVariant(job.type), [job.type]);
 
   // Memoized job description parsing
@@ -157,7 +150,7 @@ export function JobMainContent({
             </Avatar>
 
             <div className="flex-1 min-w-0">
-              <h1 className="text-2xl md:text-3xl font-bold text-[#202124] mb-3 font-['Jost']">
+              <h1 className="text-2xl md:text-3xl font-bold text-[#202124] mb-3">
                 {job.title}
               </h1>
 
@@ -187,7 +180,9 @@ export function JobMainContent({
               </div>
 
               <div className="flex flex-wrap gap-2 mb-6">
-                <Badge className={`${badgeVariant} px-3 py-1 rounded-md font-medium text-sm`}>
+                <Badge
+                  className={`${badgeVariant} px-3 py-1 rounded-md font-medium text-sm`}
+                >
                   {job.type.replace("_", " ").toUpperCase()}
                 </Badge>
                 {job.featured && (
@@ -217,10 +212,10 @@ export function JobMainContent({
                   }
                 >
                   {isApplying
-                    ? "Applying..."
+                    ? t("jobs.details.applying")
                     : hasApplied
-                    ? "Applied"
-                    : "Apply Now"}
+                    ? t("jobs.details.applied")
+                    : t("jobs.details.apply")}
                 </Button>
                 <Button
                   variant="outline"
@@ -234,11 +229,9 @@ export function JobMainContent({
                   }
                 >
                   <Heart
-                    className={`h-4 w-4 mr-2 ${
-                      isSaved ? "fill-current" : ""
-                    }`}
+                    className={`h-4 w-4 mr-2 ${isSaved ? "fill-current" : ""}`}
                   />
-                  {isSaved ? "Saved" : "Save"}
+                  {isSaved ? t("jobs.details.saved") : t("jobs.details.save")}
                 </Button>
               </div>
             </div>
@@ -249,9 +242,11 @@ export function JobMainContent({
         <div className="space-y-8">
           {/* Job Description */}
           <div>
-            <h2 className="text-xl font-bold text-[#202124] mb-6 font-['Jost']">Job Description</h2>
+            <h2 className="text-xl font-bold text-[#202124] mb-6">
+              {t("jobs.details.jobDescription")}
+            </h2>
             <div className="prose prose-gray max-w-none">
-              <p className="text-[#696969] leading-relaxed text-base font-['Jost']">
+              <p className="text-[#696969] leading-relaxed text-base">
                 {jobSections.overview}
               </p>
             </div>
@@ -260,7 +255,9 @@ export function JobMainContent({
           {/* Key Responsibilities */}
           {jobSections.responsibilities.length > 0 && (
             <div>
-              <h2 className="text-xl font-bold text-[#202124] mb-6 font-['Jost']">Key Responsibilities</h2>
+              <h2 className="text-xl font-bold text-[#202124] mb-6 font-['Jost']">
+                Key Responsibilities
+              </h2>
               <div className="space-y-4">
                 {jobSections.responsibilities.map((responsibility, index) => (
                   <div key={index} className="flex items-start gap-3">
@@ -277,12 +274,14 @@ export function JobMainContent({
           {/* Skills & Experience */}
           {jobSections.requirements.length > 0 && (
             <div>
-              <h2 className="text-xl font-bold text-[#202124] mb-6 font-['Jost']">Skills & Experience</h2>
+              <h2 className="text-xl font-bold text-[#202124] mb-6">
+                {t("jobs.details.skillsExperience")}
+              </h2>
               <div className="space-y-4">
                 {jobSections.requirements.map((requirement, index) => (
                   <div key={index} className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-[#1967D2] rounded-full mt-2 flex-shrink-0" />
-                    <p className="text-[#696969] leading-relaxed text-base font-['Jost']">
+                    <p className="text-[#696969] leading-relaxed text-base">
                       {requirement}
                     </p>
                   </div>
@@ -294,11 +293,13 @@ export function JobMainContent({
           {/* Skills */}
           {job.skills && job.skills.length > 0 && (
             <div>
-              <h2 className="text-xl font-bold text-[#202124] mb-6 font-['Jost']">Required Skills</h2>
+              <h2 className="text-xl font-bold text-[#202124] mb-6">
+                {t("jobs.details.requiredSkills")}
+              </h2>
               <div className="flex flex-wrap gap-2">
                 {job.skills.map((skill, index) => (
-                  <Badge 
-                    key={index} 
+                  <Badge
+                    key={index}
                     className="bg-[#F5F7FC] text-[#1967D2] border-[#1967D2] hover:bg-[#1967D2] hover:text-white px-3 py-1 rounded-md font-medium"
                   >
                     {skill}
@@ -307,7 +308,7 @@ export function JobMainContent({
               </div>
             </div>
           )}
-          
+
           {/* Share Job */}
           <ShareJob jobTitle={job.title} />
         </div>

@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { paths } from "@/config/paths";
 import { useForgotPassword } from "../api/forgot-password";
-import { toast } from "sonner";
+import { useToast } from "@/services/toast-service";
 import { getFieldLabel, getAuthError } from "@/i18n/helpers";
 
 import {
@@ -26,6 +26,7 @@ import {
 export function ForgotPasswordForm() {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const toastService = useToast();
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -35,7 +36,7 @@ export function ForgotPasswordForm() {
     mutationConfig: {
       onSuccess: () => {
         setIsSuccess(true);
-        toast.success(t("common:auth.forgotPassword.otpSent"));
+        toastService.success(t("common:auth.forgotPassword.otpSent"));
         // Navigate to verify reset OTP page after 2 seconds
         setTimeout(() => {
           navigate(paths.auth.verifyResetOtp.getHref(), {
@@ -50,19 +51,11 @@ export function ForgotPasswordForm() {
         if (message === "auth.messages.forgotPassword.emailNotFound") {
           const errorMsg = getAuthError(t, "emailNotFound");
           setError(errorMsg);
-          toast.error(errorMsg, {
-            action: {
-              label: t("auth.register.signUp"),
-              onClick: () =>
-                navigate("/auth/register", {
-                  state: { email: form.getValues("email") },
-                }),
-            },
-          });
+          toastService.error(errorMsg);
         } else {
           const errorMsg = t("common:errors.api.serverError");
           setError(errorMsg);
-          toast.error(errorMsg);
+          toastService.error(errorMsg);
         }
       },
     },

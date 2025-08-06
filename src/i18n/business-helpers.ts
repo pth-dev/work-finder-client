@@ -1,4 +1,4 @@
-import { TFunction } from "react-i18next";
+import { TFunction } from "i18next";
 
 /**
  * Business logic i18n helpers for formatting data with proper localization
@@ -33,22 +33,26 @@ export const formatCompanySize = (t: TFunction, size: string): string => {
     large: "business.companySize.large",
     enterprise: "business.companySize.enterprise",
   };
-  
+
   return t(sizeMap[size] || "business.companySize.unknown");
 };
 
 // Date formatting with localization
-export const formatDate = (t: TFunction, date: string | Date, format: "short" | "long" | "relative" = "short"): string => {
+export const formatDate = (
+  t: TFunction,
+  date: string | Date,
+  format: "short" | "long" | "relative" = "short"
+): string => {
   const dateObj = typeof date === "string" ? new Date(date) : date;
-  
+
   if (isNaN(dateObj.getTime())) {
     return t("business.date.invalid");
   }
-  
+
   const now = new Date();
   const diffInMs = now.getTime() - dateObj.getTime();
   const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-  
+
   if (format === "relative") {
     if (diffInDays === 0) {
       return t("business.date.today");
@@ -70,7 +74,7 @@ export const formatDate = (t: TFunction, date: string | Date, format: "short" | 
     const years = Math.floor(diffInDays / 365);
     return t("business.date.yearsAgo", { years });
   }
-  
+
   if (format === "long") {
     return dateObj.toLocaleDateString(t("business.locale"), {
       year: "numeric",
@@ -78,7 +82,7 @@ export const formatDate = (t: TFunction, date: string | Date, format: "short" | 
       day: "numeric",
     });
   }
-  
+
   // Default short format
   return dateObj.toLocaleDateString(t("business.locale"), {
     year: "numeric",
@@ -87,63 +91,7 @@ export const formatDate = (t: TFunction, date: string | Date, format: "short" | 
   });
 };
 
-// Salary formatting with currency and localization
-export const formatSalary = (
-  t: TFunction,
-  minSalary?: number,
-  maxSalary?: number,
-  currency: string = "VND",
-  period: "month" | "year" = "month"
-): string => {
-  const formatAmount = (amount: number): string => {
-    if (currency === "VND") {
-      // Format Vietnamese Dong in millions
-      if (amount >= 1000000) {
-        const millions = amount / 1000000;
-        return t("business.salary.millions", { amount: millions });
-      }
-      return t("business.salary.thousands", { amount: amount / 1000 });
-    }
-    
-    // Format other currencies with standard formatting
-    return new Intl.NumberFormat(t("business.locale"), {
-      style: "currency",
-      currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
-  
-  if (!minSalary && !maxSalary) {
-    return t("business.salary.negotiable");
-  }
-  
-  if (minSalary && maxSalary) {
-    if (minSalary === maxSalary) {
-      return t(`business.salary.exact.${period}`, { 
-        amount: formatAmount(minSalary) 
-      });
-    }
-    return t(`business.salary.range.${period}`, {
-      min: formatAmount(minSalary),
-      max: formatAmount(maxSalary),
-    });
-  }
-  
-  if (minSalary) {
-    return t(`business.salary.from.${period}`, { 
-      amount: formatAmount(minSalary) 
-    });
-  }
-  
-  if (maxSalary) {
-    return t(`business.salary.upTo.${period}`, { 
-      amount: formatAmount(maxSalary) 
-    });
-  }
-  
-  return t("business.salary.negotiable");
-};
+// Note: formatSalary has been moved to utils/common.ts for better reusability
 
 // Job type formatting
 export const formatJobType = (t: TFunction, jobType: string): string => {
@@ -157,7 +105,7 @@ export const formatJobType = (t: TFunction, jobType: string): string => {
     hybrid: "business.jobType.hybrid",
     onsite: "business.jobType.onsite",
   };
-  
+
   return t(jobTypeMap[jobType] || "business.jobType.unknown");
 };
 
@@ -173,12 +121,15 @@ export const formatExperienceLevel = (t: TFunction, level: string): string => {
     director: "business.experience.director",
     executive: "business.experience.executive",
   };
-  
+
   return t(levelMap[level] || "business.experience.unknown");
 };
 
 // Application status formatting
-export const formatApplicationStatus = (t: TFunction, status: string): string => {
+export const formatApplicationStatus = (
+  t: TFunction,
+  status: string
+): string => {
   const statusMap: Record<string, string> = {
     pending: "business.applicationStatus.pending",
     reviewing: "business.applicationStatus.reviewing",
@@ -189,7 +140,7 @@ export const formatApplicationStatus = (t: TFunction, status: string): string =>
     rejected: "business.applicationStatus.rejected",
     withdrawn: "business.applicationStatus.withdrawn",
   };
-  
+
   return t(statusMap[status] || "business.applicationStatus.unknown");
 };
 
@@ -198,12 +149,12 @@ export const formatFileSize = (t: TFunction, bytes: number): string => {
   if (bytes === 0) {
     return t("business.fileSize.zero");
   }
-  
+
   const k = 1024;
   const sizes = ["bytes", "kb", "mb", "gb"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   const size = parseFloat((bytes / Math.pow(k, i)).toFixed(1));
-  
+
   return t(`business.fileSize.${sizes[i]}`, { size });
 };
 

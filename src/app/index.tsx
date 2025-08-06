@@ -7,13 +7,13 @@ export function App() {
     <>
       <AppRouter />
       <GlobalLoading />
-      <Toaster 
-        position="top-right" 
-        richColors 
+      <Toaster
+        position="top-right"
+        richColors
         closeButton
         toastOptions={{
           style: {
-            padding: '16px',
+            padding: "16px",
           },
         }}
       />

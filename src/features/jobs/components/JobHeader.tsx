@@ -26,14 +26,16 @@ interface JobHeaderProps {
   isSaved: boolean;
   isApplying: boolean;
   hasApplied: boolean;
+  appliedAt?: string; // Application date when user has applied
 }
 
 // Helper to convert Job salary to global formatSalary format
 const formatJobSalary = (job: Job) => {
   if (!job.salary) return formatSalary({});
   return formatSalary({
-    salary_min: job.salary.min,
-    salary_max: job.salary.max,
+    min: job.salary.min,
+    max: job.salary.max,
+    text: job.salary.text, // ✅ Use pre-formatted text if available
   });
 };
 
@@ -45,6 +47,7 @@ export function JobHeader({
   isSaved,
   isApplying,
   hasApplied,
+  appliedAt,
 }: JobHeaderProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -119,7 +122,7 @@ export function JobHeader({
             />
 
             <div className="flex-1 min-w-0">
-              <h1 className="text-2xl md:text-3xl font-bold text-[#202124] mb-2 font-['Jost']">
+              <h1 className="text-2xl md:text-3xl font-bold text-[#202124] mb-2">
                 {job.title}
               </h1>
 
@@ -133,7 +136,7 @@ export function JobHeader({
                     </div>
                     <div>
                       <p className="text-sm font-medium text-[#202124]">
-                        Mức lương
+                        {t("jobs.details.salary")}
                       </p>
                       <p className="text-sm text-[#696969]">{salaryText}</p>
                     </div>
@@ -147,7 +150,7 @@ export function JobHeader({
                   </div>
                   <div>
                     <p className="text-sm font-medium text-[#202124]">
-                      Địa điểm
+                      {t("jobs.details.location")}
                     </p>
                     <p className="text-sm text-[#696969]">
                       {job.location.isRemote
@@ -164,18 +167,18 @@ export function JobHeader({
                   </div>
                   <div>
                     <p className="text-sm font-medium text-[#202124]">
-                      Loại hình
+                      {t("jobs.details.jobType")}
                     </p>
                     <p className="text-sm text-[#696969]">
                       {job.type === "full_time"
-                        ? "Toàn thời gian"
+                        ? t("jobs.details.jobTypes.fullTime")
                         : job.type === "part_time"
-                        ? "Bán thời gian"
+                        ? t("jobs.details.jobTypes.partTime")
                         : job.type === "contract"
-                        ? "Hợp đồng"
+                        ? t("jobs.details.jobTypes.contract")
                         : job.type === "internship"
-                        ? "Thực tập"
-                        : "Toàn thời gian"}
+                        ? t("jobs.details.jobTypes.internship")
+                        : t("jobs.details.jobTypes.fullTime")}
                     </p>
                   </div>
                 </div>
@@ -185,12 +188,29 @@ export function JobHeader({
               <div className="flex items-center gap-2 text-sm text-[#696969]">
                 <Clock className="h-4 w-4" />
                 <span>
-                  Hạn nộp hồ sơ:{" "}
+                  {t("jobs.details.deadline")}:{" "}
                   {job.expiresAt
                     ? new Date(job.expiresAt).toLocaleDateString("vi-VN")
                     : "01/09/2025"}
                 </span>
               </div>
+
+              {/* Applied Date - Show only if user has applied */}
+              {hasApplied && appliedAt && (
+                <div className="flex items-center gap-2 text-sm text-green-600 bg-green-50 px-3 py-2 rounded-lg">
+                  <User className="h-4 w-4" />
+                  <span>
+                    Đã ứng tuyển:{" "}
+                    {new Date(appliedAt).toLocaleDateString("vi-VN", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 
@@ -208,7 +228,7 @@ export function JobHeader({
               <Heart
                 className={`h-4 w-4 mr-2 ${isSaved ? "fill-current" : ""}`}
               />
-              {isSaved ? "Saved" : "Save Job"}
+              {isSaved ? t("jobs.details.saved") : t("jobs.details.saveJob")}
             </Button>
             <Button
               size="lg"
@@ -222,10 +242,10 @@ export function JobHeader({
               }
             >
               {isApplying
-                ? "Applying..."
+                ? t("jobs.details.applying")
                 : hasApplied
-                ? "Applied"
-                : "Apply Now"}
+                ? t("jobs.details.applied")
+                : t("jobs.details.apply")}
             </Button>
           </div>
         </div>

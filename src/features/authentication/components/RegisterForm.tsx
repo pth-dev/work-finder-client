@@ -16,6 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { paths } from "@/config/paths";
 import { useRegister } from "../api/register";
 import { useMutationLoading } from "@/hooks/use-loading";
@@ -32,7 +34,7 @@ export function RegisterForm() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const toast = useToast();
+  const toastService = useToast();
 
   const registerSchema = createRegisterSchema(t);
 
@@ -46,7 +48,7 @@ export function RegisterForm() {
           // Show success toast using message from response
           const messageKey =
             response.message || "auth.messages.registration.success";
-          toast.success(messageKey);
+          toastService.success(messageKey);
 
           // Navigate to OTP verification page
           const email = response.data?.email || form.getValues().email;
@@ -60,7 +62,7 @@ export function RegisterForm() {
           const messageKey =
             error?.response?.data?.message ||
             "auth.messages.registration.failed";
-          toast.error(messageKey);
+          toastService.error(messageKey);
         },
       },
     }),
@@ -73,14 +75,12 @@ export function RegisterForm() {
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      fullName: "",
       email: prefilledEmail,
       password: "",
       confirmPassword: "",
-      phoneNumber: "",
+      role: "job_seeker",
       termsAccepted: false,
-      marketingEmails: false,
     },
   });
 
@@ -88,8 +88,8 @@ export function RegisterForm() {
     registerMutation.mutate({
       email: values.email,
       password: values.password,
-      full_name: `${values.firstName} ${values.lastName}`.trim(),
-      role: "job_seeker", // Default role since it's not in the form
+      full_name: values.fullName,
+      role: values.role,
     });
   };
 
@@ -112,9 +112,14 @@ export function RegisterForm() {
               </svg>
             </div>
             <div className="ml-3">
-              <h3 className="text-sm font-medium text-red-800">Lỗi đăng ký</h3>
+              <h3 className="text-sm font-medium text-red-800">
+                {t("auth.errors.registrationError")}
+              </h3>
               <div className="mt-2 text-sm text-red-700">
-                <p>{registerMutation.error?.message || "Đăng ký thất bại"}</p>
+                <p>
+                  {registerMutation.error?.message ||
+                    t("auth.errors.registrationFailed")}
+                </p>
               </div>
             </div>
           </div>
@@ -126,32 +131,50 @@ export function RegisterForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-5 w-full"
         >
-          {/* First Name Field */}
+          {/* Role Selection */}
           <FormField
             control={form.control}
-            name="firstName"
+            name="role"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="space-y-3">
+                <FormLabel className="text-sm lg:text-base font-medium text-[#56575d]">
+                  {t("auth.register.role")}
+                </FormLabel>
                 <FormControl>
-                  <div className="h-12 lg:h-14 relative rounded-lg">
-                    <Input
-                      {...field}
-                      type="text"
-                      placeholder={t("auth.placeholders.firstName")}
-                      autoComplete="given-name"
-                      className="h-12 lg:h-14 border-[#c6c6c9] text-[#56575d] text-sm lg:text-base font-medium bg-transparent"
-                    />
-                  </div>
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    className="flex flex-row space-x-6"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="job_seeker" id="job_seeker" />
+                      <Label
+                        htmlFor="job_seeker"
+                        className="text-sm lg:text-base font-medium text-[#56575d] cursor-pointer"
+                      >
+                        {t("auth.register.jobSeeker")}
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="recruiter" id="recruiter" />
+                      <Label
+                        htmlFor="recruiter"
+                        className="text-sm lg:text-base font-medium text-[#56575d] cursor-pointer"
+                      >
+                        {t("auth.register.recruiter")}
+                      </Label>
+                    </div>
+                  </RadioGroup>
                 </FormControl>
                 <FormMessage className="text-red-600 text-sm" />
               </FormItem>
             )}
           />
 
-          {/* Last Name Field */}
+          {/* Full Name Field */}
           <FormField
             control={form.control}
-            name="lastName"
+            name="fullName"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
@@ -159,8 +182,8 @@ export function RegisterForm() {
                     <Input
                       {...field}
                       type="text"
-                      placeholder={t("auth.placeholders.lastName")}
-                      autoComplete="family-name"
+                      placeholder={t("auth.placeholders.fullName")}
+                      autoComplete="name"
                       className="h-12 lg:h-14 border-[#c6c6c9] text-[#56575d] text-sm lg:text-base font-medium bg-transparent"
                     />
                   </div>
@@ -264,28 +287,6 @@ export function RegisterForm() {
             )}
           />
 
-          {/* Phone Number Field */}
-          <FormField
-            control={form.control}
-            name="phoneNumber"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <div className="h-12 lg:h-14 relative rounded-lg">
-                    <Input
-                      {...field}
-                      type="tel"
-                      placeholder={t("auth.placeholders.phoneNumber")}
-                      autoComplete="tel"
-                      className="h-12 lg:h-14 border-[#c6c6c9] text-[#56575d] text-sm lg:text-base font-medium bg-transparent"
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage className="text-red-600 text-sm" />
-              </FormItem>
-            )}
-          />
-
           {/* Terms Accepted Field */}
           <FormField
             control={form.control}
@@ -301,28 +302,6 @@ export function RegisterForm() {
                 <div className="space-y-1 leading-none">
                   <FormLabel className="text-sm">
                     {t("auth.labels.termsAccepted")}
-                  </FormLabel>
-                  <FormMessage className="text-red-600 text-sm" />
-                </div>
-              </FormItem>
-            )}
-          />
-
-          {/* Marketing Emails Field */}
-          <FormField
-            control={form.control}
-            name="marketingEmails"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="text-sm">
-                    {t("auth.labels.marketingEmails")}
                   </FormLabel>
                   <FormMessage className="text-red-600 text-sm" />
                 </div>

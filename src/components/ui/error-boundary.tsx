@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from "react";
+import { Component, ErrorInfo, ReactNode } from "react";
 import { AlertTriangle, RefreshCw } from "lucide-react";
 import { Button } from "./button";
 
@@ -24,7 +24,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
     this.props.onError?.(error, errorInfo);
   }
 
@@ -44,16 +44,17 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="flex justify-center mb-4">
               <AlertTriangle className="h-16 w-16 text-red-500" />
             </div>
-            
+
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
               Something went wrong
             </h2>
-            
+
             <p className="text-gray-600 mb-6">
-              We encountered an error while loading this section. Please try again.
+              We encountered an error while loading this section. Please try
+              again.
             </p>
-            
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+
+            {process.env.NODE_ENV === "development" && this.state.error && (
               <details className="mb-6 text-left">
                 <summary className="cursor-pointer text-sm text-gray-500 mb-2">
                   Error Details (Development Only)
@@ -64,17 +65,17 @@ export class ErrorBoundary extends Component<Props, State> {
                 </pre>
               </details>
             )}
-            
+
             <div className="flex gap-3 justify-center">
-              <Button 
+              <Button
                 onClick={this.handleRetry}
                 className="flex items-center gap-2"
               >
                 <RefreshCw className="h-4 w-4" />
                 Try Again
               </Button>
-              
-              <Button 
+
+              <Button
                 variant="outline"
                 onClick={() => window.location.reload()}
               >

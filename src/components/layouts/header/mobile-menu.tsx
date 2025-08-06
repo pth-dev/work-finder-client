@@ -5,6 +5,7 @@ import { useAuthStore } from "@/stores";
 import { paths } from "@/config/paths";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/utils";
+import { useLogout } from "@/features/authentication/api/logout";
 
 interface NavigationItem {
   name: string;
@@ -22,13 +23,28 @@ export const MobileMenu = ({ navigationItems, onClose }: MobileMenuProps) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  const logoutMutation = useLogout({
+    mutationConfig: {
+      onSuccess: () => {
+        onClose();
+        navigate(paths.home.getHref());
+      },
+      onError: (error) => {
+        console.error("Logout failed:", error);
+        onClose();
+        navigate(paths.home.getHref());
+      },
+    },
+  });
+
   const handleLogout = async () => {
     try {
+      // Clear auth state immediately to prevent API calls
       clearAuth();
-      onClose();
-      navigate(paths.home.getHref());
+      await logoutMutation.mutateAsync();
     } catch (error) {
       console.error("Logout failed:", error);
+      // Auth already cleared above
     }
   };
 
@@ -108,12 +124,12 @@ export const MobileMenu = ({ navigationItems, onClose }: MobileMenuProps) => {
             {/* User Menu Links */}
             <div className="space-y-1">
               <Link
-                to={paths.app.profile.getHref()}
+                to={paths.app.dashboard.getHref()}
                 className="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
                 onClick={onClose}
               >
                 <User className="w-4 h-4 mr-3 text-gray-400" />
-                {t("header.userMenu.completeProfile")}
+                {t("sidebar.dashboard")}
               </Link>
               <Link
                 to={paths.app.applications.getHref()}

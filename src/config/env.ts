@@ -2,7 +2,7 @@ import * as z from "zod";
 
 const createEnv = () => {
   const EnvSchema = z.object({
-    API_URL: z.string().default("http://localhost:3002/api/v1"),
+    API_URL: z.string().default("http://localhost:3001/api/v1"),
     ENABLE_API_MOCKING: z
       .string()
       .refine((s) => s === "true" || s === "false")

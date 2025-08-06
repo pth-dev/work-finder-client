@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { TFunction } from "react-i18next";
+import { TFunction } from "i18next";
 import { getValidationError, getFieldLabel } from "@/i18n/helpers";
 
 /**
@@ -34,26 +34,26 @@ export const createPasswordSchema = (t: TFunction, minLength: number = 8) =>
     )
     .regex(
       /[A-Z]/,
-      getValidationError(t, "passwordStrength.uppercase", {
-        field: getFieldLabel(t, "password"),
+      getValidationError(t, "strongPassword" as any, {
+        field: getFieldLabel(t, "password" as any),
       })
     )
     .regex(
       /[a-z]/,
-      getValidationError(t, "passwordStrength.lowercase", {
-        field: getFieldLabel(t, "password"),
+      getValidationError(t, "strongPassword" as any, {
+        field: getFieldLabel(t, "password" as any),
       })
     )
     .regex(
       /[0-9]/,
-      getValidationError(t, "passwordStrength.number", {
-        field: getFieldLabel(t, "password"),
+      getValidationError(t, "strongPassword" as any, {
+        field: getFieldLabel(t, "password" as any),
       })
     )
     .regex(
       /[^A-Za-z0-9]/,
-      getValidationError(t, "passwordStrength.special", {
-        field: getFieldLabel(t, "password"),
+      getValidationError(t, "strongPassword" as any, {
+        field: getFieldLabel(t, "password" as any),
       })
     );
 
@@ -66,12 +66,14 @@ export const createSimplePasswordSchema = (
     .string()
     .min(
       1,
-      getValidationError(t, "required", { field: getFieldLabel(t, fieldKey) })
+      getValidationError(t, "required", {
+        field: getFieldLabel(t, fieldKey as any),
+      })
     )
     .min(
       minLength,
       getValidationError(t, "minLength", {
-        field: getFieldLabel(t, fieldKey),
+        field: getFieldLabel(t, fieldKey as any),
         min: minLength,
       })
     );
@@ -86,25 +88,29 @@ export const createNameSchema = (
     .string()
     .min(
       1,
-      getValidationError(t, "required", { field: getFieldLabel(t, fieldKey) })
+      getValidationError(t, "required", {
+        field: getFieldLabel(t, fieldKey as any),
+      })
     )
     .min(
       minLength,
       getValidationError(t, "minLength", {
-        field: getFieldLabel(t, fieldKey),
+        field: getFieldLabel(t, fieldKey as any),
         min: minLength,
       })
     )
     .max(
       maxLength,
       getValidationError(t, "maxLength", {
-        field: getFieldLabel(t, fieldKey),
+        field: getFieldLabel(t, fieldKey as any),
         max: maxLength,
       })
     )
     .regex(
       /^[a-zA-ZÀ-ỹ\s]+$/,
-      getValidationError(t, "nameFormat", { field: getFieldLabel(t, fieldKey) })
+      getValidationError(t, "nameFormat", {
+        field: getFieldLabel(t, fieldKey as any),
+      })
     );
 
 export const createPhoneSchema = (t: TFunction) =>
@@ -114,7 +120,7 @@ export const createPhoneSchema = (t: TFunction) =>
     .refine(
       (val) => !val || /^\+?[1-9]\d{1,14}$/.test(val),
       getValidationError(t, "phoneNumber", {
-        field: getFieldLabel(t, "phoneNumber"),
+        field: getFieldLabel(t, "phoneNumber" as any),
       })
     );
 
@@ -129,16 +135,22 @@ export const createUrlSchema = (
     return baseSchema
       .min(
         1,
-        getValidationError(t, "required", { field: getFieldLabel(t, fieldKey) })
+        getValidationError(t, "required", {
+          field: getFieldLabel(t, fieldKey as any),
+        })
       )
-      .url(getValidationError(t, "url", { field: getFieldLabel(t, fieldKey) }));
+      .url(
+        getValidationError(t, "url", {
+          field: getFieldLabel(t, fieldKey as any),
+        })
+      );
   }
 
   return baseSchema
     .optional()
     .refine(
       (val) => !val || val === "" || z.string().url().safeParse(val).success,
-      getValidationError(t, "url", { field: getFieldLabel(t, fieldKey) })
+      getValidationError(t, "url", { field: getFieldLabel(t, fieldKey as any) })
     );
 };
 
@@ -153,14 +165,14 @@ export const createFileSchema = (
     .refine(
       (file) => file.size <= maxSizeMB * 1024 * 1024,
       getValidationError(t, "fileSize", {
-        field: getFieldLabel(t, fieldKey),
+        field: getFieldLabel(t, fieldKey as any),
         size: maxSizeMB,
       })
     )
     .refine(
       (file) => allowedTypes.includes(file.type),
       getValidationError(t, "fileType", {
-        field: getFieldLabel(t, fieldKey),
+        field: getFieldLabel(t, fieldKey as any),
         types: allowedTypes.join(", "),
       })
     );
@@ -178,18 +190,20 @@ export const createDateSchema = (
 
   let schema = z.date({
     message: getValidationError(t, "required", {
-      field: getFieldLabel(t, fieldKey),
+      field: getFieldLabel(t, fieldKey as any),
     }),
   });
 
   if (!required) {
-    schema = schema.optional();
+    schema = schema.optional() as any;
   }
 
   if (minDate) {
     schema = schema.refine(
       (date) => !date || date >= minDate,
-      getValidationError(t, "dateInPast", { field: getFieldLabel(t, fieldKey) })
+      getValidationError(t, "dateInPast", {
+        field: getFieldLabel(t, fieldKey as any),
+      })
     );
   }
 
@@ -197,7 +211,7 @@ export const createDateSchema = (
     schema = schema.refine(
       (date) => !date || date <= maxDate,
       getValidationError(t, "dateInFuture", {
-        field: getFieldLabel(t, fieldKey),
+        field: getFieldLabel(t, fieldKey as any),
       })
     );
   }
@@ -219,18 +233,20 @@ export const createNumberSchema = (
 
   let schema = z.number({
     message: getValidationError(t, "required", {
-      field: getFieldLabel(t, fieldKey),
+      field: getFieldLabel(t, fieldKey as any),
     }),
   });
 
   if (!required) {
-    schema = schema.optional();
+    schema = schema.optional() as any;
   }
 
   if (positive) {
     schema = schema.min(
       0,
-      getValidationError(t, "positive", { field: getFieldLabel(t, fieldKey) })
+      getValidationError(t, "positive", {
+        field: getFieldLabel(t, fieldKey as any),
+      })
     );
   }
 
@@ -238,7 +254,7 @@ export const createNumberSchema = (
     schema = schema.min(
       min,
       getValidationError(t, "minLength", {
-        field: getFieldLabel(t, fieldKey),
+        field: getFieldLabel(t, fieldKey as any),
         min,
       })
     );
@@ -248,7 +264,7 @@ export const createNumberSchema = (
     schema = schema.max(
       max,
       getValidationError(t, "maxLength", {
-        field: getFieldLabel(t, fieldKey),
+        field: getFieldLabel(t, fieldKey as any),
         max,
       })
     );
@@ -273,17 +289,19 @@ export const createTextSchema = (
   if (required) {
     schema = schema.min(
       1,
-      getValidationError(t, "required", { field: getFieldLabel(t, fieldKey) })
+      getValidationError(t, "required", {
+        field: getFieldLabel(t, fieldKey as any),
+      })
     );
   } else {
-    schema = schema.optional();
+    schema = schema.optional() as any;
   }
 
   if (minLength !== undefined) {
     schema = schema.min(
       minLength,
       getValidationError(t, "minLength", {
-        field: getFieldLabel(t, fieldKey),
+        field: getFieldLabel(t, fieldKey as any),
         min: minLength,
       })
     );
@@ -293,7 +311,7 @@ export const createTextSchema = (
     schema = schema.max(
       maxLength,
       getValidationError(t, "maxLength", {
-        field: getFieldLabel(t, fieldKey),
+        field: getFieldLabel(t, fieldKey as any),
         max: maxLength,
       })
     );
@@ -313,7 +331,7 @@ export const createBooleanSchema = (
     schema = schema.refine(
       (val) => val === true,
       getValidationError(t, "termsAccepted", {
-        field: getFieldLabel(t, fieldKey),
+        field: getFieldLabel(t, fieldKey as any),
       })
     );
   }
@@ -324,13 +342,13 @@ export const createBooleanSchema = (
 // Complex validation refinements
 export const createPasswordConfirmationRefine = (
   t: TFunction,
-  passwordField: string = "password",
+  _passwordField: string = "password",
   confirmField: string = "confirmPassword"
 ) => ({
   message: getValidationError(t, "passwordMismatch", {
-    field: getFieldLabel(t, confirmField),
+    field: getFieldLabel(t, confirmField as any),
   }),
-  path: [confirmField] as const,
+  path: [confirmField],
 });
 
 export const createDateRangeRefine = (
@@ -339,8 +357,8 @@ export const createDateRangeRefine = (
   endField: string
 ) => ({
   message: getValidationError(t, "startBeforeEnd", {
-    field: getFieldLabel(t, endField),
-    startField: getFieldLabel(t, startField),
+    field: getFieldLabel(t, endField as any),
+    startField: getFieldLabel(t, startField as any),
   }),
   path: [endField] as const,
 });
@@ -354,12 +372,12 @@ export const createSalaryRangeRefine = (t: TFunction) => ({
 export const createConditionalRequiredRefine = (
   t: TFunction,
   fieldKey: string,
-  conditionField: string,
-  conditionValue: any,
+  _conditionField: string,
+  _conditionValue: any,
   errorType: "currentJobRequired" | "currentStudyRequired"
 ) => ({
   message: getValidationError(t, errorType, {
-    field: getFieldLabel(t, fieldKey),
+    field: getFieldLabel(t, fieldKey as any),
   }),
   path: [fieldKey] as const,
 });

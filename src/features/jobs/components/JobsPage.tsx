@@ -161,26 +161,33 @@ export function JobsPage() {
     description: apiJob.description || "",
     summary: apiJob.description?.substring(0, 150) + "..." || "",
     companyId: apiJob.company_id.toString(),
-    companyName:
-      apiJob.company?.company_name || t("common:jobs.unknownCompany"),
+    companyName: apiJob.company?.company_name || t("jobs.unknownCompany"),
     companyLogo: apiJob.company?.company_image,
     type:
       (apiJob.job_type === "temporary" ? "full_time" : apiJob.job_type) ||
       "full_time",
     experienceLevel: "entry", // Default value since API doesn't provide this
     location: {
-      city: apiJob.location || t("common:jobs.remote"),
+      city: apiJob.location || t("jobs.remote"),
       state: "",
       country: "",
       isRemote: apiJob.location?.toLowerCase().includes("remote") || false,
     },
     salary:
-      apiJob.salary_min && apiJob.salary_max
+      // ✅ FIX: Create salary object if ANY salary info exists (consistent with job detail)
+      apiJob.salary_min || apiJob.salary_max || apiJob.salary
         ? {
-            min: apiJob.salary_min,
-            max: apiJob.salary_max,
+            min:
+              typeof apiJob.salary_min === "string"
+                ? parseFloat(apiJob.salary_min)
+                : apiJob.salary_min || 0,
+            max:
+              typeof apiJob.salary_max === "string"
+                ? parseFloat(apiJob.salary_max)
+                : apiJob.salary_max || 0,
             currency: "VND",
             period: "monthly" as const,
+            text: apiJob.salary,
           }
         : undefined,
     skills: [],
@@ -193,6 +200,7 @@ export function JobsPage() {
     viewsCount: apiJob.view_count,
     featured: false,
     urgent: false,
+    isSaved: apiJob.is_saved || false, // ✅ Map saved state from API
   });
 
   const jobs = apiJobs.map(transformApiJobToJob);

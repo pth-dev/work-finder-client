@@ -87,12 +87,14 @@ const JobListingCard: React.FC<{
       location={getLocationDisplay(job)}
       timeAgo={formatTimeAgo(job.postedAt, t)}
       salary={formatSalary({
-        salary_min: job.salary?.min,
-        salary_max: job.salary?.max,
+        min: job.salary?.min,
+        max: job.salary?.max,
+        text: job.salary?.text, // ✅ Use pre-formatted text if available
       })}
       tags={getJobTags(job)}
       onBookmark={() => onSaveJob?.(job.id)}
       onClick={() => onViewJob(job)}
+      isBookmarked={job.isSaved || false} // ✅ Pass saved state
       logo={
         <div className="w-12 h-12 bg-[#ECEDF2] rounded-lg flex items-center justify-center">
           <Building2 className="w-6 h-6 text-gray-400" />

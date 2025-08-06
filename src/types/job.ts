@@ -38,6 +38,7 @@ export interface Job {
     max: number;
     currency: string;
     period: "hourly" | "monthly" | "yearly";
+    text?: string; // ✅ Support original salary text from backend
   };
   skills: string[];
   categories: string[];
@@ -49,6 +50,7 @@ export interface Job {
   viewsCount: number;
   featured: boolean;
   urgent: boolean;
+  isSaved?: boolean; // ✅ Add saved state for UI
 }
 
 // ✅ NEW: Backend job interface for direct API consumption

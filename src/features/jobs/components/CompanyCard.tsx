@@ -24,7 +24,7 @@ export function CompanyCard({ company }: CompanyCardProps) {
           className="h-20 w-20 mx-auto"
         />
         <div>
-          <h3 className="text-lg font-bold text-[#202124] mb-2 font-['Jost']">
+          <h3 className="text-lg font-bold text-[#202124] mb-2">
             {company.company_name}
           </h3>
           <Button

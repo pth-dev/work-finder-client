@@ -3,8 +3,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ArrowRight } from "lucide-react";
-import { useFeaturedJobs, useSaveJob, useSavedJobStatus } from "../hooks";
+import { useFeaturedJobs, useSaveJob } from "../hooks";
 import { ApiJobPost } from "../types";
+import { Job } from "@/types";
 import { formatTimeAgo, formatSalary } from "@/utils/common";
 import { generateJobSlug } from "@/utils/slug-utils";
 import {
@@ -24,7 +25,7 @@ interface FeaturedJobsProps {
 // ✅ Helper function to transform backend job to UI props
 const transformJobToCardProps = (
   job: ApiJobPost,
-  onBookmark: (jobId: string) => void,
+  onBookmark: (jobId: string, currentlySaved: boolean) => void,
   onClick: (job: ApiJobPost) => void,
   isBookmarked: boolean,
   t: any // i18n translation function
@@ -62,9 +63,13 @@ const transformJobToCardProps = (
     company: job.company?.company_name || t("common:jobs.unknownCompany"),
     location: job.location || t("common:jobs.remote"),
     timeAgo: formatTimeAgo(job.posted_date, t),
-    salary: formatSalary(job),
+    salary: formatSalary({
+      salary: job.salary,
+      salary_min: job.salary_min,
+      salary_max: job.salary_max,
+    }),
     tags,
-    onBookmark: () => onBookmark(job.job_id.toString()),
+    onBookmark: () => onBookmark(job.job_id.toString(), isBookmarked),
     onClick: () => onClick(job),
     isBookmarked,
   };
@@ -84,21 +89,19 @@ export const FeaturedJobs: React.FC<FeaturedJobsProps> = ({
   const jobs = apiResponse?.data?.jobs || [];
 
   const handleViewJob = (job: ApiJobPost) => {
-    // Transform ApiJobPost to Job format for slug generation
     const jobForSlug = {
       id: job.job_id.toString(),
       title: job.job_title,
       companyName: job.company?.company_name || "Unknown Company",
-    };
+    } as Job;
+
     const slug = generateJobSlug(jobForSlug);
     navigate(`/jobs/${slug}`);
   };
-
-  const handleSaveJob = (jobId: string) => {
-    const { isSaved } = useSavedJobStatus(jobId);
+  const handleSaveJob = (jobId: string, currentlySaved: boolean = false) => {
     saveJobMutation({
       jobId,
-      action: isSaved ? "unsave" : "save",
+      action: currentlySaved ? "unsave" : "save",
     });
   };
 
@@ -143,7 +146,7 @@ export const FeaturedJobs: React.FC<FeaturedJobsProps> = ({
                 <JobCardSkeleton key={index} />
               ))
             : jobs.map((job) => {
-                const { isSaved } = useSavedJobStatus(job.job_id.toString());
+                const isSaved = job.is_saved || false;
                 const cardProps = transformJobToCardProps(
                   job,
                   handleSaveJob,

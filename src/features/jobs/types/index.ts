@@ -34,8 +34,8 @@ export interface ApiJobPost {
   benefits?: string;
   location?: string;
   category?: string;
-  salary_min?: number;
-  salary_max?: number;
+  salary_min?: number | string; // API can return string from DECIMAL fields
+  salary_max?: number | string; // API can return string from DECIMAL fields
   salary?: string;
   job_type?: ApiJobType;
   status: ApiJobStatus;
@@ -46,6 +46,9 @@ export interface ApiJobPost {
   save_count: number;
   application_count: number;
   company?: ApiCompany; // Optional populated relation
+  is_saved?: boolean; // ✅ Added: Backend returns this when user is authenticated
+  is_applied?: boolean; // ✅ NEW: Backend returns this when user is authenticated
+  applied_at?: string; // ✅ NEW: Application date when user has applied
 }
 
 // ===== API RESPONSE TYPES =====

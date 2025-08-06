@@ -1,4 +1,4 @@
-import { TFunction } from "react-i18next";
+import { TFunction } from "i18next";
 
 /**
  * Common i18n helper functions for standardized message patterns

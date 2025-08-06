@@ -1,4 +1,4 @@
-import { SavedJobsPage } from "@/features/dashboard";
+import { SavedJobsPage } from "@/features/saved-jobs";
 
 const SavedJobsRoute = () => {
   return <SavedJobsPage />;

@@ -32,20 +32,20 @@ export function OTPVerificationForm({ email }: OTPVerificationFormProps) {
   const { setUser, isAuthenticated, user } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
-  const toast = useToast();
+  const toastService = useToast();
   const shouldNavigateRef = useRef(false);
 
-  // Get appropriate redirect path based on user role and 'from' state  
+  // Get appropriate redirect path based on user role and 'from' state
   const getRedirectPath = (user: any) => {
     const from = (location.state as any)?.from;
-    
+
     // If there's a specific 'from' path, use it
     if (from && from !== "/" && from !== paths.home.getHref()) {
       return from;
     }
-    
+
     // Default redirect based on user role
-    if (user?.role === 'job_seeker') {
+    if (user?.role === "job_seeker") {
       return paths.home.getHref();
     } else {
       return paths.app.dashboard.getHref();
@@ -66,21 +66,23 @@ export function OTPVerificationForm({ email }: OTPVerificationFormProps) {
       mutationConfig: {
         onSuccess: (response) => {
           // Show success toast using message from response or fallback
-          const messageKey = response.message || 'auth.messages.otp.verifySuccess';
-          toast.success(messageKey);
-          
+          const messageKey =
+            response.message || "auth.messages.otp.verifySuccess";
+          toastService.success(messageKey);
+
           // Set user and flag for navigation
           setUser(response.data.user);
           shouldNavigateRef.current = true;
         },
         onError: (error: any) => {
           // Show error toast based on error message/key from backend
-          const messageKey = error?.response?.data?.message || 'auth.messages.otp.verifyFailed';
-          toast.error(messageKey);
+          const messageKey =
+            error?.response?.data?.message || "auth.messages.otp.verifyFailed";
+          toastService.error(messageKey);
         },
       },
     }),
-    'verify-otp',
+    "verify-otp",
     {
       globalLoading: true,
     }
@@ -91,19 +93,20 @@ export function OTPVerificationForm({ email }: OTPVerificationFormProps) {
       mutationConfig: {
         onSuccess: () => {
           // Show success toast
-          toast.success('auth.messages.otp.resendSuccess');
-          
+          toastService.success("auth.messages.otp.resendSuccess");
+
           setCountdown(60);
           setCanResend(false);
         },
         onError: (error: any) => {
           // Show error toast
-          const messageKey = error?.response?.data?.message || 'auth.messages.otp.resendFailed';
-          toast.error(messageKey);
+          const messageKey =
+            error?.response?.data?.message || "auth.messages.otp.resendFailed";
+          toastService.error(messageKey);
         },
       },
     }),
-    'resend-otp',
+    "resend-otp",
     {}
   );
 
@@ -157,7 +160,7 @@ export function OTPVerificationForm({ email }: OTPVerificationFormProps) {
                 Lỗi xác thực OTP
               </h3>
               <div className="mt-2 text-sm text-red-700">
-                <p>{verifyOTPMutation.error?.message || 'OTP không hợp lệ'}</p>
+                <p>{verifyOTPMutation.error?.message || "OTP không hợp lệ"}</p>
               </div>
             </div>
           </div>
@@ -195,7 +198,7 @@ export function OTPVerificationForm({ email }: OTPVerificationFormProps) {
                       className="h-12 lg:h-14 border-[#c6c6c9] text-[#56575d] font-medium bg-transparent text-center text-2xl tracking-widest"
                       onChange={(e) => {
                         // Only allow numbers
-                        const value = e.target.value.replace(/\D/g, '');
+                        const value = e.target.value.replace(/\D/g, "");
                         field.onChange(value);
                       }}
                     />
@@ -253,9 +256,7 @@ export function OTPVerificationForm({ email }: OTPVerificationFormProps) {
                 {resendOTPMutation.isPending ? "Đang gửi..." : "Gửi lại mã OTP"}
               </button>
             ) : (
-              <p className="text-gray-500">
-                Gửi lại mã OTP sau {countdown}s
-              </p>
+              <p className="text-gray-500">Gửi lại mã OTP sau {countdown}s</p>
             )}
           </div>
         </form>

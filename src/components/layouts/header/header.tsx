@@ -10,6 +10,7 @@ import { Navigation, useNavigationItems } from "./navigation";
 import { UserMenu } from "./user-menu";
 import { MobileMenu } from "./mobile-menu";
 import { LanguageSwitcher } from "./language-switcher";
+import { NotificationBell } from "@/features/notifications/components/NotificationBell";
 
 export const Header = () => {
   const { isAuthenticated, user } = useAuthStore();
@@ -75,7 +76,7 @@ export const Header = () => {
 
   return (
     <header className={getHeaderClasses()}>
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center h-16 md:h-[80px]">
           {/* Left Section: Logo + Navigation */}
           <div className="flex items-center">
@@ -88,7 +89,7 @@ export const Header = () => {
               <img
                 src={WorkFinderIcon}
                 alt="WorkFinder"
-                className="h-12 w-auto"
+                className="h-10 md:h-12 w-auto"
               />
             </Link>
 
@@ -97,42 +98,57 @@ export const Header = () => {
           </div>
 
           {/* Right Section */}
-          <div className="flex items-center space-x-6">
-            {/* Upload CV Link */}
-            <Link
-              to="#"
-              className="hidden md:block text-[#1967d2] text-[15px] font-normal hover:underline transition-all"
-            >
-              {t("header.actions.uploadCV")}
-            </Link>
-
-            {/* Language Switcher */}
-            <LanguageSwitcher />
-
-            {/* Auth Section */}
-            {isAuthenticated ? (
-              <UserMenu />
-            ) : (
-              <Button
-                variant="outline"
-                className="hidden md:flex bg-[#1967d2]/7 text-[#1967d2] border-[#1967d2]/20 hover:bg-[#1967d2]/10 px-6 py-2 h-10 text-[15px] font-medium rounded-lg transition-all duration-200"
-                onClick={() => navigate(paths.auth.login.getHref())}
+          <div className="flex items-center">
+            {/* Desktop Right Section */}
+            <div className="hidden md:flex items-center space-x-3">
+              {/* Upload CV Link */}
+              <Link
+                to="#"
+                className="text-[#1967d2] text-[15px] font-normal hover:underline transition-all"
               >
-                {t("header.actions.loginRegister")}
-              </Button>
-            )}
+                {t("header.actions.uploadCV")}
+              </Link>
 
-            {/* Mobile Menu Button */}
-            <button
-              className="lg:hidden p-2 text-gray-600 hover:text-[#1967d2] transition-colors"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
+              {/* Language Switcher */}
+              <LanguageSwitcher />
+
+              {/* Notifications - Only show when authenticated */}
+              {isAuthenticated && <NotificationBell />}
+
+              {/* Auth Section */}
+              {isAuthenticated ? (
+                <UserMenu />
               ) : (
-                <Menu className="w-6 h-6" />
+                <Button
+                  variant="outline"
+                  className="bg-[#1967d2]/7 text-[#1967d2] border-[#1967d2]/20 hover:bg-[#1967d2]/10 px-6 py-2 h-10 text-[15px] font-medium rounded-lg transition-all duration-200"
+                  onClick={() => navigate(paths.auth.login.getHref())}
+                >
+                  {t("header.actions.loginRegister")}
+                </Button>
               )}
-            </button>
+            </div>
+
+            {/* Mobile Right Section - Minimal */}
+            <div className="flex md:hidden items-center space-x-3">
+              {/* Language Switcher - Compact */}
+              <LanguageSwitcher />
+
+              {/* Notifications - Only show when authenticated */}
+              {isAuthenticated && <NotificationBell />}
+
+              {/* Mobile Menu Button */}
+              <button
+                className="p-2 text-gray-600 hover:text-[#1967d2] transition-colors"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                {isMobileMenuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
 

@@ -1,10 +1,11 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api-client';
-import { useToast } from '@/services/toast-service';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
+import { api } from "@/lib/api-client";
+import { useToast } from "@/services/toast-service";
 
 interface SaveJobRequest {
   jobId: string;
-  action: 'save' | 'unsave';
+  action: "save" | "unsave";
 }
 
 interface SaveJobResponse {
@@ -19,179 +20,218 @@ interface SaveJobResponse {
 
 /**
  * Hook for saving/unsaving jobs with optimistic updates and cache management
- * 
+ *
  * Features:
  * - Optimistic UI updates for instant feedback
  * - Automatic cache invalidation for consistency
  * - Error handling with rollback on failure
  * - Toast notifications for user feedback
- * 
+ *
  * @example
  * ```tsx
  * const { mutate: saveJob, isPending } = useSaveJob();
- * 
+ *
  * const handleSaveJob = (jobId: string, currentlySaved: boolean) => {
- *   saveJob({ 
- *     jobId, 
- *     action: currentlySaved ? 'unsave' : 'save' 
+ *   saveJob({
+ *     jobId,
+ *     action: currentlySaved ? 'unsave' : 'save'
  *   });
  * };
  * ```
  */
 export const useSaveJob = () => {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
+  const toastService = useToast();
+  const { t } = useTranslation();
 
   return useMutation<SaveJobResponse, Error, SaveJobRequest>({
-    mutationFn: async ({ jobId, action }: SaveJobRequest) => {
-      const response = await api.post(`/jobs/${jobId}/${action}`);
-      return response;
+    mutationFn: async ({
+      jobId,
+      action,
+    }: SaveJobRequest): Promise<SaveJobResponse> => {
+      if (action === "save") {
+        const response = await api.post(`/jobs/${jobId}/save`);
+        return response.data;
+      } else {
+        const response = await api.delete(`/jobs/${jobId}/save`);
+        return response.data;
+      }
     },
 
-    // Optimistic update - immediately update UI before API call
+    // Optimistic updates for instant UI feedback
     onMutate: async ({ jobId, action }) => {
-      // Cancel any outgoing refetches to avoid overwriting optimistic update
-      await queryClient.cancelQueries({ queryKey: ['jobs'] });
-      await queryClient.cancelQueries({ queryKey: ['saved-jobs'] });
-      await queryClient.cancelQueries({ queryKey: ['job', jobId] });
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ["jobs"] });
+      await queryClient.cancelQueries({ queryKey: ["job", jobId] });
+      await queryClient.cancelQueries({ queryKey: ["featured-jobs"] });
 
-      // Snapshot previous values for rollback
-      const previousJobs = queryClient.getQueryData(['jobs']);
-      const previousSavedJobs = queryClient.getQueryData(['saved-jobs']);
-      const previousJob = queryClient.getQueryData(['job', jobId]);
+      // Snapshot the previous values
+      const previousJobsData = queryClient.getQueriesData({
+        queryKey: ["jobs"],
+      });
+      const previousJobData = queryClient.getQueryData(["job", jobId]);
+      const previousFeaturedData = queryClient.getQueriesData({
+        queryKey: ["featured-jobs"],
+      });
 
-      // Optimistically update job in jobs list
-      queryClient.setQueryData(['jobs'], (old: any) => {
-        if (!old?.data?.jobs) return old;
-        
+      // Optimistically update job data
+      const isSaved = action === "save";
+
+      // Update individual job query
+      queryClient.setQueryData(["job", jobId], (old: any) => {
+        if (!old?.data) return old;
         return {
           ...old,
           data: {
             ...old.data,
-            jobs: old.data.jobs.map((job: any) => 
-              job.id === jobId 
-                ? { 
-                    ...job, 
-                    isSaved: action === 'save',
-                    saveCount: action === 'save' 
-                      ? (job.saveCount || 0) + 1 
-                      : Math.max((job.saveCount || 1) - 1, 0)
-                  }
-                : job
-            )
-          }
+            is_saved: isSaved,
+            save_count: old.data.save_count + (isSaved ? 1 : -1),
+          },
         };
       });
 
-      // Optimistically update individual job
-      queryClient.setQueryData(['job', jobId], (old: any) => {
-        if (!old) return old;
+      // Update jobs list queries
+      queryClient.setQueriesData({ queryKey: ["jobs"] }, (old: any) => {
+        if (!old?.data?.jobs) return old;
         return {
           ...old,
-          isSaved: action === 'save',
-          saveCount: action === 'save' 
-            ? (old.saveCount || 0) + 1 
-            : Math.max((old.saveCount || 1) - 1, 0)
+          data: {
+            ...old.data,
+            jobs: old.data.jobs.map((job: any) =>
+              job.job_id.toString() === jobId
+                ? {
+                    ...job,
+                    is_saved: isSaved,
+                    save_count: job.save_count + (isSaved ? 1 : -1),
+                  }
+                : job
+            ),
+          },
         };
       });
 
-      // Optimistically update saved jobs list
-      if (action === 'unsave') {
-        queryClient.setQueryData(['saved-jobs'], (old: any) => {
-          if (!old?.data) return old;
+      // Update featured jobs queries
+      queryClient.setQueriesData(
+        { queryKey: ["featured-jobs"] },
+        (old: any) => {
+          if (!old?.data?.jobs) return old;
           return {
             ...old,
-            data: old.data.filter((savedJob: any) => savedJob.jobId !== jobId)
+            data: {
+              ...old.data,
+              jobs: old.data.jobs.map((job: any) =>
+                job.job_id.toString() === jobId
+                  ? {
+                      ...job,
+                      is_saved: isSaved,
+                      save_count: job.save_count + (isSaved ? 1 : -1),
+                    }
+                  : job
+              ),
+            },
           };
-        });
-      }
+        }
+      );
 
-      return { previousJobs, previousSavedJobs, previousJob };
+      // Return context for rollback
+      return { previousJobsData, previousJobData, previousFeaturedData };
     },
 
-    // On success - show success message and invalidate related queries
-    onSuccess: (data, { action }) => {
-      const message = action === 'save' 
-        ? 'Việc làm đã được lưu thành công!' 
-        : 'Đã bỏ lưu việc làm!';
-      
-      toast({
-        title: "Thành công",
-        description: message,
-        variant: "default",
-      });
+    onSuccess: (_, { action }) => {
+      const messageKey =
+        action === "save" ? "jobs.save.success" : "jobs.unsave.success";
+
+      toastService.success(t(messageKey));
 
       // Invalidate and refetch related queries to ensure consistency
-      queryClient.invalidateQueries({ queryKey: ['saved-jobs'] });
-      queryClient.invalidateQueries({ queryKey: ['jobs'] });
-      queryClient.invalidateQueries({ queryKey: ['featured-jobs'] });
+      queryClient.invalidateQueries({ queryKey: ["saved-jobs"] });
+      queryClient.invalidateQueries({ queryKey: ["jobs"], type: "all" });
+      queryClient.invalidateQueries({
+        queryKey: ["featured-jobs"],
+        type: "all",
+      });
+      queryClient.invalidateQueries({ queryKey: ["job"], type: "all" });
     },
 
     // On error - rollback optimistic updates and show error message
-    onError: (error, { action }, context) => {
+    onError: (_, { action }, context: any) => {
+      const messageKey =
+        action === "save" ? "jobs.save.error" : "jobs.unsave.error";
+
+      toastService.error(t(messageKey));
+
       // Rollback optimistic updates
-      if (context?.previousJobs) {
-        queryClient.setQueryData(['jobs'], context.previousJobs);
-      }
-      if (context?.previousSavedJobs) {
-        queryClient.setQueryData(['saved-jobs'], context.previousSavedJobs);
-      }
-      if (context?.previousJob) {
-        queryClient.setQueryData(['job', context.previousJob.id], context.previousJob);
-      }
+      if (context) {
+        const { previousJobsData, previousJobData, previousFeaturedData } =
+          context;
 
-      const message = action === 'save'
-        ? 'Không thể lưu việc làm. Vui lòng thử lại!'
-        : 'Không thể bỏ lưu việc làm. Vui lòng thử lại!';
+        // Restore previous jobs data
+        if (previousJobsData) {
+          previousJobsData.forEach(([queryKey, data]: [any, any]) => {
+            queryClient.setQueryData(queryKey, data);
+          });
+        }
 
-      toast({
-        title: "Lỗi",
-        description: message,
-        variant: "destructive",
-      });
+        // Restore previous job data
+        if (previousJobData) {
+          queryClient.setQueryData(["job", action], previousJobData);
+        }
 
-      console.error('Save job error:', error);
+        // Restore previous featured data
+        if (previousFeaturedData) {
+          previousFeaturedData.forEach(([queryKey, data]: [any, any]) => {
+            queryClient.setQueryData(queryKey, data);
+          });
+        }
+      }
     },
 
-    // Always run after mutation (success or error)
+    // Always refetch to ensure consistency
     onSettled: () => {
-      // Ensure queries are refetched to sync with server state
-      queryClient.invalidateQueries({ queryKey: ['jobs'] });
-      queryClient.invalidateQueries({ queryKey: ['saved-jobs'] });
+      queryClient.invalidateQueries({ queryKey: ["saved-jobs"] });
     },
   });
 };
 
 /**
+ * @deprecated Use is_saved field from API response instead
  * Hook to get saved job status for a specific job
- * 
- * @param jobId - The job ID to check
- * @returns Object with isSaved status and loading state
  */
 export const useSavedJobStatus = (jobId: string) => {
   const queryClient = useQueryClient();
-  
-  // Get saved status from cache or query
-  const savedJobs = queryClient.getQueryData(['saved-jobs']) as any;
-  const isSaved = savedJobs?.data?.some((savedJob: any) => savedJob.jobId === jobId) || false;
-  
+  const savedJobs = queryClient.getQueryData(["saved-jobs"]) as any;
+  const isSaved =
+    savedJobs?.data?.jobs?.some(
+      (savedJob: any) => savedJob.job_id.toString() === jobId
+    ) || false;
   return { isSaved };
 };
 
 /**
+ * @deprecated Use is_saved field from API response instead
+ * Utility function to create a Set of saved job IDs for fast lookup
+ */
+export const createSavedJobsSet = (savedJobsData: any): Set<string> => {
+  if (!savedJobsData?.data?.jobs) return new Set();
+  return new Set(
+    savedJobsData.data.jobs.map((job: any) => job.job_id.toString())
+  );
+};
+
+/**
  * Utility function to toggle save status
- * 
+ *
  * @param jobId - The job ID
  * @param currentlySaved - Current save status
  * @param saveJobMutation - The save job mutation from useSaveJob
  */
 export const toggleSaveJob = (
-  jobId: string, 
-  currentlySaved: boolean, 
-  saveJobMutation: ReturnType<typeof useSaveJob>['mutate']
+  jobId: string,
+  currentlySaved: boolean,
+  saveJobMutation: ReturnType<typeof useSaveJob>["mutate"]
 ) => {
   saveJobMutation({
     jobId,
-    action: currentlySaved ? 'unsave' : 'save'
+    action: currentlySaved ? "unsave" : "save",
   });
 };

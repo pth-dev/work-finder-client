@@ -1,4 +1,4 @@
-import { ApplicationsPage } from "@/features/dashboard";
+import { ApplicationsPage } from "@/features/applications";
 
 const ApplicationsRoute = () => {
   return <ApplicationsPage />;

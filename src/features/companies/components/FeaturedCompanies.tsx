@@ -9,7 +9,7 @@ import {
   Building2,
   CheckCircle,
 } from "lucide-react";
-import { Button, Card, CardContent, Badge } from "@/components";
+import { Button, Card, CardContent, Badge, SectionHeader } from "@/components";
 import { useNavigate } from "react-router-dom";
 import { ApiCompany } from "../types";
 
@@ -194,15 +194,22 @@ export const FeaturedCompanies: React.FC<FeaturedCompaniesProps> = ({
   return (
     <section className="py-16 px-4 bg-white">
       <div className="container mx-auto max-w-7xl">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-            {t("companies.topCompanies")}
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            {t("companies.exploreCompanies")}
-          </p>
-        </div>
+        {/* Section Header */}
+        <SectionHeader
+          title={t("companies.topCompanies")}
+          subtitle={t("companies.exploreCompanies")}
+        >
+          <div className="mt-6">
+            <Button
+              variant="outline"
+              onClick={handleViewAllCompanies}
+              className="group"
+            >
+              {t("companies.viewAllCompanies")}
+              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          </div>
+        </SectionHeader>
 
         {/* Companies Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
@@ -217,18 +224,6 @@ export const FeaturedCompanies: React.FC<FeaturedCompaniesProps> = ({
                   onViewCompany={handleViewCompany}
                 />
               ))}
-        </div>
-
-        {/* View All Button */}
-        <div className="text-center">
-          <Button
-            onClick={handleViewAllCompanies}
-            size="lg"
-            className="px-8 py-3 text-base font-semibold"
-          >
-            View All Companies
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
         </div>
 
         {/* Empty State */}

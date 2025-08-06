@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export interface User {
   user_id: number;
@@ -28,7 +28,7 @@ interface AuthActions {
 
 type AuthStore = AuthState & AuthActions;
 
-const STORAGE_KEY = 'work-finder-auth';
+const STORAGE_KEY = "work-finder-auth";
 
 export const useAuthStore = create<AuthStore>()(
   persist(
@@ -46,12 +46,12 @@ export const useAuthStore = create<AuthStore>()(
         });
       },
 
-
       clearAuth: () => {
         // Clear auth state (tokens stored in HTTP-only cookies)
         set({
           user: null,
           isAuthenticated: false,
+          isInitializing: false, // Ensure we don't re-initialize after logout
         });
       },
 

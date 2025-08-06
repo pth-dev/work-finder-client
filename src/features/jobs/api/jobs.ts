@@ -35,7 +35,9 @@ export const getFeaturedJobs = (
 /**
  * Get single job by ID or slug
  */
-export const getJob = (identifier: string | number): Promise<{ data: ApiJobPost }> => {
+export const getJob = (
+  identifier: string | number
+): Promise<{ data: ApiJobPost }> => {
   return api.get(`/jobs/${identifier}`);
 };
 
@@ -67,7 +69,11 @@ export const getJobsByCompany = (
  * Save/unsave a job
  */
 export const saveJob = (jobId: string, action: "save" | "unsave") => {
-  return api.post(`/jobs/${jobId}/${action}`);
+  if (action === "save") {
+    return api.post(`/jobs/${jobId}/save`);
+  } else {
+    return api.delete(`/jobs/${jobId}/save`);
+  }
 };
 
 /**

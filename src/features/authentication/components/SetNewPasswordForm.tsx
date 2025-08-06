@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { paths } from "@/config/paths";
 import { useCompletePasswordReset } from "../api/complete-password-reset";
-import { toast } from "sonner";
+import { useToast } from "@/services/toast-service";
 
 const setNewPasswordSchema = z
   .object({
@@ -38,6 +38,7 @@ export function SetNewPasswordForm() {
   const location = useLocation();
   const email = location.state?.email;
   const reset_token = location.state?.reset_token;
+  const toastService = useToast();
 
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -52,7 +53,7 @@ export function SetNewPasswordForm() {
   const completePasswordResetMutation = useCompletePasswordReset({
     mutationConfig: {
       onSuccess: () => {
-        toast.success("Mật khẩu đã được đặt lại thành công!");
+        toastService.success("Mật khẩu đã được đặt lại thành công!");
         // Navigate to login page after 2 seconds
         setTimeout(() => {
           navigate("/auth/login", {
@@ -68,7 +69,7 @@ export function SetNewPasswordForm() {
         const message =
           error?.response?.data?.message || "Có lỗi xảy ra, vui lòng thử lại";
         setError(message);
-        toast.error(message);
+        toastService.error(message);
       },
     },
   });

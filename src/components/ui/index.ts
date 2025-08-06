@@ -24,6 +24,14 @@ export * from "./error-state";
 export * from "./skeleton";
 export * from "./textarea";
 export * from "./error-boundary";
+export * from "./file-upload-area";
+export * from "./collapsible";
+export * from "./switch";
+export * from "./progress";
+export * from "./alert-dialog";
+
+// Section components
+export * from "./section-header";
 
 // Job-related UI components
 export * from "./job-card";

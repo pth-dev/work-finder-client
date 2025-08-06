@@ -1,5 +1,5 @@
 import React from "react";
-import { AlertCircle, RefreshCw, Wifi, WifiOff } from "lucide-react";
+import { AlertCircle, RefreshCw, WifiOff } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "./button";
 

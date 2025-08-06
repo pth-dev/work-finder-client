@@ -1,9 +1,11 @@
 import { useMemo } from "react";
-import { Card, Badge } from "@/components";
-import { MapPin } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { type Job } from "@/types";
 import { useJobs } from "../hooks";
-import { CompanyLogo } from "@/components";
+import { JobCard, CompanyLogo, Spinner } from "@/components";
+import { formatTimeAgo, formatSalary } from "@/utils/common";
+import { generateJobSlug } from "@/utils/slug-utils";
 
 interface RelatedJobsProps {
   currentJobId: string;
@@ -18,6 +20,8 @@ export default function RelatedJobs({
   jobTitle,
   limit = 2,
 }: RelatedJobsProps) {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   // Create search filters for related jobs
   const searchFilters = useMemo(() => {
     const filters: any = {
@@ -138,80 +142,81 @@ export default function RelatedJobs({
   return (
     <div className="p-6 md:p-8">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-[#202124] mb-2 font-['Jost']">
-          Related Jobs
+        <h2 className="text-2xl font-bold text-[#202124] mb-2">
+          {t("jobs.details.relatedJobs")}
         </h2>
       </div>
 
       {isLoading ? (
-        <div className="text-[#696969] font-['Jost']">
-          Loading related jobs...
+        <div className="flex justify-center py-8">
+          <Spinner size="md" />
         </div>
       ) : error ? (
-        <div className="text-[#696969] font-['Jost']">
+        <div className="text-[#696969] text-center py-8">
           Unable to load related jobs at the moment.
         </div>
       ) : relatedJobs.length === 0 ? (
-        <div className="text-[#696969] font-['Jost']">Loading more jobs...</div>
+        <div className="flex justify-center py-8">
+          <Spinner size="md" />
+        </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2">
-          {relatedJobs.map((job) => (
-            <Card
-              key={job.id}
-              className="border border-gray-200 hover:shadow-lg transition-all duration-200 cursor-pointer hover:border-[#1967D2]"
-            >
-              <div className="p-6 space-y-4">
-                {/* Job badges */}
-                <div className="flex flex-wrap gap-2">
-                  {job.featured && (
-                    <Badge className="bg-[#34A853] text-white px-2 py-1 rounded-md text-xs font-medium">
-                      Private
-                    </Badge>
-                  )}
-                  {job.urgent && (
-                    <Badge className="bg-[#D93025] text-white px-2 py-1 rounded-md text-xs font-medium">
-                      Urgent
-                    </Badge>
-                  )}
-                  <Badge className="bg-[#1967D2] text-white px-2 py-1 rounded-md text-xs font-medium">
-                    Full Time
-                  </Badge>
-                </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          {relatedJobs.map((job) => {
+            const handleJobClick = () => {
+              const slug = generateJobSlug(job);
+              navigate(`/jobs/${slug}`);
+            };
 
-                {/* Company logo */}
-                <div className="flex justify-center">
+            const getJobTags = (job: Job) => {
+              const tags = [];
+
+              // Job type tag
+              if (job.type) {
+                tags.push({
+                  text: job.type.replace("_", " "),
+                  variant: "secondary" as const,
+                  color: "blue" as const,
+                });
+              }
+
+              // Experience level tag
+              if (job.experienceLevel) {
+                tags.push({
+                  text: job.experienceLevel,
+                  variant: "outline" as const,
+                  color: "yellow" as const,
+                });
+              }
+
+              return tags;
+            };
+
+            return (
+              <JobCard
+                key={job.id}
+                title={job.title}
+                company={job.companyName}
+                location={`${job.location.city}, ${job.location.country}`}
+                timeAgo={formatTimeAgo(job.postedAt, t)}
+                salary={formatSalary({
+                  min: job.salary?.min,
+                  max: job.salary?.max,
+                  text: job.salary?.text,
+                })}
+                tags={getJobTags(job)}
+                onClick={handleJobClick}
+                logo={
                   <CompanyLogo
                     src={job.companyLogo}
                     companyName={job.companyName}
-                    size="lg"
+                    size="md"
                     variant="rounded"
                   />
-                </div>
-
-                {/* Company name */}
-                <div className="text-center">
-                  <p className="text-[#34A853] font-medium text-sm font-['Jost']">
-                    {job.companyName}
-                  </p>
-                </div>
-
-                {/* Job title */}
-                <div className="text-center">
-                  <h3 className="font-bold text-[#202124] text-lg font-['Jost'] leading-tight">
-                    {job.title}
-                  </h3>
-                </div>
-
-                {/* Location */}
-                <div className="flex items-center justify-center gap-2 text-[#696969]">
-                  <MapPin className="h-4 w-4" />
-                  <span className="text-sm font-['Jost']">
-                    {job.location.city}, {job.location.country}
-                  </span>
-                </div>
-              </div>
-            </Card>
-          ))}
+                }
+                className="h-full"
+              />
+            );
+          })}
         </div>
       )}
     </div>

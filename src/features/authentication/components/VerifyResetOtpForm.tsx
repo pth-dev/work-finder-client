@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { paths } from "@/config/paths";
 import { useVerifyResetOtp } from "../api/verify-reset-otp";
-import { toast } from "sonner";
+import { useToast } from "@/services/toast-service";
 
 const verifyResetOtpSchema = z.object({
   otp_code: z.string().length(6, "OTP phải có 6 chữ số"),
@@ -24,6 +24,7 @@ export function VerifyResetOtpForm() {
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state?.email;
+  const toastService = useToast();
 
   const [error, setError] = useState<string | null>(null);
 
@@ -36,7 +37,7 @@ export function VerifyResetOtpForm() {
   const verifyResetOtpMutation = useVerifyResetOtp({
     mutationConfig: {
       onSuccess: (data) => {
-        toast.success("OTP xác thực thành công!");
+        toastService.success("OTP xác thực thành công!");
         // Navigate to set new password page with reset token
         navigate("/auth/set-new-password", {
           state: {
@@ -49,7 +50,7 @@ export function VerifyResetOtpForm() {
         const message =
           error?.response?.data?.message || "OTP không hợp lệ hoặc đã hết hạn";
         setError(message);
-        toast.error(message);
+        toastService.error(message);
       },
     },
   });
