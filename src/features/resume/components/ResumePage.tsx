@@ -1,10 +1,14 @@
 import { useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { User, Plus, FileText } from "lucide-react";
+import { Plus, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
+import { PageHeader } from "@/components/common";
 import { ResumeCard } from "./ResumeCard";
 import { ResumeUpload } from "./ResumeUpload";
+import { ResumeTabTrigger } from "./ResumeTabTrigger";
+import { LoadingSkeleton } from "./LoadingSkeleton";
+import { EmptyState } from "./EmptyState";
 import { useMyResumes } from "../hooks";
 
 export function ResumePage() {
@@ -19,64 +23,49 @@ export function ResumePage() {
   }, [refetch]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Page Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-            <User className="h-5 w-5 text-purple-600" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              {t("resume.title", "Resume Management")}
-            </h1>
-            <p className="text-gray-600">
-              {t(
-                "resume.subtitle",
-                "Upload, manage, and organize your resumes"
-              )}
-            </p>
-          </div>
-        </div>
+        <PageHeader
+          icon={FileText}
+          title={t("resume.title", "Resume Management")}
+          subtitle={t(
+            "resume.subtitle",
+            "Upload, manage, and organize your resumes"
+          )}
+          theme="blue"
+        />
 
-        <Button onClick={() => setActiveTab("upload")}>
+        <Button
+          onClick={() => setActiveTab("upload")}
+          className="bg-blue-600 hover:bg-blue-700"
+        >
           <Plus className="h-4 w-4 mr-2" />
           {t("resume.uploadNew", "Upload New Resume")}
         </Button>
       </div>
 
-      {/* Main Content */}
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="my-resumes">
-            {t("resume.myResumes", "My Resumes")} ({resumes.length})
-          </TabsTrigger>
-          <TabsTrigger value="upload">
-            {t("resume.uploadResume", "Upload Resume")}
-          </TabsTrigger>
-        </TabsList>
+      {/* Resume Tabs */}
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-6"
+      >
+        <div className="w-full">
+          <TabsList className="grid w-full grid-cols-2 h-auto min-h-[48px] rounded-xl bg-white border border-gray-200 p-0.5 shadow-sm gap-0.5">
+            <ResumeTabTrigger value="my-resumes">
+              {t("resume.myResumes", "My Resumes")} ({resumes.length})
+            </ResumeTabTrigger>
+
+            <ResumeTabTrigger value="upload">
+              {t("resume.uploadResume", "Upload Resume")}
+            </ResumeTabTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="my-resumes" className="space-y-4">
           {isLoading ? (
-            <div className="space-y-4">
-              {/* Loading Skeleton */}
-              {Array.from({ length: 3 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="animate-pulse bg-white rounded-lg border p-4"
-                >
-                  <div className="flex items-start space-x-3">
-                    <div className="w-12 h-12 bg-gray-200 rounded-lg"></div>
-                    <div className="flex-1 space-y-2">
-                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                      <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                      <div className="h-3 bg-gray-200 rounded w-1/4"></div>
-                    </div>
-                    <div className="w-20 h-8 bg-gray-200 rounded"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <LoadingSkeleton count={3} />
           ) : resumes.length > 0 ? (
             <div className="space-y-4">
               {resumes.map((resume) => (
@@ -84,27 +73,17 @@ export function ResumePage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                <FileText className="h-12 w-12 text-gray-400" />
-              </div>
-
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                {t("resume.noResumes", "No resumes uploaded yet")}
-              </h3>
-
-              <p className="text-gray-600 mb-6">
-                {t(
-                  "resume.noResumesSubtitle",
-                  "Upload your first resume to get started with job applications"
-                )}
-              </p>
-
-              <Button onClick={() => setActiveTab("upload")}>
-                <Plus className="h-4 w-4 mr-2" />
-                {t("resume.uploadFirst", "Upload Your First Resume")}
-              </Button>
-            </div>
+            <EmptyState
+              icon={FileText}
+              title={t("resume.noResumes", "No resumes uploaded yet")}
+              subtitle={t(
+                "resume.noResumesSubtitle",
+                "Upload your first resume to get started with job applications"
+              )}
+              actionLabel={t("resume.uploadFirst", "Upload Your First Resume")}
+              onAction={() => setActiveTab("upload")}
+              theme="blue"
+            />
           )}
         </TabsContent>
 

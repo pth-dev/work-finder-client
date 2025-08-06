@@ -46,7 +46,8 @@ export const useUpdateProfile = () => {
 // Hook to change password
 export const useChangePassword = () => {
   return useMutation({
-    mutationFn: (data: ChangePasswordData) => changePassword(data),
+    mutationFn: (data: Omit<ChangePasswordData, "confirm_password">) =>
+      changePassword(data),
     onSuccess: () => {
       toast.success("Password changed successfully!");
     },

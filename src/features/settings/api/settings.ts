@@ -21,9 +21,9 @@ export const updateUserProfile = (
 
 // Change password
 export const changePassword = (
-  data: ChangePasswordData
+  data: Omit<ChangePasswordData, "confirm_password">
 ): Promise<{ data: { message: string } }> => {
-  return api.put("/users/change-password", data);
+  return api.post("/auth/change-password", data);
 };
 
 // Upload avatar
