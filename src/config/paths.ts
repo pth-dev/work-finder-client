@@ -78,6 +78,58 @@ export const paths = {
     },
   },
 
+  // Recruiter routes - chỉ dashboard
+  recruiter: {
+    root: {
+      path: "/recruiter",
+      getHref: () => "/recruiter",
+    },
+    dashboard: {
+      path: "",
+      getHref: () => "/recruiter",
+    },
+    jobs: {
+      path: "jobs",
+      getHref: () => "/recruiter/jobs",
+    },
+    candidates: {
+      path: "candidates",
+      getHref: () => "/recruiter/candidates",
+    },
+    interviews: {
+      path: "interviews",
+      getHref: () => "/recruiter/interviews",
+    },
+    analytics: {
+      path: "analytics",
+      getHref: () => "/recruiter/analytics",
+    },
+  },
+
+  // Admin routes - chỉ dashboard
+  admin: {
+    root: {
+      path: "/admin",
+      getHref: () => "/admin",
+    },
+    dashboard: {
+      path: "",
+      getHref: () => "/admin",
+    },
+    users: {
+      path: "users",
+      getHref: () => "/admin/users",
+    },
+    companies: {
+      path: "companies",
+      getHref: () => "/admin/companies",
+    },
+    analytics: {
+      path: "analytics",
+      getHref: () => "/admin/analytics",
+    },
+  },
+
   jobs: {
     root: {
       path: "/jobs",

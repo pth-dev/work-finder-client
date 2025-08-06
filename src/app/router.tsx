@@ -10,6 +10,14 @@ import {
   default as AppRoot,
   ErrorBoundary as AppRootErrorBoundary,
 } from "./routes/app/root";
+import {
+  default as RecruiterRoot,
+  ErrorBoundary as RecruiterRootErrorBoundary,
+} from "./routes/recruiter/root";
+import {
+  default as AdminRoot,
+  ErrorBoundary as AdminRootErrorBoundary,
+} from "./routes/admin/root";
 
 const convert = (queryClient: QueryClient) => (m: any) => {
   const { clientLoader, clientAction, default: Component, ...rest } = m;
@@ -98,11 +106,11 @@ export const createAppRouter = (queryClient: QueryClient) =>
       ],
     },
 
-    // Dashboard routes với DashboardLayout riêng (KHÔNG có AppLayout)
+    // Dashboard routes
     {
       path: paths.app.root.path,
       element: (
-        <ProtectedRoute>
+        <ProtectedRoute permission={["job_seeker"]}>
           <AppRoot />
         </ProtectedRoute>
       ),
@@ -140,6 +148,76 @@ export const createAppRouter = (queryClient: QueryClient) =>
           path: paths.app.companies.path,
           lazy: () =>
             import("./routes/app/companies").then(convert(queryClient)),
+        },
+      ],
+    },
+
+    // Recruiter Dashboard routes
+    {
+      path: paths.recruiter.root.path,
+      element: (
+        <ProtectedRoute permission={["recruiter"]}>
+          <RecruiterRoot />
+        </ProtectedRoute>
+      ),
+      ErrorBoundary: RecruiterRootErrorBoundary,
+      children: [
+        {
+          path: paths.recruiter.dashboard.path,
+          lazy: () =>
+            import("./routes/recruiter/dashboard").then(convert(queryClient)),
+        },
+        {
+          path: paths.recruiter.jobs.path,
+          lazy: () =>
+            import("./routes/recruiter/jobs").then(convert(queryClient)),
+        },
+        {
+          path: paths.recruiter.candidates.path,
+          lazy: () =>
+            import("./routes/recruiter/candidates").then(convert(queryClient)),
+        },
+        {
+          path: paths.recruiter.interviews.path,
+          lazy: () =>
+            import("./routes/recruiter/interviews").then(convert(queryClient)),
+        },
+        {
+          path: paths.recruiter.analytics.path,
+          lazy: () =>
+            import("./routes/recruiter/analytics").then(convert(queryClient)),
+        },
+      ],
+    },
+
+    // Admin Dashboard routes
+    {
+      path: paths.admin.root.path,
+      element: (
+        <ProtectedRoute permission={["admin"]}>
+          <AdminRoot />
+        </ProtectedRoute>
+      ),
+      ErrorBoundary: AdminRootErrorBoundary,
+      children: [
+        {
+          path: paths.admin.dashboard.path,
+          lazy: () =>
+            import("./routes/admin/dashboard").then(convert(queryClient)),
+        },
+        {
+          path: paths.admin.users.path,
+          lazy: () => import("./routes/admin/users").then(convert(queryClient)),
+        },
+        {
+          path: paths.admin.companies.path,
+          lazy: () =>
+            import("./routes/admin/companies").then(convert(queryClient)),
+        },
+        {
+          path: paths.admin.analytics.path,
+          lazy: () =>
+            import("./routes/admin/analytics").then(convert(queryClient)),
         },
       ],
     },
