@@ -22,8 +22,8 @@ export default function RecruiterDashboard() {
           <p className="text-2xl font-bold">8</p>
         </div>
         <div className="rounded-lg border p-4">
-          <h3 className="font-semibold">Hired</h3>
-          <p className="text-2xl font-bold">3</p>
+          <h3 className="font-semibold">Team Members</h3>
+          <p className="text-2xl font-bold">15</p>
         </div>
       </div>
     </div>

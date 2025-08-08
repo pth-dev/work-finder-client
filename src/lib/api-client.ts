@@ -35,23 +35,19 @@ api.interceptors.response.use(
 
       // If user is not authenticated, don't try to refresh
       if (!authState.isAuthenticated) {
-        console.log("User not authenticated, skipping token refresh");
         return Promise.reject(error);
       }
 
       // Skip refresh for auth endpoints to prevent loops
       if (originalRequest.url?.includes("/auth/")) {
-        console.log("Auth endpoint failed, clearing auth state");
         authState.clearAuth();
         window.location.href = paths.auth.login.getHref();
         return Promise.reject(error);
       }
 
       try {
-        // ✅ Try to refresh token first
         await api.post("/auth/refresh");
 
-        // ✅ Fetch updated user info after successful token refresh
         try {
           const userResponse = await api.get("/users/me");
           authState.setUser(userResponse.data);
@@ -60,13 +56,10 @@ api.interceptors.response.use(
             "Failed to fetch user info after token refresh:",
             userError
           );
-          // Continue anyway - token refresh was successful
         }
 
-        // If refresh successful, retry the original request
         return api(originalRequest);
       } catch (refreshError) {
-        // ✅ Refresh failed, clear auth and redirect to login
         console.error("Token refresh failed:", refreshError);
         authState.clearAuth();
         window.location.href = paths.auth.login.getHref();

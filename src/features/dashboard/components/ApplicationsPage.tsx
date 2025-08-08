@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Clock,
-  Calendar,
   Eye,
   Trash2,
   ExternalLink,
@@ -11,7 +10,6 @@ import {
   Users,
   CheckCircle,
 } from "lucide-react";
-import { generateJobSlug } from "@/utils/slug-utils";
 
 import {
   Button,
@@ -30,31 +28,49 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components";
-import { mockApplications } from "@/lib/mock-data";
-import { type Application, type ApplicationStatus } from "@/types";
+import { useUserApplications } from "../hooks";
+import { type UserApplication } from "../types";
 import { formatDistanceToNow } from "date-fns";
 
 export function ApplicationsPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [applications, setApplications] = useState<Application[]>([]);
   const [activeTab, setActiveTab] = useState("all");
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setApplications(mockApplications);
-      setIsLoading(false);
-    }, 500);
-  }, []);
+  // Fetch applications from API
+  const { data: applicationsData, isLoading, error } = useUserApplications(100); // Get more applications for full page
 
-  const getStatusColor = (status: ApplicationStatus) => {
+  const applications = applicationsData?.data?.applications || [];
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="container mx-auto px-4 py-8">
+          <Card className="shadow-sm border-0">
+            <CardContent className="text-center py-12">
+              <FileText className="h-16 w-16 text-red-400 mx-auto mb-4" />
+              <h3 className="text-xl font-medium text-gray-900 mb-2">
+                Failed to load applications
+              </h3>
+              <p className="text-gray-600 mb-6">
+                There was an error loading your applications. Please try again.
+              </p>
+              <Button onClick={() => window.location.reload()}>
+                Try Again
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  const getStatusColor = (status: string) => {
     switch (status) {
       case "submitted":
       case "under_review":
         return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "interview_scheduled":
       case "interview_completed":
         return "bg-blue-100 text-blue-800 border-blue-200";
       case "offer_pending":
@@ -68,7 +84,7 @@ export function ApplicationsPage() {
     }
   };
 
-  const getStatusLabel = (status: ApplicationStatus) => {
+  const getStatusLabel = (status: string) => {
     switch (status) {
       case "submitted":
         return "Submitted";
@@ -76,8 +92,7 @@ export function ApplicationsPage() {
         return "Under Review";
       case "screening":
         return "Screening";
-      case "interview_scheduled":
-        return "Interview Scheduled";
+
       case "interview_completed":
         return "Interview Completed";
       case "reference_check":
@@ -102,9 +117,7 @@ export function ApplicationsPage() {
       case "in-review":
         return ["submitted", "under_review", "screening"].includes(app.status);
       case "interviews":
-        return ["interview_scheduled", "interview_completed"].includes(
-          app.status
-        );
+        return ["interview_completed"].includes(app.status);
       case "offers":
         return ["offer_pending", "offer_accepted", "offer_declined"].includes(
           app.status
@@ -120,7 +133,7 @@ export function ApplicationsPage() {
       ["submitted", "under_review", "screening"].includes(app.status)
     ).length,
     interviews: applications.filter((app) =>
-      ["interview_scheduled", "interview_completed"].includes(app.status)
+      ["interview_completed"].includes(app.status)
     ).length,
     offers: applications.filter((app) =>
       ["offer_pending", "offer_accepted"].includes(app.status)
@@ -132,9 +145,8 @@ export function ApplicationsPage() {
     console.log("View application:", appId);
   };
 
-  const handleViewJob = (job: Job) => {
-    const slug = generateJobSlug(job);
-    navigate(`/jobs/${slug}`);
+  const handleViewJob = (jobId: number) => {
+    navigate(`/jobs/${jobId}`);
   };
 
   const handleWithdrawApplication = (appId: string) => {
@@ -142,116 +154,76 @@ export function ApplicationsPage() {
     console.log("Withdraw application:", appId);
   };
 
-  const ApplicationCard = ({ application }: { application: Application }) => (
+  const ApplicationCard = ({
+    application,
+  }: {
+    application: UserApplication;
+  }) => (
     <Card className="shadow-sm border-0 hover:shadow-md transition-shadow">
       <CardContent className="p-6">
         <div className="flex justify-between items-start mb-4">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
-              {application.job.companyLogo && (
+              {application.job_post?.company?.company_image && (
                 <img
-                  src={application.job.companyLogo}
-                  alt={application.job.companyName}
+                  src={application.job_post.company.company_image}
+                  alt={application.job_post.company.company_name}
                   className="w-10 h-10 rounded-lg object-cover border"
                 />
               )}
               <div>
                 <h3 className="text-xl font-semibold text-gray-900">
-                  {application.job.title}
+                  {application.job_post?.job_title ||
+                    application.job_post?.title}
                 </h3>
                 <p className="text-blue-600 font-medium">
-                  {application.job.companyName}
+                  {application.job_post?.company?.company_name}
                 </p>
               </div>
             </div>
-            <p className="text-gray-600 mb-2">{application.job.location}</p>
+            <p className="text-gray-600 mb-2">
+              {application.job_post?.location}
+            </p>
             <div className="flex items-center gap-4 text-sm text-gray-500">
               <div className="flex items-center">
                 <Clock className="h-4 w-4 mr-1" />
                 <span>
                   Applied{" "}
-                  {formatDistanceToNow(new Date(application.appliedAt), {
+                  {formatDistanceToNow(new Date(application.applied_at), {
                     addSuffix: true,
                   })}
                 </span>
               </div>
-              {application.job.salary && (
-                <div className="text-green-600 font-medium">
-                  ${(application.job.salary.min / 1000).toFixed(0)}k - $
-                  {(application.job.salary.max / 1000).toFixed(0)}k
-                </div>
-              )}
+              {application.job_post?.salary_min &&
+                application.job_post?.salary_max && (
+                  <div className="text-green-600 font-medium">
+                    {(application.job_post.salary_min / 1000000).toFixed(0)}M -{" "}
+                    {(application.job_post.salary_max / 1000000).toFixed(0)}M
+                    VND
+                  </div>
+                )}
             </div>
           </div>
           <div className="text-right">
             <Badge className={`${getStatusColor(application.status)} mb-2`}>
               {getStatusLabel(application.status)}
             </Badge>
-            {application.priority === "high" && (
-              <Badge variant="outline" className="block text-xs">
-                High Priority
-              </Badge>
-            )}
           </div>
         </div>
 
-        {/* Progress Timeline */}
+        {/* Application Info */}
         <div className="mb-4">
           <div className="flex items-center text-sm text-gray-600 mb-2">
             <FileText className="h-4 w-4 mr-1" />
-            <span>Application Progress</span>
+            <span>Application ID: {application.application_id}</span>
           </div>
-          <div className="flex items-center space-x-2">
-            {application.timeline.slice(-3).map((step, index) => (
-              <div key={step.id} className="flex items-center">
-                <div
-                  className={`w-3 h-3 rounded-full ${
-                    index === application.timeline.length - 1
-                      ? "bg-blue-500"
-                      : "bg-gray-300"
-                  }`}
-                ></div>
-                {index < 2 && <div className="w-8 h-px bg-gray-300 mx-1"></div>}
-              </div>
-            ))}
+          <div className="text-sm text-gray-500">
+            Last updated:{" "}
+            {formatDistanceToNow(new Date(application.updated_at), {
+              addSuffix: true,
+            })}
           </div>
         </div>
-
-        {/* Interview Information */}
-        {application.interviews.length > 0 && (
-          <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-            <div className="flex items-center text-blue-800 text-sm mb-1">
-              <Calendar className="h-4 w-4 mr-1" />
-              <span className="font-medium">Upcoming Interview</span>
-            </div>
-            <p className="text-blue-700 text-sm">
-              {application.interviews[0].title} -{" "}
-              {new Date(
-                application.interviews[0].scheduledAt
-              ).toLocaleDateString()}{" "}
-              at{" "}
-              {new Date(
-                application.interviews[0].scheduledAt
-              ).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </p>
-          </div>
-        )}
-
-        {/* Tags */}
-        {application.tags.length > 0 && (
-          <div className="mb-4">
-            <div className="flex flex-wrap gap-2">
-              {application.tags.map((tag, index) => (
-                <Badge key={index} variant="outline" className="text-xs">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* Actions */}
         <div className="flex justify-between items-center">
@@ -259,7 +231,9 @@ export function ApplicationsPage() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => handleViewApplication(application.id)}
+              onClick={() =>
+                handleViewApplication(application.application_id.toString())
+              }
             >
               <Eye className="h-4 w-4 mr-1" />
               View Details
@@ -267,23 +241,13 @@ export function ApplicationsPage() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => handleViewJob(application.job)}
+              onClick={() => handleViewJob(application.job_id)}
             >
               <ExternalLink className="h-4 w-4 mr-1" />
               View Job
             </Button>
           </div>
           <div className="flex space-x-2">
-            {application.status === "interview_scheduled" && (
-              <Button size="sm" className="bg-green-600 hover:bg-green-700">
-                Join Interview
-              </Button>
-            )}
-            {application.status === "offer_pending" && (
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                View Offer
-              </Button>
-            )}
             <Dialog>
               <DialogTrigger asChild>
                 <Button
@@ -300,15 +264,21 @@ export function ApplicationsPage() {
                   <DialogTitle>Withdraw Application</DialogTitle>
                   <DialogDescription>
                     Are you sure you want to withdraw your application for{" "}
-                    {application.job.title} at {application.job.companyName}?
-                    This action cannot be undone.
+                    {application.job_post?.job_title ||
+                      application.job_post?.title}{" "}
+                    at {application.job_post?.company?.company_name}? This
+                    action cannot be undone.
                   </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
                   <Button variant="outline">Cancel</Button>
                   <Button
                     variant="destructive"
-                    onClick={() => handleWithdrawApplication(application.id)}
+                    onClick={() =>
+                      handleWithdrawApplication(
+                        application.application_id.toString()
+                      )
+                    }
                   >
                     Withdraw Application
                   </Button>
@@ -431,7 +401,7 @@ export function ApplicationsPage() {
               <div className="space-y-4">
                 {filteredApplications.map((application) => (
                   <ApplicationCard
-                    key={application.id}
+                    key={application.application_id}
                     application={application}
                   />
                 ))}
@@ -456,7 +426,7 @@ export function ApplicationsPage() {
             <div className="space-y-4">
               {filteredApplications.map((application) => (
                 <ApplicationCard
-                  key={application.id}
+                  key={application.application_id}
                   application={application}
                 />
               ))}
@@ -467,7 +437,7 @@ export function ApplicationsPage() {
             <div className="space-y-4">
               {filteredApplications.map((application) => (
                 <ApplicationCard
-                  key={application.id}
+                  key={application.application_id}
                   application={application}
                 />
               ))}
@@ -478,7 +448,7 @@ export function ApplicationsPage() {
             <div className="space-y-4">
               {filteredApplications.map((application) => (
                 <ApplicationCard
-                  key={application.id}
+                  key={application.application_id}
                   application={application}
                 />
               ))}

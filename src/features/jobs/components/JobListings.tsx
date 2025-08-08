@@ -18,6 +18,7 @@ import { type Job } from "@/types";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { formatTimeAgo, formatSalary } from "@/utils/common";
+import { formatJobType } from "@/i18n/business-helpers";
 import { generateJobSlug } from "@/utils/slug-utils";
 
 interface JobListingsProps {
@@ -55,23 +56,17 @@ const JobListingCard: React.FC<{
 
     if (job.type) {
       tags.push({
-        text: job.type,
+        text: formatJobType(t, job.type),
         variant: "outline" as const,
         color: "blue" as const,
       });
     }
 
-    if (job.experienceLevel) {
-      tags.push({
-        text: job.experienceLevel,
-        variant: "outline" as const,
-        color: "yellow" as const,
-      });
-    }
+    // Remove experienceLevel tag since it's mock data
 
     if (job.featured) {
       tags.push({
-        text: "Featured",
+        text: t("jobs.featured"),
         variant: "outline" as const,
         color: "red" as const,
       });

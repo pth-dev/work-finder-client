@@ -704,7 +704,7 @@ export const mockApplications: Application[] = [
         currency: "USD",
       },
     },
-    status: "interview_scheduled" as ApplicationStatus,
+    status: "interview_completed" as ApplicationStatus,
     appliedAt: "2024-01-22T00:00:00Z",
     updatedAt: "2024-01-25T00:00:00Z",
     coverLetter:
@@ -764,7 +764,7 @@ export const mockApplications: Application[] = [
       },
       {
         id: "tl-3",
-        status: "interview_scheduled",
+        status: "interview_completed",
         timestamp: "2024-01-25T14:00:00Z",
         description: "Technical interview scheduled",
         performer: {

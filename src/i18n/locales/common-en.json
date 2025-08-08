@@ -19,7 +19,8 @@
     "retry": "Retry",
     "refresh": "Refresh",
     "continue": "Continue",
-    "skip": "Skip"
+    "skip": "Skip",
+    "goBack": "Go Back"
   },
   "statuses": {
     "loading": "Loading...",
@@ -255,7 +256,21 @@
     "errorLoadingCompany": "Error Loading Company",
     "couldNotLoadCompany": "We couldn't load the company details. Please try again later.",
     "tryAgain": "Try Again",
-    "searchPlaceholder": "Search companies, industries, or technologies"
+    "searchPlaceholder": "Search companies, industries, or technologies",
+    "companyNotFound": "Company Not Found",
+    "companyNotFoundMessage": "The company you're looking for doesn't exist or has been removed.",
+    "companyDetails": "Company Details",
+    "industry": "Industry",
+    "location": "Location",
+    "companySize": "Company Size",
+    "founded": "Founded",
+    "connect": "Connect",
+    "visitWebsite": "Visit Website",
+    "share": "Share",
+    "following": "Following",
+    "jobsCount": "{{count}} jobs",
+    "noOpenPositions": "No Open Positions",
+    "noOpenPositionsMessage": "This company doesn't have any open positions at the moment."
   },
   "jobs": {
     "backToJobs": "Back to Jobs",
@@ -353,10 +368,10 @@
       "pending": "Pending",
       "reviewing": "Under Review",
       "shortlisted": "Shortlisted",
-      "interview": "Interview",
+      "interviewed": "Interviewed",
       "offered": "Offered",
-      "accepted": "Accepted",
-      "rejected": "Rejected",
+      "accepted": "Suitable",
+      "rejected": "Not Suitable",
       "withdrawn": "Withdrawn",
       "unknown": "Unknown"
     },

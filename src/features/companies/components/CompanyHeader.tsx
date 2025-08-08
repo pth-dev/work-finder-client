@@ -107,7 +107,7 @@ export function CompanyHeader({
                 </h1>
                 {company.is_verified && (
                   <Badge className="bg-[#1967D2]/15 text-[#1967D2] border-[#1967D2]/20">
-                    Verified
+                    {t("common:companies.verified")}
                   </Badge>
                 )}
               </div>
@@ -122,7 +122,7 @@ export function CompanyHeader({
                     </div>
                     <div>
                       <p className="text-sm font-medium text-[#202124]">
-                        Industry
+                        {t("common:companies.industry")}
                       </p>
                       <p className="text-sm text-[#696969]">
                         {company.industry}
@@ -139,7 +139,7 @@ export function CompanyHeader({
                     </div>
                     <div>
                       <p className="text-sm font-medium text-[#202124]">
-                        Location
+                        {t("common:companies.location")}
                       </p>
                       <p className="text-sm text-[#696969]">
                         {company.location}
@@ -155,7 +155,7 @@ export function CompanyHeader({
                   </div>
                   <div>
                     <p className="text-sm font-medium text-[#202124]">
-                      Company Size
+                      {t("common:companies.companySize")}
                     </p>
                     <p className="text-sm text-[#696969]">
                       {formatEmployeeCount(company.employee_count || undefined)}
@@ -196,7 +196,7 @@ export function CompanyHeader({
                       className="text-[#1967D2] hover:underline"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      Visit Website
+                      {t("common:companies.visitWebsite")}
                     </a>
                   </div>
                 )}
@@ -214,7 +214,7 @@ export function CompanyHeader({
               aria-label="Share this company"
             >
               <Share2 className="h-4 w-4 mr-2" />
-              Share
+              {t("common:companies.share")}
             </Button>
 
             <Button
@@ -233,10 +233,10 @@ export function CompanyHeader({
                 className={`h-4 w-4 mr-2 ${isFollowed ? "fill-current" : ""}`}
               />
               {isFollowing
-                ? "Following..."
+                ? t("common:companies.following")
                 : isFollowed
-                ? "Following"
-                : "Follow"}
+                ? t("common:companies.following")
+                : t("common:companies.follow")}
             </Button>
 
             {/* View Jobs Button */}
@@ -248,7 +248,7 @@ export function CompanyHeader({
                 aria-label="View jobs at this company"
               >
                 <Briefcase className="h-4 w-4 mr-2" />
-                View Jobs
+                {t("common:companies.viewJobs")}
               </Button>
             )}
           </div>

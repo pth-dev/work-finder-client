@@ -1,21 +1,20 @@
-export type ApplicationStatus = 
-  | 'draft' 
-  | 'submitted' 
-  | 'under_review' 
-  | 'screening' 
-  | 'interview_scheduled' 
-  | 'interview_completed' 
-  | 'reference_check' 
-  | 'offer_pending' 
-  | 'offer_accepted' 
-  | 'offer_declined' 
-  | 'rejected' 
-  | 'withdrawn';
+export type ApplicationStatus =
+  | "draft"
+  | "submitted"
+  | "under_review"
+  | "screening"
+  | "interview_completed"
+  | "reference_check"
+  | "offer_pending"
+  | "offer_accepted"
+  | "offer_declined"
+  | "rejected"
+  | "withdrawn";
 
 export interface ApplicationDocument {
   id: string;
   name: string;
-  type: 'resume' | 'cover_letter' | 'portfolio' | 'certificate' | 'other';
+  type: "resume" | "cover_letter" | "portfolio" | "certificate" | "other";
   url: string;
   size: number;
   uploadedAt: string;
@@ -31,7 +30,7 @@ export interface ApplicationNote {
 
 export interface InterviewSchedule {
   id: string;
-  type: 'phone' | 'video' | 'in_person' | 'technical' | 'group';
+  type: "phone" | "video" | "in_person" | "technical" | "group";
   title: string;
   description?: string;
   scheduledAt: string;
@@ -44,7 +43,7 @@ export interface InterviewSchedule {
     title: string;
     email: string;
   }[];
-  status: 'scheduled' | 'completed' | 'cancelled' | 'rescheduled';
+  status: "scheduled" | "completed" | "cancelled" | "rescheduled";
   feedback?: string;
   rating?: number; // 1-5
 }
@@ -57,7 +56,7 @@ export interface ApplicationTimeline {
   performer?: {
     id: string;
     name: string;
-    role: 'applicant' | 'recruiter' | 'hiring_manager' | 'system';
+    role: "applicant" | "recruiter" | "hiring_manager" | "system";
   };
   metadata?: Record<string, any>;
 }
@@ -93,7 +92,7 @@ export interface Application {
   expectedSalary?: number;
   availabilityDate?: string;
   isUrgent: boolean;
-  priority: 'low' | 'medium' | 'high';
+  priority: "low" | "medium" | "high";
   tags: string[];
   customFields: Record<string, any>;
 }
@@ -104,13 +103,13 @@ export interface ApplicationFilter {
   companyName?: string;
   appliedDateFrom?: string;
   appliedDateTo?: string;
-  priority?: ('low' | 'medium' | 'high')[];
+  priority?: ("low" | "medium" | "high")[];
   tags?: string[];
   hasInterview?: boolean;
   page?: number;
   limit?: number;
-  sortBy?: 'appliedAt' | 'updatedAt' | 'companyName' | 'jobTitle' | 'status';
-  sortOrder?: 'asc' | 'desc';
+  sortBy?: "appliedAt" | "updatedAt" | "companyName" | "jobTitle" | "status";
+  sortOrder?: "asc" | "desc";
 }
 
 export interface ApplicationSearchResult {

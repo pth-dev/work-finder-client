@@ -11,17 +11,45 @@ export const createApplication = (
 };
 
 /**
- * Get user's applications
+ * Get user's applications with pagination
  */
-export const getMyApplications = (): Promise<Application[]> => {
-  return api.get("/applications/my-applications");
+export const getMyApplications = (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+}): Promise<{
+  data: {
+    applications: any[];
+    pagination: {
+      total: number;
+      page: number;
+      limit: number;
+      totalPages: number;
+    };
+  };
+}> => {
+  const searchParams = new URLSearchParams();
+  if (params?.page) searchParams.append("page", params.page.toString());
+  if (params?.limit) searchParams.append("limit", params.limit.toString());
+  if (params?.search) searchParams.append("search", params.search);
+  if (params?.status) searchParams.append("status", params.status);
+
+  const queryString = searchParams.toString();
+  const url = queryString
+    ? `/users/me/applications?${queryString}`
+    : "/users/me/applications";
+
+  return api.get(url);
 };
 
 /**
  * Get application by ID
  */
-export const getApplication = (id: number): Promise<Application> => {
-  return api.get(`/applications/${id}`);
+export const getApplication = async (id: number): Promise<Application> => {
+  const response = await api.get(`/applications/${id}`);
+  // Extract the actual application data from the API response
+  return response.data;
 };
 
 /**

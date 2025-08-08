@@ -1,49 +1,73 @@
 /**
- * Format salary amount to Vietnamese currency format
- * @param amount - Salary amount in VND
- * @returns Formatted salary string
+ * Format number as Vietnamese currency (VND)
  */
-export function formatSalary(amount: number): string {
-  if (amount >= 1000000000) {
-    // Billions - format as "X.X tỷ"
-    const billions = amount / 1000000000;
-    return `${billions.toFixed(1).replace('.0', '')} tỷ`;
-  } else if (amount >= 1000000) {
-    // Millions - format as "X triệu" or "XX triệu"
-    const millions = amount / 1000000;
-    return `${millions.toFixed(0)} triệu`;
-  } else if (amount >= 1000) {
-    // Thousands - format as "X.XXX"
-    return amount.toLocaleString('vi-VN');
-  } else {
-    return amount.toString();
-  }
-}
+export const formatVND = (amount: number): string => {
+  return new Intl.NumberFormat("vi-VN").format(amount);
+};
 
 /**
- * Format salary range for display
- * @param min - Minimum salary
- * @param max - Maximum salary
- * @param currency - Currency code (default: VND)
- * @param period - Salary period (default: monthly)
- * @returns Formatted salary range string
+ * Parse formatted VND string back to number
  */
-export function formatSalaryRange(
-  min: number,
-  max: number,
-  currency: string = 'VND',
-  period: string = 'monthly'
-): string {
-  const formattedMin = formatSalary(min);
-  const formattedMax = formatSalary(max);
-  
-  const periodText = period === 'monthly' ? '/tháng' : 
-                    period === 'yearly' ? '/năm' : 
-                    period === 'hourly' ? '/giờ' : '';
-  
-  if (min === max) {
-    return `${formattedMin} ${currency}${periodText}`;
+export const parseVND = (value: string): number => {
+  return parseInt(value.replace(/[^0-9]/g, ""), 10) || 0;
+};
+
+/**
+ * Convert amount to millions for display
+ */
+export const formatMillions = (amount: number): string => {
+  if (amount >= 1000000) {
+    const millions = amount / 1000000;
+    return millions % 1 === 0 ? `${millions}` : millions.toFixed(1);
   }
-  
-  return `${formattedMin} - ${formattedMax} ${currency}${periodText}`;
-}
+  return (amount / 1000000).toFixed(1);
+};
+
+/**
+ * Generate salary description based on min/max values
+ */
+export const generateSalaryDescription = (
+  salaryMin?: number,
+  salaryMax?: number,
+  salaryText?: string
+): string => {
+  // If custom salary text is provided, use it
+  if (salaryText && salaryText.trim()) {
+    return salaryText;
+  }
+
+  // If both min and max are provided
+  if (salaryMin && salaryMax && salaryMin > 0 && salaryMax > 0) {
+    const minMillions = formatMillions(salaryMin);
+    const maxMillions = formatMillions(salaryMax);
+    return `${minMillions}-${maxMillions} triệu VND`;
+  }
+
+  // If only min is provided
+  if (salaryMin && salaryMin > 0) {
+    const minMillions = formatMillions(salaryMin);
+    return `Từ ${minMillions} triệu VND`;
+  }
+
+  // If only max is provided
+  if (salaryMax && salaryMax > 0) {
+    const maxMillions = formatMillions(salaryMax);
+    return `Lên đến ${maxMillions} triệu VND`;
+  }
+
+  // Default case
+  return "Thỏa thuận";
+};
+
+/**
+ * Validate salary range
+ */
+export const validateSalaryRange = (
+  min?: number,
+  max?: number
+): string | null => {
+  if (min && max && min > max) {
+    return "Lương tối thiểu không thể lớn hơn lương tối đa";
+  }
+  return null;
+};

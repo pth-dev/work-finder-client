@@ -24,7 +24,7 @@ export const getUserApplications = (
     };
   };
 }> => {
-  return api.get("/applications", { params: { limit, page: 1 } });
+  return api.get("/users/me/applications", { params: { limit, page: 1 } });
 };
 
 export const getSavedJobsCount = (): Promise<{ data: SavedJobsResponse }> => {

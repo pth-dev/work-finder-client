@@ -5,11 +5,10 @@ import {
   User,
   Settings,
   Briefcase,
-  Users,
   Calendar,
-  BarChart,
-  Building2,
   UserCheck,
+  Shield,
+  Users,
 } from "lucide-react";
 import { paths } from "@/config/paths";
 
@@ -105,9 +104,9 @@ export const NAVIGATION_CONFIG: NavigationItem[] = [
     order: 2,
   },
   {
-    id: "candidates",
-    name: "sidebar.candidates",
-    href: paths.recruiter.candidates.getHref(),
+    id: "recruiter-applications",
+    name: "sidebar.applicationsManagement",
+    href: paths.recruiter.applications.getHref(),
     icon: Users,
     roles: ["recruiter"],
     group: "main",
@@ -122,11 +121,12 @@ export const NAVIGATION_CONFIG: NavigationItem[] = [
     group: "main",
     order: 4,
   },
+
   {
-    id: "recruiter-analytics",
-    name: "sidebar.analytics",
-    href: paths.recruiter.analytics.getHref(),
-    icon: BarChart,
+    id: "staff-management",
+    name: "sidebar.staffManagement",
+    href: paths.recruiter.staff.getHref(),
+    icon: Shield,
     roles: ["recruiter"],
     group: "main",
     order: 5,
@@ -143,22 +143,13 @@ export const NAVIGATION_CONFIG: NavigationItem[] = [
     order: 2,
   },
   {
-    id: "company-management",
-    name: "sidebar.companyManagement",
-    href: paths.admin.companies.getHref(),
-    icon: Building2,
+    id: "content-moderation",
+    name: "sidebar.contentModeration",
+    href: paths.admin.jobs.getHref(),
+    icon: Shield,
     roles: ["admin"],
     group: "main",
     order: 3,
-  },
-  {
-    id: "admin-analytics",
-    name: "sidebar.systemAnalytics",
-    href: paths.admin.analytics.getHref(),
-    icon: BarChart,
-    roles: ["admin"],
-    group: "main",
-    order: 4,
   },
 ];
 

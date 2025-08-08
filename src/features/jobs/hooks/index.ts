@@ -21,14 +21,20 @@ export const useJobs = (
     gcTime?: number;
   } = {}
 ) => {
-  console.log("🚀 useJobs called with filters:", filters);
+  // Create stable query key by sorting object keys
+  const stableFilters = Object.keys(filters)
+    .sort()
+    .reduce((result, key) => {
+      const value = filters[key as keyof ApiJobSearchFilters];
+      if (value !== undefined && value !== null && value !== "") {
+        result[key] = value;
+      }
+      return result;
+    }, {} as Record<string, any>);
 
   return useQuery({
-    queryKey: ["jobs", JSON.stringify(filters)],
-    queryFn: () => {
-      console.log("📡 API call getJobs with filters:", filters);
-      return getJobs(filters);
-    },
+    queryKey: ["jobs", stableFilters],
+    queryFn: () => getJobs(filters),
     staleTime: options.staleTime ?? 5 * 60 * 1000, // 5 minutes
     gcTime: options.gcTime ?? 10 * 60 * 1000, // 10 minutes
     enabled: options.enabled ?? true,

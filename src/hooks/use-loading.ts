@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
-import { useLoadingStore } from '@/stores/loading-store';
+import { useEffect } from "react";
+import { UseMutationResult, UseQueryResult } from "@tanstack/react-query";
+import { useLoadingStore } from "@/stores/loading-store";
 
 // Hook to integrate TanStack Query mutations with global loading
 export const useMutationLoading = <TData, TError, TVariables>(
@@ -9,6 +9,7 @@ export const useMutationLoading = <TData, TError, TVariables>(
   options?: {
     globalLoading?: boolean;
     loadingMessage?: string;
+    timeout?: number; // ✅ FIX: Add timeout option
   }
 ) => {
   const { setLoading, setOperationLoading } = useLoadingStore();
@@ -19,7 +20,29 @@ export const useMutationLoading = <TData, TError, TVariables>(
     } else {
       setOperationLoading(operationName, mutation.isPending);
     }
-  }, [mutation.isPending, operationName, options?.globalLoading, options?.loadingMessage, setLoading, setOperationLoading]);
+
+    // ✅ FIX: Add fallback timeout to clear loading state
+    if (mutation.isPending && options?.timeout) {
+      const timeoutId = setTimeout(() => {
+        console.warn(`Loading timeout for operation: ${operationName}`);
+        if (options?.globalLoading) {
+          setLoading(false);
+        } else {
+          setOperationLoading(operationName, false);
+        }
+      }, options.timeout);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [
+    mutation.isPending,
+    operationName,
+    options?.globalLoading,
+    options?.loadingMessage,
+    options?.timeout,
+    setLoading,
+    setOperationLoading,
+  ]);
 
   return mutation;
 };
@@ -31,32 +54,74 @@ export const useQueryLoading = <TData, TError>(
   options?: {
     globalLoading?: boolean;
     loadingMessage?: string;
+    timeout?: number;
   }
 ) => {
   const { setLoading, setOperationLoading } = useLoadingStore();
 
   useEffect(() => {
     const isLoading = query.isLoading || query.isFetching;
-    
+
     if (options?.globalLoading) {
       setLoading(isLoading, options.loadingMessage);
     } else {
       setOperationLoading(operationName, isLoading);
     }
-  }, [query.isLoading, query.isFetching, operationName, options?.globalLoading, options?.loadingMessage, setLoading, setOperationLoading]);
+
+    // ✅ FIX: Add fallback timeout to clear loading state for queries too
+    if (isLoading && options?.timeout) {
+      const timeoutId = setTimeout(() => {
+        console.warn(`Query loading timeout for operation: ${operationName}`);
+        if (options?.globalLoading) {
+          setLoading(false);
+        } else {
+          setOperationLoading(operationName, false);
+        }
+      }, options.timeout);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [
+    query.isLoading,
+    query.isFetching,
+    operationName,
+    options?.globalLoading,
+    options?.loadingMessage,
+    options?.timeout,
+    setLoading,
+    setOperationLoading,
+  ]);
+
+  // ✅ FIX: Cleanup on unmount to prevent stuck loading states
+  useEffect(() => {
+    return () => {
+      if (options?.globalLoading) {
+        setLoading(false);
+      } else {
+        setOperationLoading(operationName, false);
+      }
+    };
+  }, [operationName, options?.globalLoading, setLoading, setOperationLoading]);
 
   return query;
 };
 
 // Simple hook for manual loading control
 export const useManualLoading = () => {
-  const { setLoading, setOperationLoading, isOperationLoading, clearAllLoading } = useLoadingStore();
+  const {
+    setLoading,
+    setOperationLoading,
+    isOperationLoading,
+    clearAllLoading,
+  } = useLoadingStore();
 
   const startLoading = (message?: string) => setLoading(true, message);
   const stopLoading = () => setLoading(false);
-  
-  const startOperationLoading = (operation: string) => setOperationLoading(operation, true);
-  const stopOperationLoading = (operation: string) => setOperationLoading(operation, false);
+
+  const startOperationLoading = (operation: string) =>
+    setOperationLoading(operation, true);
+  const stopOperationLoading = (operation: string) =>
+    setOperationLoading(operation, false);
 
   return {
     startLoading,

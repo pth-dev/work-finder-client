@@ -9,6 +9,7 @@ import {
   JoinCompanyRequest,
   FollowCompanyResponse,
   CompanyJobsFilters,
+  ApiUserCompanyResponse,
 } from "../types";
 
 // ===== API FUNCTIONS =====
@@ -67,7 +68,7 @@ export const requestJoinCompany = (data: JoinCompanyRequest) => {
 /**
  * Get user's company membership
  */
-export const getUserCompany = () => {
+export const getUserCompany = (): Promise<ApiUserCompanyResponse> => {
   return api.get("/companies/my-company");
 };
 

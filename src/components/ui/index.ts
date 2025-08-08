@@ -29,6 +29,8 @@ export * from "./collapsible";
 export * from "./switch";
 export * from "./progress";
 export * from "./alert-dialog";
+export * from "./popover";
+export * from "./alert";
 
 // Section components
 export * from "./section-header";

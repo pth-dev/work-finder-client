@@ -5,7 +5,12 @@ export type JobType =
   | "contract"
   | "internship"
   | "freelance";
-export type JobStatus = "active" | "inactive" | "expired" | "draft";
+export type JobStatus =
+  | "active"
+  | "inactive"
+  | "expired"
+  | "pending"
+  | "rejected";
 
 // ✅ BACKEND-FIRST: Company info from populated relation
 export interface JobCompany {

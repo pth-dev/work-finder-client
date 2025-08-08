@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { SearchInput } from "./search-input";
@@ -34,6 +35,8 @@ export const StickySearchBar: React.FC<StickySearchBarProps> = ({
   onToggleFilters,
   showFiltersButton = true,
 }) => {
+  const { t } = useTranslation();
+
   const form = useForm<z.infer<typeof stickySearchSchema>>({
     resolver: zodResolver(stickySearchSchema),
     defaultValues: {
@@ -61,7 +64,7 @@ export const StickySearchBar: React.FC<StickySearchBarProps> = ({
               <SearchInput
                 control={form.control}
                 name="search"
-                placeholder="Job title, keywords..."
+                placeholder={t("search.jobPlaceholder")}
                 size="sm"
               />
               <div className="flex gap-2">
@@ -69,7 +72,7 @@ export const StickySearchBar: React.FC<StickySearchBarProps> = ({
                   <LocationInput
                     control={form.control}
                     name="location"
-                    placeholder="Location"
+                    placeholder={t("search.locationPlaceholder")}
                     size="sm"
                   />
                 </div>
@@ -82,7 +85,7 @@ export const StickySearchBar: React.FC<StickySearchBarProps> = ({
                     className="h-9 px-3 border-gray-300"
                   >
                     <Filter className="h-4 w-4 mr-2" />
-                    Filters
+                    {t("search.filtersButton")}
                   </Button>
                 )}
               </div>
@@ -90,7 +93,7 @@ export const StickySearchBar: React.FC<StickySearchBarProps> = ({
                 type="submit"
                 className="w-full h-9 bg-[#1967d2] hover:bg-[#1557b8] text-white text-sm"
               >
-                Search Jobs
+                {t("search.searchJobs")}
               </Button>
             </div>
 
@@ -102,7 +105,7 @@ export const StickySearchBar: React.FC<StickySearchBarProps> = ({
                     <SearchInput
                       control={form.control}
                       name="search"
-                      placeholder="Job title, keywords..."
+                      placeholder={t("search.jobPlaceholder")}
                       size="md"
                     />
                   </div>
@@ -110,7 +113,7 @@ export const StickySearchBar: React.FC<StickySearchBarProps> = ({
                     <LocationInput
                       control={form.control}
                       name="location"
-                      placeholder="Location"
+                      placeholder={t("search.locationPlaceholder")}
                       size="md"
                     />
                   </div>
@@ -123,14 +126,14 @@ export const StickySearchBar: React.FC<StickySearchBarProps> = ({
                       className="h-12 px-4 border-gray-300"
                     >
                       <Filter className="h-4 w-4 mr-2" />
-                      Advanced Filters
+                      {t("search.advancedFilters")}
                     </Button>
                   )}
                   <Button
                     type="submit"
                     className="h-12 px-8 bg-[#1967d2] hover:bg-[#1557b8] text-white font-medium"
                   >
-                    Search
+                    {t("search.search")}
                   </Button>
                 </div>
               </div>

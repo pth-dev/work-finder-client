@@ -49,6 +49,34 @@ export interface ApiCompanyResponse {
   message: string;
 }
 
+// ===== USER COMPANY TYPES =====
+
+export interface UserCompanyInfo {
+  id: number;
+  user_id: number;
+  company_id: number;
+  role: string;
+  status: string;
+  requested_at: string;
+  approved_at?: string;
+  approved_by?: number;
+  company: {
+    company_id: number;
+    company_name: string;
+    industry?: string;
+    company_image?: string;
+    is_verified: boolean;
+  };
+}
+
+export interface ApiUserCompanyResponse {
+  success: boolean;
+  data: {
+    company: UserCompanyInfo | null;
+    message?: string;
+  };
+}
+
 // ===== REQUEST TYPES =====
 
 export interface CreateCompanyRequest {

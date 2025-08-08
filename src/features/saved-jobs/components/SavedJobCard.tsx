@@ -65,30 +65,33 @@ export function SavedJobCard({ job, onRemove }: SavedJobCardProps) {
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h3 className="text-base font-semibold text-gray-900 truncate mb-1">
+                  <h3 className="text-base font-semibold text-gray-900 truncate mb-1 overflow-hidden whitespace-nowrap">
                     {job.job_title || t("jobs.unknownJob", "Unknown Job")}
                   </h3>
 
                   <div className="flex items-center space-x-4 text-sm text-gray-600 mb-2">
-                    <div className="flex items-center space-x-1">
-                      <Building2 className="h-4 w-4" />
-                      <span>
+                    <div className="flex items-center space-x-1 min-w-0 flex-1">
+                      <Building2 className="h-4 w-4 flex-shrink-0" />
+                      <span className="truncate">
                         {company?.company_name || t("jobs.unknownCompany")}
                       </span>
                     </div>
 
                     {job.location && (
-                      <div className="flex items-center space-x-1">
-                        <MapPin className="h-4 w-4" />
-                        <span>{job.location}</span>
+                      <div className="flex items-center space-x-1 min-w-0 flex-shrink-0">
+                        <MapPin className="h-4 w-4 flex-shrink-0" />
+                        <span className="truncate max-w-[120px]">
+                          {job.location}
+                        </span>
                       </div>
                     )}
                   </div>
 
                   {/* Salary */}
-                  {(job.salary_min || job.salary_max) && (
+                  {(job.salary || job.salary_min || job.salary_max) && (
                     <div className="text-sm text-green-600 font-medium mb-2">
                       {formatSalary({
+                        salary: job.salary,
                         salary_min: job.salary_min,
                         salary_max: job.salary_max,
                       })}
@@ -114,11 +117,11 @@ export function SavedJobCard({ job, onRemove }: SavedJobCardProps) {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col space-y-2 ml-4">
-            <Button asChild size="sm" className="w-full">
+          <div className="flex flex-col space-y-2 ml-4 flex-shrink-0">
+            <Button asChild size="sm" className="min-w-[80px] text-xs">
               <Link to={`/jobs/${job.job_id}`}>
-                <ExternalLink className="h-4 w-4 mr-1" />
-                View Job
+                <ExternalLink className="h-3 w-3 mr-1" />
+                Xem
               </Link>
             </Button>
 
@@ -127,14 +130,14 @@ export function SavedJobCard({ job, onRemove }: SavedJobCardProps) {
               size="sm"
               onClick={handleUnsave}
               disabled={isUnsaving}
-              className="w-full text-red-600 hover:text-red-700 hover:bg-red-50"
+              className="min-w-[80px] text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
             >
               {isUnsaving ? (
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-600"></div>
               ) : (
                 <>
-                  <Trash2 className="h-4 w-4 mr-1" />
-                  Remove
+                  <Trash2 className="h-3 w-3 mr-1" />
+                  Bỏ lưu
                 </>
               )}
             </Button>

@@ -1,7 +1,11 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { MutationConfig } from "@/lib/react-query";
-import { createApplication, withdrawApplication } from "../api/applications";
-import { CreateApplicationRequest, Application } from "../types";
+import {
+  createApplication,
+  withdrawApplication,
+  getMyApplications,
+  getApplication,
+} from "../api/applications";
 
 /**
  * Hook to create a new application
@@ -46,5 +50,59 @@ export const useWithdrawApplication = ({
       queryClient.invalidateQueries({ queryKey: ["jobs"] }); // To update is_applied status
     },
     ...mutationConfig,
+  });
+};
+
+/**
+ * Hook to get user's applications with pagination and filters
+ */
+type UseMyApplicationsOptions = {
+  filters?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    status?: string;
+  };
+  enabled?: boolean;
+};
+
+export const useMyApplications = ({
+  filters = {},
+  enabled = true,
+}: UseMyApplicationsOptions = {}) => {
+  return useQuery({
+    queryKey: ["my-applications", filters],
+    queryFn: () => getMyApplications(filters),
+    enabled,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    retry: 2,
+  });
+};
+
+/**
+ * Hook to get application details by ID
+ */
+type UseApplicationOptions = {
+  applicationId?: number;
+  enabled?: boolean;
+};
+
+export const useApplication = ({
+  applicationId,
+  enabled = true,
+}: UseApplicationOptions) => {
+  return useQuery({
+    queryKey: ["application", applicationId],
+    queryFn: () => {
+      if (!applicationId) {
+        throw new Error("Application ID is required");
+      }
+      return getApplication(applicationId);
+    },
+    enabled: enabled && Boolean(applicationId),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    retry: 2,
   });
 };

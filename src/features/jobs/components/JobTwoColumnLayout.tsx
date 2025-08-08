@@ -52,8 +52,22 @@ export function JobTwoColumnLayout({
       if (!text) return [];
       return text
         .split("\n")
-        .filter((item) => item.trim().startsWith("•"))
-        .map((item) => item.substring(1).trim())
+        .filter((item) => {
+          const trimmed = item.trim();
+          return (
+            trimmed.startsWith("•") ||
+            trimmed.startsWith("-") ||
+            trimmed.startsWith("*")
+          );
+        })
+        .map((item) => {
+          const trimmed = item.trim();
+          // Remove bullet points (•, -, *)
+          if (trimmed.startsWith("•")) return trimmed.substring(1).trim();
+          if (trimmed.startsWith("-")) return trimmed.substring(1).trim();
+          if (trimmed.startsWith("*")) return trimmed.substring(1).trim();
+          return trimmed;
+        })
         .filter((item) => item.length > 0);
     };
 

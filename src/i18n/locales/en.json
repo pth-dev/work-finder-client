@@ -33,6 +33,7 @@
       "markAsUnread": "Mark as unread",
       "delete": "Delete notification",
       "loading": "Loading...",
+      "refreshing": "Refreshing...",
       "unreadCount": "{{count}}+"
     },
     "language": {
@@ -59,10 +60,21 @@
     "previous": "Previous",
     "submit": "Submit",
     "reset": "Reset",
+    "create": "Create",
+    "creating": "Creating...",
+    "export": "Export",
+    "all": "All",
+    "select": "Select",
+    "selectAll": "Select all",
+    "currency": {
+      "million": "million"
+    },
+
     "companies": {
       "viewCompanyProfile": "View Company Profile"
     },
     "time": {
+      "ago": "{{time}} ago",
       "justNow": "Just now",
       "minutesAgo": "{{count}} minute ago",
       "minutesAgo_other": "{{count}} minutes ago",
@@ -128,6 +140,285 @@
     "errors": {
       "registrationError": "Registration Error",
       "registrationFailed": "Registration failed"
+    }
+  },
+  "recruiterApplications": {
+    "title": "Applications Management",
+    "subtitle": "View and manage job applications",
+    "status": {
+      "pending": "Pending",
+      "reviewing": "Reviewing",
+      "interviewed": "Interviewed",
+      "accepted": "Suitable",
+      "rejected": "Not Suitable",
+      "withdrawn": "Withdrawn"
+    },
+    "stats": {
+      "total": "Total Applications",
+      "pending": "Pending",
+      "reviewing": "Reviewing",
+      "accepted": "Suitable"
+    },
+    "search": {
+      "placeholder": "Search by candidate name or email..."
+    },
+    "filters": {
+      "selectStatus": "Select status",
+      "advanced": "Advanced filters",
+      "job": "Job",
+      "status": "Status",
+      "search": "Search",
+      "sortBy": "Sort by"
+    },
+    "sort": {
+      "newestFirst": "Newest first",
+      "oldestFirst": "Oldest first",
+      "recentlyUpdated": "Recently updated",
+      "statusAsc": "Status A-Z"
+    },
+    "actions": {
+      "viewDetail": "View details",
+      "downloadCV": "Download CV",
+      "sendMessage": "Send message",
+      "scheduleInterview": "Schedule interview",
+      "markReviewing": "Mark as reviewing",
+      "markInterviewed": "Mark as interviewed",
+      "scheduleInterview": "Schedule Interview",
+      "accept": "Accept",
+      "reject": "Reject",
+      "review": "Review",
+      "view": "View",
+      "download": "Download"
+    },
+    "bulkActions": {
+      "changeStatus": "Change status",
+      "export": "Export",
+      "confirmTitle": "Confirm action",
+      "confirmStatusChange": "Are you sure you want to change the status of {{count}} applications to {{status}}?"
+    },
+    "list": {
+      "title": "Applications List"
+    },
+    "detail": {
+      "applicationFor": "Application for",
+      "changeStatus": "Change status",
+      "candidateInfo": "Candidate Information",
+      "jobInfo": "Job Information",
+      "timeline": "Timeline",
+      "applied": "Applied",
+      "lastUpdated": "Last updated",
+      "coverLetter": "Cover Letter",
+      "resume": "Resume",
+      "resumeFile": "Resume file"
+    },
+    "empty": {
+      "title": "No applications yet",
+      "noApplications": "No candidates have applied to your jobs yet",
+      "noResults": "No applications found matching your filters"
+    },
+    "errors": {
+      "fetchFailed": "Failed to load applications",
+      "fetchJobApplicationsFailed": "Failed to load applications for this job",
+      "fetchStatsFailed": "Failed to load statistics",
+      "searchFailed": "Search failed",
+      "updateStatusFailed": "Failed to update status",
+      "bulkUpdateFailed": "Failed to bulk update",
+      "loadFailed": "Failed to load data",
+      "generic": "An unknown error occurred"
+    },
+    "messages": {
+      "statusUpdated": "Status updated to {{status}}",
+      "bulkUpdateSuccess": "Updated {{count}} applications to {{status}}",
+      "exportStarted": "Export started"
+    },
+    "results": {
+      "showing": "Showing {{count}} results"
+    },
+    "pagination": {
+      "showing": "Showing {{start}}-{{end}} of {{total}} results"
+    },
+    "selected": "{{count}} selected",
+    "appliedAt": "Applied at",
+    "lastUpdated": "Last updated",
+    "coverLetter": "Cover Letter",
+    "table": {
+      "candidate": "Candidate",
+      "job": "Job",
+      "status": "Status",
+      "appliedAt": "Applied At"
+    }
+  },
+  "recruiterInterviews": {
+    "title": "Interview Management",
+    "subtitle": "View and manage interviews",
+    "status": {
+      "scheduled": "Scheduled",
+      "confirmed": "Confirmed",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "no_show": "No Show",
+      "rescheduled": "Rescheduled"
+    },
+    "type": {
+      "phone": "Phone",
+      "video": "Video",
+      "in_person": "In Person",
+      "technical": "Technical",
+      "hr": "HR",
+      "final": "Final"
+    },
+    "table": {
+      "candidate": "Candidate",
+      "job": "Job",
+      "type": "Type",
+      "scheduledAt": "Scheduled At",
+      "status": "Status"
+    },
+    "actions": {
+      "viewDetail": "View Details",
+      "edit": "Edit",
+      "reschedule": "Reschedule",
+      "sendReminder": "Send Reminder",
+      "cancel": "Cancel",
+      "complete": "Complete",
+      "createInterview": "Schedule Interview"
+    },
+    "empty": {
+      "noInterviews": "No interviews yet"
+    },
+    "createModal": {
+      "title": "Schedule Interview",
+      "subtitle": "Schedule an interview with {{candidateName}} for {{jobTitle}}",
+      "form": {
+        "interviewType": {
+          "label": "Interview Type",
+          "placeholder": "Select interview type",
+          "description": "Choose the type of interview to conduct"
+        },
+        "scheduledAt": {
+          "label": "Interview Date & Time",
+          "placeholder": "Select date and time",
+          "description": "Choose when the interview will take place"
+        },
+        "duration": {
+          "label": "Duration (minutes)",
+          "placeholder": "60",
+          "description": "How long will the interview last?"
+        },
+        "location": {
+          "label": "Location",
+          "placeholder": "Enter interview location",
+          "description": "Where will the interview take place?"
+        },
+        "meetingLink": {
+          "label": "Meeting Link",
+          "placeholder": "https://meet.google.com/...",
+          "description": "Video call link for online interviews"
+        },
+        "notes": {
+          "label": "Notes",
+          "placeholder": "Additional notes about the interview...",
+          "description": "Any additional information or preparation notes"
+        }
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "create": "Schedule Interview",
+        "creating": "Scheduling..."
+      }
+    },
+    "validation": {
+      "interviewType": {
+        "required": "Please select an interview type"
+      },
+      "scheduledAt": {
+        "required": "Please select interview date and time",
+        "futureDate": "Interview must be scheduled for a future date",
+        "businessHours": "Please schedule during business hours (9 AM - 6 PM)"
+      },
+      "duration": {
+        "required": "Please enter interview duration",
+        "min": "Interview must be at least 15 minutes",
+        "max": "Interview cannot exceed 480 minutes (8 hours)"
+      },
+      "location": {
+        "required": "Location is required for in-person interviews"
+      },
+      "meetingLink": {
+        "required": "Meeting link is required for video interviews",
+        "invalidUrl": "Please enter a valid meeting link"
+      }
+    },
+    "messages": {
+      "statusUpdated": "Status updated to {{status}}",
+      "bulkUpdateSuccess": "Updated {{count}} interviews to {{status}}",
+      "interviewCreated": "Interview scheduled successfully",
+      "interviewUpdated": "Interview updated",
+      "interviewDeleted": "Interview deleted",
+      "interviewRescheduled": "Interview rescheduled",
+      "reminderSent": "Reminder sent",
+      "exportStarted": "Export started"
+    },
+    "errors": {
+      "updateStatusFailed": "Failed to update status",
+      "bulkUpdateFailed": "Failed to bulk update",
+      "createFailed": "Failed to schedule interview",
+      "updateFailed": "Failed to update interview",
+      "deleteFailed": "Failed to delete interview",
+      "rescheduleFailed": "Failed to reschedule",
+      "reminderFailed": "Failed to send reminder"
+    }
+  },
+  "companyMembers": {
+    "title": "Staff Management",
+    "subtitle": "Manage team members and approve company join requests",
+    "yourRole": "Your role",
+    "role": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "hr": "HR",
+      "recruiter": "Recruiter",
+      "employee": "Employee"
+    },
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "suspended": "Suspended"
+    },
+    "accessDenied": {
+      "title": "Access Denied",
+      "description": "You need Owner or Admin role to manage staff"
+    },
+    "table": {
+      "member": "Member",
+      "role": "Role",
+      "status": "Status",
+      "joinedAt": "Joined At"
+    },
+    "actions": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "updateRole": "Update Role",
+      "remove": "Remove from Company",
+      "viewDetail": "View Details"
+    },
+    "messages": {
+      "memberStatusUpdated": "Updated {{name}} status to {{status}}",
+      "memberUpdated": "Updated {{name}} information",
+      "memberRemoved": "Removed member from company",
+      "bulkApproveSuccess": "Approved {{count}} members with {{role}} role",
+      "bulkRemoveSuccess": "Removed {{count}} members",
+      "exportStarted": "Export started"
+    },
+    "errors": {
+      "loadRoleFailed": "Failed to load role information",
+      "approveFailed": "Failed to approve member",
+      "updateFailed": "Failed to update member",
+      "removeFailed": "Failed to remove member",
+      "bulkApproveFailed": "Failed to bulk approve",
+      "bulkRemoveFailed": "Failed to bulk remove"
     }
   },
   "jobApplication": {
@@ -206,7 +497,20 @@
         "total": "Total Applications",
         "inReview": "In Review",
         "interviews": "Interviews",
-        "offers": "Offers"
+        "offers": "Offers",
+        "pending": "Pending",
+        "reviewed": "Reviewed",
+        "hired": "Hired"
+      },
+      "search": {
+        "placeholder": "Search candidates..."
+      },
+      "results": {
+        "showing": "Showing {{count}} results"
+      },
+      "empty": {
+        "title": "No applications yet",
+        "noApplications": "No candidates have applied yet"
       }
     }
   },
@@ -219,6 +523,15 @@
     "locationPlaceholder": "City or postcode",
     "searchButton": "Search Jobs",
     "discoverOpportunities": "Discover your next career opportunity from thousands of job listings",
+    "types": {
+      "full_time": "Full-time",
+      "part_time": "Part-time",
+      "contract": "Contract",
+      "freelance": "Freelance",
+      "internship": "Internship",
+      "temporary": "Temporary"
+    },
+    "featured": "Featured",
     "details": {
       "jobDescription": "Job Description",
       "requirements": "Requirements",
@@ -320,13 +633,23 @@
     "employees": "employees",
     "openPositions": "open positions"
   },
+  "search": {
+    "jobPlaceholder": "Job title, keywords...",
+    "locationPlaceholder": "Location",
+    "filtersButton": "Filters",
+    "advancedFilters": "Advanced Filters",
+    "searchJobs": "Search Jobs",
+    "search": "Search"
+  },
   "hero": {
     "title": {
-      "main": "New Beginnings – Big Opportunities –",
-      "highlight": "Real Success",
+      "main": "There Are",
+      "count": "93,178",
+      "postings": "Postings",
+      "forYou": "Here For you!",
       "subtitle": ""
     },
-    "description": "Start your career journey with amazing opportunities",
+    "description": "Find Jobs, Employment & Career Opportunities",
     "search": {
       "title": "Find Your Dream Job",
       "subtitle": "Discover thousands of job opportunities from leading companies",
@@ -334,7 +657,8 @@
       "locationPlaceholder": "City or postcode",
       "button": "Find Jobs"
     },
-    "popularSearches": "Popular Searches"
+    "popularSearches": "Popular Searches",
+    "popularSearchTerms": "Designer, Developer, Web, IOS, PHP, Senior, Engineer"
   },
   "contact": {
     "title": "Contact Us",
@@ -343,6 +667,238 @@
       "emailPlaceholder": "Email Address",
       "messagePlaceholder": "Message",
       "sendButton": "Send Message"
+    }
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "applications": "Applications",
+    "savedJobs": "Saved Jobs",
+    "settings": "Settings",
+    "companies": "Companies",
+    "jobs": "Job Management",
+    "candidates": "Candidates",
+    "applicationsManagement": "Applications Management",
+    "interviews": "Interviews",
+    "analytics": "Analytics",
+    "staffManagement": "Staff Management",
+    "userManagement": "User Management",
+    "contentModeration": "Content Moderation",
+    "logout": "Logout"
+  },
+  "recruiter": {
+    "jobs": {
+      "management": {
+        "title": "Job Management",
+        "subtitle": "Manage all job postings for your company",
+        "jobsList": "Job Listings",
+        "createJob": "Create New Job",
+        "createFirstJob": "Create Your First Job Posting",
+        "noJobs": "No job postings yet",
+        "confirmDelete": "Are you sure you want to delete this job posting?",
+        "deleteSuccess": "Job posting deleted successfully",
+        "errors": {
+          "fetchFailed": "Unable to load job listings",
+          "deleteFailed": "Unable to delete job posting"
+        }
+      },
+      "fields": {
+        "title": "Title",
+        "type": "Type",
+        "location": "Location",
+        "salary": "Salary",
+        "salaryMin": "Minimum Salary",
+        "salaryMax": "Maximum Salary",
+        "salaryDescription": "Salary Description",
+        "status": "Status",
+        "actions": "Actions",
+        "applications": "Applications",
+        "postedDate": "Posted Date",
+        "description": "Job Description",
+        "requirements": "Job Requirements",
+        "benefits": "Benefits",
+        "expiresAt": "Expiry Date"
+      },
+      "type": {
+        "full_time": "Full-time",
+        "part_time": "Part-time",
+        "contract": "Contract",
+        "internship": "Internship",
+        "temporary": "Temporary",
+        "freelance": "Freelance"
+      },
+      "status": {
+        "pending": "Pending Approval",
+        "active": "Active",
+        "inactive": "Inactive",
+        "closed": "Closed",
+        "rejected": "Rejected"
+      },
+      "actions": {
+        "label": "Actions",
+        "edit": "Edit Job",
+        "delete": "Delete Job",
+        "extend": "Extend Job",
+        "changeStatus": "Change Status"
+      },
+      "statusManager": {
+        "currentStatus": "Current Status",
+        "changeToStatus": "Change to",
+        "confirmTitle": "Confirm Status Change",
+        "confirmDescription": "Are you sure you want to change the job status to {{status}}?"
+      },
+      "create": {
+        "title": "Create New Job Posting",
+        "description": "Fill in the details to create a new job posting for your company",
+        "formTitle": "Basic Information",
+        "formDescription": "Fill in the details to create a new job posting for your company",
+        "sections": {
+          "basicInfo": "Basic Information",
+          "jobDetails": "Job Details",
+          "requirements": "Job Requirements",
+          "benefits": "Benefits",
+          "salaryInfo": "Salary Information",
+          "publishingSettings": "Publishing Settings"
+        },
+        "placeholders": {
+          "title": "e.g., Senior Software Engineer",
+          "type": "Select job type",
+          "location": "e.g., Ho Chi Minh City, Vietnam",
+          "salary": "e.g., 15-25 million VND or Negotiable",
+          "salaryMin": "e.g., 15000000",
+          "salaryMax": "e.g., 25000000",
+          "description": "Detailed job description, requirements and benefits...",
+          "requirements": "Experience, skills requirements...",
+          "benefits": "Employee benefits and perks...",
+          "salaryDescription": "e.g., 15-25 million VND or Negotiable",
+          "expiresAt": "YYYY-MM-DD"
+        },
+        "salaryHelp": "Can be left blank or enter salary range/negotiable",
+        "statusHelp": "Job posts will be pending admin approval",
+        "expiresHelp": "Job posting expiry date (optional)",
+        "preview": "Preview",
+        "statusInfo": {
+          "title": "Job Posting Approval Process",
+          "description": "Job postings will be submitted for admin approval before being publicly visible to candidates."
+        }
+      },
+      "messages": {
+        "createSuccess": "Job posting created successfully",
+        "createError": "Unable to create job posting",
+        "updateSuccess": "Job posting updated successfully",
+        "updateError": "Unable to update job posting"
+      },
+      "extend": {
+        "title": "Extend Job Posting",
+        "description": "Select new expiry date for the job posting",
+        "newExpiryDate": "New Expiry Date",
+        "confirm": "Confirm Extension",
+        "success": "Job posting extended successfully",
+        "error": "Unable to extend job posting"
+      },
+      "detail": {
+        "viewTitle": "Job Details",
+        "editTitle": "Edit Job Posting"
+      },
+      "errors": {
+        "notFound": "Job posting not found"
+      }
+    }
+  },
+  "applications": {
+    "title": "Applications",
+    "subtitle": "Track and manage your applications",
+    "searchPlaceholder": "Search by job title or company...",
+    "filterByStatus": "Filter by status",
+    "selectStatus": "Select status",
+    "status": {
+      "pending": "Pending",
+      "reviewed": "Reviewed",
+      "interviewed": "Interviewed",
+      "offered": "Offered",
+      "hired": "Hired",
+      "rejected": "Not Suitable",
+      "withdrawn": "Withdrawn"
+    },
+    "sort": {
+      "newestFirst": "Newest First",
+      "oldestFirst": "Oldest First",
+      "recentlyUpdated": "Recently Updated",
+      "statusAsc": "Status Ascending"
+    },
+    "filters": {
+      "selectStatus": "Select Status",
+      "advanced": "Advanced Filters",
+      "sortBy": "Sort By"
+    },
+    "stats": {
+      "pending": "Pending",
+      "reviewed": "Reviewed",
+      "hired": "Hired"
+    },
+    "search": {
+      "placeholder": "Search candidates..."
+    },
+    "results": {
+      "showing": "Showing {{count}} results"
+    },
+    "empty": {
+      "title": "No applications yet",
+      "noApplications": "No candidates have applied yet"
+    },
+    "list": {
+      "title": "Applications List"
+    },
+    "selected": "{{count}} selected",
+    "bulkActions": {
+      "export": "Export"
+    }
+  },
+  "admin": {
+    "jobs": {
+      "title": "Content Moderation",
+      "subtitle": "Review and moderate job postings and content",
+      "status": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "pendingJobs": {
+        "title": "Pending Jobs",
+        "titleWithCount": "Pending Jobs ({{count}})",
+        "loading": "Loading pending jobs...",
+        "empty": {
+          "title": "No Pending Jobs",
+          "message": "All jobs have been reviewed. Great work!"
+        },
+        "error": {
+          "title": "Failed to Load Jobs",
+          "message": "There was an error loading pending jobs. Please try again."
+        }
+      },
+      "actions": {
+        "viewDetails": "View Details",
+        "approve": "Approve",
+        "reject": "Reject"
+      },
+      "approve": {
+        "title": "Approve Job",
+        "description": "Are you sure you want to approve \"{{title}}\"?",
+        "approving": "Approving...",
+        "approveJob": "Approve Job",
+        "success": "Job approved successfully",
+        "error": "Failed to approve job"
+      },
+      "reject": {
+        "title": "Reject Job",
+        "description": "Please provide a reason for rejecting \"{{title}}\".",
+        "reasonLabel": "Rejection Reason",
+        "reasonPlaceholder": "Please explain why this job is being rejected...",
+        "reasonRequired": "Please provide a reason for rejection",
+        "rejecting": "Rejecting...",
+        "rejectJob": "Reject Job",
+        "success": "Job rejected successfully",
+        "error": "Failed to reject job"
+      }
     }
   }
 }

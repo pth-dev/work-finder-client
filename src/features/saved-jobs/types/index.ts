@@ -4,6 +4,7 @@ export interface SavedJobPost {
   company_id: number;
   job_title: string;
   location?: string;
+  salary?: string;
   salary_min?: number;
   salary_max?: number;
   job_type?: string;

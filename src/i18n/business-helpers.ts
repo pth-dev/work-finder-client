@@ -95,18 +95,7 @@ export const formatDate = (
 
 // Job type formatting
 export const formatJobType = (t: TFunction, jobType: string): string => {
-  const jobTypeMap: Record<string, string> = {
-    full_time: "business.jobType.fullTime",
-    part_time: "business.jobType.partTime",
-    contract: "business.jobType.contract",
-    freelance: "business.jobType.freelance",
-    internship: "business.jobType.internship",
-    remote: "business.jobType.remote",
-    hybrid: "business.jobType.hybrid",
-    onsite: "business.jobType.onsite",
-  };
-
-  return t(jobTypeMap[jobType] || "business.jobType.unknown");
+  return t(`jobs.types.${jobType}`, jobType);
 };
 
 // Experience level formatting

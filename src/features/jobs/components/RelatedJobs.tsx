@@ -5,6 +5,7 @@ import { type Job } from "@/types";
 import { useJobs } from "../hooks";
 import { JobCard, CompanyLogo, Spinner } from "@/components";
 import { formatTimeAgo, formatSalary } from "@/utils/common";
+import { formatJobType } from "@/i18n/business-helpers";
 import { generateJobSlug } from "@/utils/slug-utils";
 
 interface RelatedJobsProps {
@@ -103,7 +104,7 @@ export default function RelatedJobs({
               (apiJob.job_type === "temporary"
                 ? "full_time"
                 : apiJob.job_type) || "full_time",
-            experienceLevel: "entry" as const,
+            experienceLevel: undefined, // Remove hardcoded mock data
             location: {
               city: apiJob.location || "Remote",
               state: "",
@@ -173,20 +174,13 @@ export default function RelatedJobs({
               // Job type tag
               if (job.type) {
                 tags.push({
-                  text: job.type.replace("_", " "),
+                  text: formatJobType(t, job.type),
                   variant: "secondary" as const,
                   color: "blue" as const,
                 });
               }
 
-              // Experience level tag
-              if (job.experienceLevel) {
-                tags.push({
-                  text: job.experienceLevel,
-                  variant: "outline" as const,
-                  color: "yellow" as const,
-                });
-              }
+              // Remove experienceLevel tag since it's mock data
 
               return tags;
             };

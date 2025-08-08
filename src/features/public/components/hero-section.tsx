@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import {
   HeroSearchForm,
@@ -13,6 +14,7 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // Handle search submission
   const handleSearch = (params: JobSearchParams) => {
@@ -51,11 +53,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
             {/* Main Heading */}
             <div className="space-y-3 lg:space-y-4">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-medium text-[#202124] leading-tight">
-                There Are <span className="text-[#1967d2]">93,178</span>{" "}
-                Postings <span className="block">Here For you!</span>
+                {t("hero.title.main")}{" "}
+                <span className="text-[#1967d2]">{t("hero.title.count")}</span>{" "}
+                {t("hero.title.postings")}{" "}
+                <span className="block">{t("hero.title.forYou")}</span>
               </h1>
               <p className="text-[#696969] text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed">
-                Find Jobs, Employment & Career Opportunities
+                {t("hero.description")}
               </p>
             </div>
 
@@ -67,9 +71,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onSearch }) => {
             {/* Popular Searches */}
             <div className="space-y-2">
               <p className="text-[#202124] text-xs sm:text-sm md:text-base">
-                <span className="font-medium">Popular Searches : </span>
+                <span className="font-medium">
+                  {t("hero.popularSearches")} :{" "}
+                </span>
                 <span className="text-[#696969] font-normal">
-                  Designer, Developer, Web, IOS, PHP, Senior, Engineer
+                  {t("hero.popularSearchTerms")}
                 </span>
               </p>
             </div>

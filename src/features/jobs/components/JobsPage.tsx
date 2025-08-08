@@ -166,7 +166,7 @@ export function JobsPage() {
     type:
       (apiJob.job_type === "temporary" ? "full_time" : apiJob.job_type) ||
       "full_time",
-    experienceLevel: "entry", // Default value since API doesn't provide this
+    experienceLevel: undefined, // Remove hardcoded mock data
     location: {
       city: apiJob.location || t("jobs.remote"),
       state: "",

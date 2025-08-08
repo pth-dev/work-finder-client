@@ -4,6 +4,7 @@ import { LanguageSwitcher } from "./header/language-switcher";
 import { NotificationBell } from "@/features/notifications/components/NotificationBell";
 import { UserMenu } from "./header/user-menu";
 import { Sidebar } from "./sidebar";
+import { MainContentCard } from "@/components/common";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -32,8 +33,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-auto">
-          <div className="container-xl mx-auto p-6 h-full">{children}</div>
+        <main className="flex-1 overflow-hidden">
+          <MainContentCard>{children}</MainContentCard>
         </main>
       </div>
     </div>

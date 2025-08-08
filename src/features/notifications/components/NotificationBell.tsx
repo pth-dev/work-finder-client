@@ -28,7 +28,12 @@ export const NotificationBell = ({ className }: NotificationBellProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // API hooks
-  const { data: notificationsData, isLoading } = useNotifications({
+  const {
+    data: notificationsData,
+    isLoading,
+    refetch,
+    isFetching,
+  } = useNotifications({
     limit: 20,
     queryConfig: {
       refetchInterval: 30000, // Refetch every 30 seconds
@@ -41,6 +46,21 @@ export const NotificationBell = ({ className }: NotificationBellProps) => {
 
   const notifications = notificationsData?.data?.notifications || [];
   const unreadCount = notificationsData?.data?.unread_count || 0;
+
+  // Track previous unread count for animation
+  const [prevUnreadCount, setPrevUnreadCount] = useState(unreadCount);
+  const [hasNewNotification, setHasNewNotification] = useState(false);
+
+  // Detect new notifications
+  useEffect(() => {
+    if (unreadCount > prevUnreadCount && prevUnreadCount > 0) {
+      setHasNewNotification(true);
+      // Reset animation after 3 seconds
+      const timer = setTimeout(() => setHasNewNotification(false), 3000);
+      return () => clearTimeout(timer);
+    }
+    setPrevUnreadCount(unreadCount);
+  }, [unreadCount, prevUnreadCount]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -58,15 +78,46 @@ export const NotificationBell = ({ className }: NotificationBellProps) => {
   }, []);
 
   const handleMarkAsRead = (notificationId: number) => {
-    markAsReadMutation.mutate({ notification_id: notificationId });
+    markAsReadMutation.mutate(
+      { notification_id: notificationId },
+      {
+        onSuccess: () => {
+          // Reset new notification animation when user interacts
+          setHasNewNotification(false);
+        },
+      }
+    );
   };
 
   const handleMarkAllAsRead = () => {
-    markAllAsReadMutation.mutate();
+    markAllAsReadMutation.mutate(undefined, {
+      onSuccess: () => {
+        // Reset new notification animation when user marks all as read
+        setHasNewNotification(false);
+      },
+    });
   };
 
   const handleDeleteNotification = (notificationId: number) => {
     deleteNotificationMutation.mutate(notificationId);
+  };
+
+  // Handle bell click - toggle dropdown and fetch latest notifications
+  const handleBellClick = async () => {
+    const wasOpen = isOpen;
+    setIsOpen(!isOpen);
+
+    // If opening the dropdown, fetch latest notifications immediately
+    if (!wasOpen) {
+      // Reset new notification animation when user opens dropdown
+      setHasNewNotification(false);
+
+      try {
+        await refetch();
+      } catch (error) {
+        console.error("Failed to fetch notifications:", error);
+      }
+    }
   };
 
   const formatNotificationTime = (createdAt: string) => {
@@ -141,11 +192,23 @@ export const NotificationBell = ({ className }: NotificationBellProps) => {
       <Button
         variant="ghost"
         size="sm"
-        className="relative p-2 hover:bg-gray-100 rounded-full"
-        onClick={() => setIsOpen(!isOpen)}
+        className={cn(
+          "relative p-2 hover:bg-gray-100 rounded-full transition-all duration-200",
+          isFetching && "opacity-70"
+        )}
+        onClick={handleBellClick}
+        disabled={isFetching}
         aria-label={t("header.notifications.title")}
       >
-        <Bell className="h-5 w-5 text-gray-600" />
+        <Bell
+          className={cn(
+            "h-5 w-5 text-gray-600 transition-all duration-200",
+            isFetching && "animate-pulse",
+            isOpen && "text-blue-600",
+            hasNewNotification && "animate-bounce text-blue-600",
+            unreadCount > 0 && !isOpen && !isFetching && "text-blue-600"
+          )}
+        />
         {unreadCount > 0 && (
           <Badge
             variant="destructive"
@@ -155,6 +218,13 @@ export const NotificationBell = ({ className }: NotificationBellProps) => {
               ? t("header.notifications.unreadCount", { count: 99 })
               : unreadCount}
           </Badge>
+        )}
+
+        {/* Loading indicator */}
+        {isFetching && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-3 h-3 border border-blue-600 border-t-transparent rounded-full animate-spin" />
+          </div>
         )}
       </Button>
 
@@ -190,7 +260,17 @@ export const NotificationBell = ({ className }: NotificationBellProps) => {
           </div>
 
           {/* Content */}
-          <div className="max-h-96">
+          <div className="max-h-96 relative">
+            {/* Loading overlay when fetching */}
+            {isFetching && !isLoading && (
+              <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center">
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                  <Spinner size="sm" />
+                  <span>{t("header.notifications.refreshing")}</span>
+                </div>
+              </div>
+            )}
+
             {isLoading ? (
               <div className="flex justify-center py-8">
                 <Spinner size="md" />

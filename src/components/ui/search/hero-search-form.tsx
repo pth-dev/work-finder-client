@@ -3,6 +3,7 @@ import { Search, MapPin } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -28,6 +29,8 @@ export const HeroSearchForm: React.FC<HeroSearchFormProps> = ({
   onSearch,
   className = "",
 }) => {
+  const { t } = useTranslation();
+
   const form = useForm<z.infer<typeof searchFormSchema>>({
     resolver: zodResolver(searchFormSchema),
     defaultValues: {
@@ -60,7 +63,7 @@ export const HeroSearchForm: React.FC<HeroSearchFormProps> = ({
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                       <Input
                         {...field}
-                        placeholder="Job title, keywords, or company"
+                        placeholder={t("hero.search.jobPlaceholder")}
                         className="pl-10 h-12 bg-white border border-gray-200 rounded-lg shadow-sm text-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                       />
                     </div>
@@ -80,7 +83,7 @@ export const HeroSearchForm: React.FC<HeroSearchFormProps> = ({
                       <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                       <Input
                         {...field}
-                        placeholder="City or postcode"
+                        placeholder={t("hero.search.locationPlaceholder")}
                         className="pl-10 h-12 bg-white border border-gray-200 rounded-lg shadow-sm text-gray-600 placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                       />
                     </div>
@@ -94,7 +97,7 @@ export const HeroSearchForm: React.FC<HeroSearchFormProps> = ({
               type="submit"
               className="w-full h-12 bg-[#1967d2] hover:bg-[#1557b8] text-white rounded-lg font-medium text-sm transition-colors duration-200"
             >
-              Find Jobs
+              {t("hero.search.button")}
             </Button>
           </div>
 
@@ -114,7 +117,7 @@ export const HeroSearchForm: React.FC<HeroSearchFormProps> = ({
                             <Search className="w-4 h-4 text-[#696969] mr-[15px] flex-shrink-0" />
                             <Input
                               {...field}
-                              placeholder="Job title, keywords..."
+                              placeholder={t("hero.search.jobPlaceholder")}
                               className="w-full min-w-0 text-[15px] text-[#696969] placeholder:text-[#696969] bg-transparent border-none outline-none shadow-none p-0 h-auto focus-visible:ring-0"
                             />
                           </div>
@@ -136,7 +139,7 @@ export const HeroSearchForm: React.FC<HeroSearchFormProps> = ({
                             <MapPin className="w-4 h-4 text-[#696969] mr-[15px] flex-shrink-0" />
                             <Input
                               {...field}
-                              placeholder="City or postcode"
+                              placeholder={t("hero.search.locationPlaceholder")}
                               className="w-full min-w-0 text-[15px] text-[#696969] placeholder:text-[#696969] bg-transparent border-none outline-none shadow-none p-0 h-auto focus-visible:ring-0"
                             />
                           </div>
@@ -152,7 +155,7 @@ export const HeroSearchForm: React.FC<HeroSearchFormProps> = ({
                     type="submit"
                     className="bg-[#1967d2] hover:bg-[#1557b8] text-white h-[50px] w-[130px] rounded-lg text-[15px] font-medium transition-colors duration-200 border-none shadow-none"
                   >
-                    Find Jobs
+                    {t("hero.search.button")}
                   </Button>
                 </div>
               </div>

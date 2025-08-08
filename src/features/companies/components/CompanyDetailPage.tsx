@@ -21,6 +21,7 @@ import {
 } from "../hooks";
 import { CompanyJobsFilters } from "../types";
 import { formatTimeAgo, formatSalary } from "@/utils/common";
+import { formatJobType } from "@/i18n/business-helpers";
 import { useTranslation } from "react-i18next";
 import { CompanyLogo } from "@/components";
 import { extractIdFromSlug } from "@/utils/slug-utils";
@@ -69,7 +70,7 @@ export function CompanyDetailPage() {
       ...(job.job_type
         ? [
             {
-              text: job.job_type,
+              text: formatJobType(t, job.job_type),
               variant: "outline" as const,
               color: "blue" as const,
             },
@@ -125,11 +126,11 @@ export function CompanyDetailPage() {
     return (
       <FullScreenErrorState
         type="not-found"
-        title="Company Not Found"
-        message="The company you're looking for doesn't exist or has been removed."
+        title={t("common:companies.companyNotFound")}
+        message={t("common:companies.companyNotFoundMessage")}
         actions={[
           {
-            label: "Go Back",
+            label: t("common:navigation.goBack"),
             onClick: () => window.history.back(),
             variant: "default",
           },
@@ -181,8 +182,10 @@ export function CompanyDetailPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
-                  <span>Open Positions</span>
-                  <Badge variant="secondary">{totalJobs} jobs</Badge>
+                  <span>{t("common:companies.openPositions")}</span>
+                  <Badge variant="secondary">
+                    {t("common:companies.jobsCount", { count: totalJobs })}
+                  </Badge>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -213,11 +216,10 @@ export function CompanyDetailPage() {
                   <div className="text-center py-8">
                     <Briefcase className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-lg font-medium text-gray-900 mb-2">
-                      No Open Positions
+                      {t("common:companies.noOpenPositions")}
                     </h3>
                     <p className="text-gray-600">
-                      This company doesn't have any open positions at the
-                      moment.
+                      {t("common:companies.noOpenPositionsMessage")}
                     </p>
                   </div>
                 )}
@@ -230,42 +232,54 @@ export function CompanyDetailPage() {
             {/* Company Details */}
             <Card>
               <CardHeader>
-                <CardTitle>Company Details</CardTitle>
+                <CardTitle>{t("common:companies.companyDetails")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {company?.industry && (
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Industry</span>
+                    <span className="text-gray-600">
+                      {t("common:companies.industry")}
+                    </span>
                     <span className="font-medium">{company.industry}</span>
                   </div>
                 )}
 
                 {company?.employee_count && (
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Company Size</span>
+                    <span className="text-gray-600">
+                      {t("common:companies.companySize")}
+                    </span>
                     <span className="font-medium">
-                      {company.employee_count.toLocaleString()} employees
+                      {t("common:companies.employeeCount", {
+                        count: company.employee_count,
+                      })}
                     </span>
                   </div>
                 )}
 
                 {company?.founded_year && (
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Founded</span>
+                    <span className="text-gray-600">
+                      {t("common:companies.founded")}
+                    </span>
                     <span className="font-medium">{company.founded_year}</span>
                   </div>
                 )}
 
                 {company?.location && (
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Location</span>
+                    <span className="text-gray-600">
+                      {t("common:companies.location")}
+                    </span>
                     <span className="font-medium">{company.location}</span>
                   </div>
                 )}
 
                 {company?.follower_count !== undefined && (
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Followers</span>
+                    <span className="text-gray-600">
+                      {t("common:companies.followers")}
+                    </span>
                     <span className="font-medium">
                       {company.follower_count.toLocaleString()}
                     </span>
@@ -278,7 +292,7 @@ export function CompanyDetailPage() {
             {company?.website && (
               <Card>
                 <CardHeader>
-                  <CardTitle>Connect</CardTitle>
+                  <CardTitle>{t("common:companies.connect")}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Button
@@ -289,7 +303,7 @@ export function CompanyDetailPage() {
                     }
                   >
                     <Globe className="h-4 w-4 mr-2" />
-                    Visit Website
+                    {t("common:companies.visitWebsite")}
                     <ExternalLink className="h-4 w-4 ml-auto" />
                   </Button>
                 </CardContent>

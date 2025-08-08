@@ -9,8 +9,10 @@ export interface SidebarContentProps {
 
 export function SidebarContent({ userRole }: SidebarContentProps) {
   return (
-    <nav className="flex-1 px-4 py-6 space-y-2">
-      <NavMain userRole={userRole} />
+    <nav className="flex-1 px-4 py-6 flex flex-col">
+      <div className="space-y-2">
+        <NavMain userRole={userRole} />
+      </div>
       <NavSecondary userRole={userRole} />
     </nav>
   );

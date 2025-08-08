@@ -60,11 +60,13 @@ export const createAppRouter = (queryClient: QueryClient) =>
         import("./routes/auth/set-new-password").then(convert(queryClient)),
     },
 
-    // Public routes với AppLayout (header/footer)
+    // Public routes với AppLayout (header/footer) - chặn recruiter
     {
       path: "/",
       lazy: () =>
-        import("@/components/layouts/app-layout").then(convert(queryClient)),
+        import("@/components/layouts/public-layout-wrapper").then(
+          convert(queryClient)
+        ),
       children: [
         {
           path: paths.home.path,
@@ -173,19 +175,39 @@ export const createAppRouter = (queryClient: QueryClient) =>
             import("./routes/recruiter/jobs").then(convert(queryClient)),
         },
         {
-          path: paths.recruiter.candidates.path,
+          path: paths.recruiter.createJob.path,
           lazy: () =>
-            import("./routes/recruiter/candidates").then(convert(queryClient)),
+            import("./routes/recruiter/create-job").then(convert(queryClient)),
+        },
+        {
+          path: paths.recruiter.jobApplicationDetail.path,
+          lazy: () =>
+            import(
+              "./routes/recruiter/jobs/[jobId]/applications/[applicationId]"
+            ).then(convert(queryClient)),
+        },
+        {
+          path: paths.recruiter.applications.path,
+          lazy: () =>
+            import("./routes/recruiter/applications").then(
+              convert(queryClient)
+            ),
         },
         {
           path: paths.recruiter.interviews.path,
           lazy: () =>
             import("./routes/recruiter/interviews").then(convert(queryClient)),
         },
+
         {
-          path: paths.recruiter.analytics.path,
+          path: paths.recruiter.staff.path,
           lazy: () =>
-            import("./routes/recruiter/analytics").then(convert(queryClient)),
+            import("./routes/recruiter/staff").then(convert(queryClient)),
+        },
+        {
+          path: paths.recruiter.jobDetail.path,
+          lazy: () =>
+            import("./routes/recruiter/jobs/[id]").then(convert(queryClient)),
         },
       ],
     },
@@ -210,14 +232,8 @@ export const createAppRouter = (queryClient: QueryClient) =>
           lazy: () => import("./routes/admin/users").then(convert(queryClient)),
         },
         {
-          path: paths.admin.companies.path,
-          lazy: () =>
-            import("./routes/admin/companies").then(convert(queryClient)),
-        },
-        {
-          path: paths.admin.analytics.path,
-          lazy: () =>
-            import("./routes/admin/analytics").then(convert(queryClient)),
+          path: paths.admin.jobs.path,
+          lazy: () => import("./routes/admin/jobs").then(convert(queryClient)),
         },
       ],
     },

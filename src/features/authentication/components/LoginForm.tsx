@@ -58,14 +58,22 @@ export function LoginForm() {
     useLogin({
       mutationConfig: {
         onSuccess: (response) => {
+          console.log("🎉 LoginForm: Login successful", response.data.user);
+
           // Show success toast
           toastService.success(t("common:auth.login.success"));
 
           // Store user data (tokens are stored in HTTP-only cookies)
+          console.log("💾 LoginForm: Setting user data in store");
           setUser(response.data.user);
-          // Navigate to appropriate page based on user role
-          const redirectPath = getRedirectPath(response.data.user);
-          navigate(redirectPath, { replace: true });
+
+          // ✅ FIX: Add small delay to ensure state updates are processed
+          // This prevents race condition with AuthProvider
+          setTimeout(() => {
+            const redirectPath = getRedirectPath(response.data.user);
+            console.log("🔄 LoginForm: Navigating to", redirectPath);
+            navigate(redirectPath, { replace: true });
+          }, 100); // ✅ Increased timeout to ensure state is fully updated
         },
         onError: (error: any) => {
           // Use standardized error handler with form context
@@ -75,7 +83,8 @@ export function LoginForm() {
     }),
     "login",
     {
-      globalLoading: true,
+      globalLoading: false, // ✅ FIX: Use operation-specific loading instead of global
+      timeout: 10000, // ✅ FIX: Add 10s timeout fallback
     }
   );
 

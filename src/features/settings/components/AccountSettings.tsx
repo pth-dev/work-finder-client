@@ -14,10 +14,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
-  Lock,
   Eye,
   EyeOff,
   User,
+  Shield,
   ChevronDown,
   ChevronUp,
   Camera,
@@ -25,42 +25,80 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+
 import {
   useChangePassword,
   useUserProfile,
   useUpdateProfile,
   useUploadAvatar,
 } from "../hooks";
-import { paths } from "@/config/paths";
+
 import { formatRelativeTime } from "@/utils";
 import { LoadingSpinner } from "@/components/common";
 
-const passwordSchema = z
-  .object({
-    current_password: z.string().min(1, "Current password is required"),
-    new_password: z
-      .string()
-      .min(8, "New password must be at least 8 characters")
-      .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-        "Password must contain uppercase, lowercase, number and special character"
+const createPasswordSchema = (t: any) =>
+  z
+    .object({
+      current_password: z
+        .string()
+        .min(
+          1,
+          t(
+            "settings.account.password.validation.currentRequired",
+            "Current password is required"
+          )
+        ),
+      new_password: z
+        .string()
+        .min(
+          8,
+          t(
+            "settings.account.password.validation.minLength",
+            "New password must be at least 8 characters"
+          )
+        )
+        .regex(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+          t(
+            "settings.account.password.validation.complexity",
+            "Password must contain uppercase, lowercase, number and special character"
+          )
+        ),
+      confirm_password: z
+        .string()
+        .min(
+          1,
+          t(
+            "settings.account.password.validation.confirmRequired",
+            "Please confirm your new password"
+          )
+        ),
+    })
+    .refine((data) => data.new_password === data.confirm_password, {
+      message: t(
+        "settings.account.password.validation.mismatch",
+        "Passwords don't match"
       ),
-    confirm_password: z.string().min(1, "Please confirm your new password"),
-  })
-  .refine((data) => data.new_password === data.confirm_password, {
-    message: "Passwords don't match",
-    path: ["confirm_password"],
+      path: ["confirm_password"],
+    });
+
+const createProfileSchema = (t: any) =>
+  z.object({
+    full_name: z
+      .string()
+      .min(
+        2,
+        t(
+          "settings.profile.validation.fullNameMin",
+          "Full name must be at least 2 characters"
+        )
+      ),
+    phone: z.string().optional(),
+    address: z.string().optional(),
   });
 
-const profileSchema = z.object({
-  full_name: z.string().min(2, "Full name must be at least 2 characters"),
-  phone: z.string().optional(),
-  address: z.string().optional(),
-});
-
-type PasswordFormData = z.infer<typeof passwordSchema>;
-type ProfileFormData = z.infer<typeof profileSchema>;
+type PasswordFormData = z.infer<ReturnType<typeof createPasswordSchema>>;
+type ProfileFormData = z.infer<ReturnType<typeof createProfileSchema>>;
 
 interface PasswordFieldProps {
   field: any;
@@ -109,7 +147,6 @@ function PasswordField({
 
 export function AccountSettings() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   // State for toggling sections
   const [showPasswordForm, setShowPasswordForm] = useState(false);
@@ -134,7 +171,7 @@ export function AccountSettings() {
 
   // Forms
   const passwordForm = useForm<PasswordFormData>({
-    resolver: zodResolver(passwordSchema),
+    resolver: zodResolver(createPasswordSchema(t)),
     defaultValues: {
       current_password: "",
       new_password: "",
@@ -143,7 +180,7 @@ export function AccountSettings() {
   });
 
   const profileForm = useForm<ProfileFormData>({
-    resolver: zodResolver(profileSchema),
+    resolver: zodResolver(createProfileSchema(t)),
     defaultValues: {
       full_name: user?.full_name || "",
       phone: user?.phone || "",
@@ -194,10 +231,6 @@ export function AccountSettings() {
     });
   };
 
-  const handleResetPassword = () => {
-    navigate(paths.auth.forgotPassword.getHref());
-  };
-
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -230,7 +263,7 @@ export function AccountSettings() {
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <User className="h-5 w-5" />
-              <span>{t("settings.profile.title", "Profile Information")}</span>
+              <span>{t("settings.profile.title", "Thông tin hồ sơ")}</span>
             </div>
             {!isEditingProfile && (
               <Button
@@ -239,7 +272,7 @@ export function AccountSettings() {
                 className="flex items-center space-x-2"
               >
                 <Edit3 className="h-4 w-4" />
-                <span>{t("common.edit", "Edit")}</span>
+                <span>{t("common.edit", "Chỉnh sửa")}</span>
               </Button>
             )}
           </CardTitle>
@@ -300,17 +333,21 @@ export function AccountSettings() {
 
                 <div>
                   <h3 className="text-lg font-semibold">
-                    {user?.full_name || t("common.notSet", "Not set")}
+                    {user?.full_name || t("common.notSet", "Chưa thiết lập")}
                   </h3>
                   <p className="text-gray-600">{user?.email}</p>
                   <div className="text-sm text-gray-500 mt-1">
                     <span>
-                      {t("settings.account.info.accountCreated", "Created")}:{" "}
+                      {t(
+                        "settings.account.info.accountCreated",
+                        "Tạo tài khoản"
+                      )}
+                      :{" "}
                     </span>
                     <span>
                       {user?.created_at
                         ? formatRelativeTime(user.created_at)
-                        : t("common.notAvailable", "N/A")}
+                        : t("common.notAvailable", "Không có")}
                     </span>
                   </div>
                 </div>
@@ -330,7 +367,7 @@ export function AccountSettings() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              {t("settings.profile.fullName", "Full Name")}
+                              {t("settings.profile.fullName", "Họ và tên")}
                             </FormLabel>
                             <FormControl>
                               <Input {...field} />
@@ -346,7 +383,7 @@ export function AccountSettings() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              {t("settings.profile.phone", "Phone")}
+                              {t("settings.profile.phone", "Số điện thoại")}
                             </FormLabel>
                             <FormControl>
                               <Input {...field} />
@@ -363,7 +400,7 @@ export function AccountSettings() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            {t("settings.profile.address", "Address")}
+                            {t("settings.profile.address", "Địa chỉ")}
                           </FormLabel>
                           <FormControl>
                             <Input {...field} />
@@ -378,7 +415,7 @@ export function AccountSettings() {
                         {isUpdatingProfile ? (
                           <LoadingSpinner className="mr-2" />
                         ) : (
-                          t("common.save", "Save")
+                          t("common.save", "Lưu")
                         )}
                       </Button>
 
@@ -390,7 +427,7 @@ export function AccountSettings() {
                           setIsEditingProfile(false);
                         }}
                       >
-                        {t("common.cancel", "Cancel")}
+                        {t("common.cancel", "Hủy")}
                       </Button>
                     </div>
                   </form>
@@ -399,26 +436,26 @@ export function AccountSettings() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      {t("settings.profile.fullName", "Full Name")}
+                      {t("settings.profile.fullName", "Họ và tên")}
                     </label>
                     <p className="text-sm text-gray-600">
-                      {user?.full_name || t("common.notSet", "Not set")}
+                      {user?.full_name || t("common.notSet", "Chưa thiết lập")}
                     </p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      {t("settings.profile.phone", "Phone")}
+                      {t("settings.profile.phone", "Số điện thoại")}
                     </label>
                     <p className="text-sm text-gray-600">
-                      {user?.phone || t("common.notSet", "Not set")}
+                      {user?.phone || t("common.notSet", "Chưa thiết lập")}
                     </p>
                   </div>
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      {t("settings.profile.address", "Address")}
+                      {t("settings.profile.address", "Địa chỉ")}
                     </label>
                     <p className="text-sm text-gray-600">
-                      {user?.address || t("common.notSet", "Not set")}
+                      {user?.address || t("common.notSet", "Chưa thiết lập")}
                     </p>
                   </div>
                 </div>
@@ -433,9 +470,9 @@ export function AccountSettings() {
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <Lock className="h-5 w-5" />
+              <Shield className="h-5 w-5" />
               <span>
-                {t("settings.account.password.title", "Password & Security")}
+                {t("settings.account.password.title", "Mật khẩu & Bảo mật")}
               </span>
             </div>
           </CardTitle>
@@ -448,12 +485,15 @@ export function AccountSettings() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-blue-700 mb-1">
-                    {t("settings.account.info.lastUpdated", "Last Updated")}
+                    {t(
+                      "settings.account.info.lastUpdated",
+                      "Cập nhật lần cuối"
+                    )}
                   </label>
                   <p className="text-sm text-blue-600">
                     {user?.updated_at
                       ? formatRelativeTime(user.updated_at)
-                      : t("common.notAvailable", "N/A")}
+                      : t("common.notAvailable", "Không có")}
                   </p>
                 </div>
                 <div>
@@ -461,51 +501,38 @@ export function AccountSettings() {
                     {t("settings.account.info.email", "Email")}
                   </label>
                   <p className="text-sm text-blue-600">
-                    {user?.email || t("common.notAvailable", "N/A")}
+                    {user?.email || t("common.notAvailable", "Không có")}
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Password Actions */}
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex justify-center">
               <Button
                 variant={showPasswordForm ? "secondary" : "default"}
                 onClick={() => setShowPasswordForm(!showPasswordForm)}
-                className="flex items-center space-x-2"
+                className="flex items-center space-x-2 px-8 py-3 text-base font-medium"
+                size="lg"
               >
                 {showPasswordForm ? (
                   <>
-                    <ChevronUp className="h-4 w-4" />
+                    <ChevronUp className="h-5 w-5" />
                     <span>
-                      {t("settings.account.password.hideForm", "Hide Form")}
+                      {t("settings.account.password.hideForm", "Ẩn form")}
                     </span>
                   </>
                 ) : (
                   <>
-                    <ChevronDown className="h-4 w-4" />
+                    <ChevronDown className="h-5 w-5" />
                     <span>
                       {t(
                         "settings.account.password.changePassword",
-                        "Change Password"
+                        "Đổi mật khẩu"
                       )}
                     </span>
                   </>
                 )}
-              </Button>
-
-              <Button
-                variant="outline"
-                onClick={handleResetPassword}
-                className="flex items-center space-x-2"
-              >
-                <Lock className="h-4 w-4" />
-                <span>
-                  {t(
-                    "settings.account.password.resetPassword",
-                    "Reset Password"
-                  )}
-                </span>
               </Button>
             </div>
 
@@ -525,11 +552,11 @@ export function AccountSettings() {
                           field={field}
                           label={t(
                             "settings.account.password.currentPassword",
-                            "Current Password"
+                            "Mật khẩu hiện tại"
                           )}
                           placeholder={t(
                             "settings.account.password.enterCurrentPassword",
-                            "Enter your current password"
+                            "Nhập mật khẩu hiện tại"
                           )}
                           showPassword={showCurrentPassword}
                           onTogglePassword={() =>
@@ -547,11 +574,11 @@ export function AccountSettings() {
                           field={field}
                           label={t(
                             "settings.account.password.newPassword",
-                            "New Password"
+                            "Mật khẩu mới"
                           )}
                           placeholder={t(
                             "settings.account.password.enterNewPassword",
-                            "Enter your new password"
+                            "Nhập mật khẩu mới"
                           )}
                           showPassword={showNewPassword}
                           onTogglePassword={() =>
@@ -569,11 +596,11 @@ export function AccountSettings() {
                           field={field}
                           label={t(
                             "settings.account.password.confirmPassword",
-                            "Confirm New Password"
+                            "Xác nhận mật khẩu mới"
                           )}
                           placeholder={t(
                             "settings.account.password.confirmNewPassword",
-                            "Confirm your new password"
+                            "Xác nhận mật khẩu mới"
                           )}
                           showPassword={showConfirmPassword}
                           onTogglePassword={() =>
@@ -590,7 +617,7 @@ export function AccountSettings() {
                         ) : (
                           t(
                             "settings.account.password.updatePassword",
-                            "Update Password"
+                            "Cập nhật mật khẩu"
                           )
                         )}
                       </Button>
@@ -603,7 +630,7 @@ export function AccountSettings() {
                           setShowPasswordForm(false);
                         }}
                       >
-                        {t("common.cancel", "Cancel")}
+                        {t("common.cancel", "Hủy")}
                       </Button>
                     </div>
                   </form>
@@ -614,7 +641,7 @@ export function AccountSettings() {
                   <h4 className="font-medium text-blue-900 mb-2">
                     {t(
                       "settings.account.password.requirements",
-                      "Password Requirements"
+                      "Yêu cầu mật khẩu"
                     )}
                   </h4>
                   <ul className="text-sm text-blue-700 space-y-1">
@@ -622,35 +649,35 @@ export function AccountSettings() {
                       •{" "}
                       {t(
                         "settings.account.password.requirement1",
-                        "At least 8 characters long"
+                        "Ít nhất 8 ký tự"
                       )}
                     </li>
                     <li>
                       •{" "}
                       {t(
                         "settings.account.password.requirement2",
-                        "Contains at least one uppercase letter"
+                        "Chứa ít nhất một chữ hoa"
                       )}
                     </li>
                     <li>
                       •{" "}
                       {t(
                         "settings.account.password.requirement3",
-                        "Contains at least one lowercase letter"
+                        "Chứa ít nhất một chữ thường"
                       )}
                     </li>
                     <li>
                       •{" "}
                       {t(
                         "settings.account.password.requirement4",
-                        "Contains at least one number"
+                        "Chứa ít nhất một số"
                       )}
                     </li>
                     <li>
                       •{" "}
                       {t(
                         "settings.account.password.requirement5",
-                        "Contains at least one special character (@$!%*?&)"
+                        "Chứa ít nhất một ký tự đặc biệt (@$!%*?&)"
                       )}
                     </li>
                   </ul>

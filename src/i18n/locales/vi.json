@@ -33,6 +33,7 @@
       "markAsUnread": "Đánh dấu chưa đọc",
       "delete": "Xóa thông báo",
       "loading": "Đang tải...",
+      "refreshing": "Đang làm mới...",
       "unreadCount": "{{count}}+"
     },
     "language": {
@@ -59,10 +60,40 @@
     "previous": "Trước đó",
     "submit": "Gửi",
     "reset": "Đặt lại",
+    "confirm": "Xác nhận",
+    "actions": "Thao tác",
+    "export": "Xuất dữ liệu",
+    "all": "Tất cả",
+    "select": "Chọn",
+    "selectAll": "Chọn tất cả",
+    "email": "Email",
+    "location": "Địa điểm",
+    "notSet": "Chưa thiết lập",
+    "notAvailable": "Không có",
+    "clear": "Xóa bộ lọc",
+    "currency": {
+      "million": "triệu"
+    },
+    "applicationStatus": {
+      "pending": "Đang chờ",
+      "under_review": "Đang xem xét",
+      "reviewing": "Đang xem xét",
+      "interview_scheduled": "Đã lên lịch phỏng vấn",
+      "interviewed": "Đã phỏng vấn",
+      "accepted": "Được chấp nhận",
+      "rejected": "Bị từ chối",
+      "withdrawn": "Đã rút lại",
+      "unknown": "Không xác định"
+    },
+    "views": "lượt xem",
+    "notSpecified": "Không xác định",
+    "create": "Tạo",
+    "creating": "Đang tạo...",
     "companies": {
       "viewCompanyProfile": "Xem hồ sơ công ty"
     },
     "time": {
+      "ago": "{{time}} trước",
       "justNow": "Vừa xong",
       "minutesAgo": "{{count}} phút trước",
       "hoursAgo": "{{count}} giờ trước",
@@ -170,6 +201,290 @@
       }
     }
   },
+  "recruiterApplications": {
+    "title": "Quản lý đơn ứng tuyển",
+    "subtitle": "Xem và quản lý các đơn ứng tuyển cho công việc của bạn",
+    "status": {
+      "pending": "Chờ xử lý",
+      "reviewing": "Đang xem xét",
+      "interviewed": "Đã phỏng vấn",
+      "accepted": "Phù hợp",
+      "rejected": "Chưa phù hợp",
+      "withdrawn": "Đã rút lại"
+    },
+    "stats": {
+      "total": "Tổng đơn ứng tuyển",
+      "pending": "Chờ xử lý",
+      "reviewing": "Đang xem xét",
+      "accepted": "Phù hợp"
+    },
+    "search": {
+      "placeholder": "Tìm kiếm theo tên ứng viên hoặc email..."
+    },
+    "filters": {
+      "selectStatus": "Chọn trạng thái",
+      "advanced": "Bộ lọc nâng cao",
+      "job": "Công việc",
+      "status": "Trạng thái",
+      "search": "Tìm kiếm",
+      "sortBy": "Sắp xếp theo"
+    },
+    "sort": {
+      "newestFirst": "Mới nhất trước",
+      "oldestFirst": "Cũ nhất trước",
+      "recentlyUpdated": "Cập nhật gần đây",
+      "statusAsc": "Trạng thái A-Z"
+    },
+    "actions": {
+      "viewDetail": "Xem chi tiết",
+      "downloadCV": "Tải CV",
+      "changeStatus": "Thay đổi trạng thái",
+      "sendMessage": "Gửi tin nhắn",
+      "scheduleInterview": "Lên lịch phỏng vấn",
+      "markReviewing": "Đánh dấu đang xem xét",
+      "markInterviewed": "Đánh dấu đã phỏng vấn",
+      "scheduleInterview": "Lên lịch phỏng vấn",
+      "accept": "Chấp nhận",
+      "reject": "Từ chối",
+      "review": "Xem xét",
+      "view": "Xem",
+      "download": "Tải xuống",
+      "viewResume": "Xem CV",
+      "contactCandidate": "Liên hệ ứng viên"
+    },
+    "bulkActions": {
+      "changeStatus": "Thay đổi trạng thái",
+      "export": "Xuất dữ liệu",
+      "confirmTitle": "Xác nhận thao tác",
+      "confirmStatusChange": "Bạn có chắc chắn muốn thay đổi trạng thái của {{count}} đơn ứng tuyển thành {{status}}?"
+    },
+    "list": {
+      "title": "Danh sách đơn ứng tuyển"
+    },
+    "detail": {
+      "applicationFor": "Ứng tuyển cho",
+      "changeStatus": "Thay đổi trạng thái",
+      "candidateInfo": "Thông tin ứng viên",
+      "jobInfo": "Thông tin công việc",
+      "timeline": "Lịch sử",
+      "applied": "Đã ứng tuyển",
+      "lastUpdated": "Cập nhật lần cuối",
+      "coverLetter": "Thư xin việc",
+      "resume": "Hồ sơ",
+      "resumeFile": "File hồ sơ"
+    },
+    "empty": {
+      "title": "Chưa có đơn ứng tuyển nào",
+      "noApplications": "Chưa có ứng viên nào ứng tuyển vào công việc của bạn",
+      "noResults": "Không tìm thấy đơn ứng tuyển nào phù hợp với bộ lọc"
+    },
+    "errors": {
+      "fetchFailed": "Không thể tải danh sách đơn ứng tuyển",
+      "fetchJobApplicationsFailed": "Không thể tải đơn ứng tuyển cho công việc này",
+      "fetchStatsFailed": "Không thể tải thống kê",
+      "searchFailed": "Tìm kiếm thất bại",
+      "updateStatusFailed": "Không thể cập nhật trạng thái",
+      "bulkUpdateFailed": "Không thể cập nhật hàng loạt",
+      "loadFailed": "Tải dữ liệu thất bại",
+      "generic": "Đã xảy ra lỗi không xác định"
+    },
+    "messages": {
+      "statusUpdated": "Đã cập nhật trạng thái thành {{status}}",
+      "bulkUpdateSuccess": "Đã cập nhật {{count}} đơn ứng tuyển thành {{status}}",
+      "exportStarted": "Bắt đầu xuất dữ liệu"
+    },
+    "statusUpdateSuccess": "Cập nhật trạng thái thành công",
+    "statusUpdateError": "Không thể cập nhật trạng thái",
+    "results": {
+      "showing": "Hiển thị {{count}} kết quả"
+    },
+    "pagination": {
+      "showing": "Hiển thị {{start}}-{{end}} trong tổng số {{total}} kết quả"
+    },
+    "selected": "{{count}} đã chọn",
+    "appliedAt": "Ứng tuyển lúc",
+    "lastUpdated": "Cập nhật lần cuối",
+    "coverLetter": "Thư xin việc",
+    "table": {
+      "candidate": "Ứng viên",
+      "job": "Công việc",
+      "status": "Trạng thái",
+      "appliedAt": "Ngày ứng tuyển"
+    }
+  },
+  "recruiterInterviews": {
+    "title": "Quản lý phỏng vấn",
+    "subtitle": "Xem và quản lý các cuộc phỏng vấn",
+    "status": {
+      "scheduled": "Đã lên lịch",
+      "confirmed": "Đã xác nhận",
+      "in_progress": "Đang diễn ra",
+      "completed": "Hoàn thành",
+      "cancelled": "Đã hủy",
+      "no_show": "Không đến",
+      "rescheduled": "Đã dời lịch"
+    },
+    "type": {
+      "phone": "Điện thoại",
+      "video": "Video",
+      "in_person": "Trực tiếp",
+      "technical": "Kỹ thuật",
+      "hr": "Nhân sự",
+      "final": "Cuối cùng"
+    },
+    "table": {
+      "candidate": "Ứng viên",
+      "job": "Công việc",
+      "type": "Loại",
+      "scheduledAt": "Thời gian",
+      "status": "Trạng thái"
+    },
+    "actions": {
+      "viewDetail": "Xem chi tiết",
+      "edit": "Chỉnh sửa",
+      "reschedule": "Dời lịch",
+      "sendReminder": "Gửi nhắc nhở",
+      "cancel": "Hủy",
+      "complete": "Hoàn thành",
+      "createInterview": "Tạo lịch phỏng vấn"
+    },
+    "empty": {
+      "noInterviews": "Chưa có cuộc phỏng vấn nào"
+    },
+    "createModal": {
+      "title": "Tạo lịch phỏng vấn",
+      "subtitle": "Tạo lịch phỏng vấn với {{candidateName}} cho vị trí {{jobTitle}}",
+      "form": {
+        "interviewType": {
+          "label": "Loại phỏng vấn",
+          "placeholder": "Chọn loại phỏng vấn",
+          "description": "Chọn hình thức phỏng vấn"
+        },
+        "scheduledAt": {
+          "label": "Ngày & Giờ phỏng vấn",
+          "placeholder": "Chọn ngày và giờ",
+          "description": "Chọn thời gian diễn ra phỏng vấn"
+        },
+        "duration": {
+          "label": "Thời lượng (phút)",
+          "placeholder": "60",
+          "description": "Phỏng vấn sẽ kéo dài bao lâu?"
+        },
+        "location": {
+          "label": "Địa điểm",
+          "placeholder": "Nhập địa điểm phỏng vấn",
+          "description": "Phỏng vấn sẽ diễn ra ở đâu?"
+        },
+        "meetingLink": {
+          "label": "Link cuộc họp",
+          "placeholder": "https://meet.google.com/...",
+          "description": "Link video call cho phỏng vấn trực tuyến"
+        },
+        "notes": {
+          "label": "Ghi chú",
+          "placeholder": "Ghi chú thêm về cuộc phỏng vấn...",
+          "description": "Thông tin bổ sung hoặc ghi chú chuẩn bị"
+        }
+      },
+      "buttons": {
+        "cancel": "Hủy",
+        "create": "Tạo lịch phỏng vấn",
+        "creating": "Đang tạo..."
+      }
+    },
+    "validation": {
+      "interviewType": {
+        "required": "Vui lòng chọn loại phỏng vấn"
+      },
+      "scheduledAt": {
+        "required": "Vui lòng chọn ngày và giờ phỏng vấn",
+        "futureDate": "Phỏng vấn phải được lên lịch cho thời gian tương lai",
+        "businessHours": "Vui lòng lên lịch trong giờ làm việc (9:00 - 18:00)"
+      },
+      "duration": {
+        "required": "Vui lòng nhập thời lượng phỏng vấn",
+        "min": "Phỏng vấn phải kéo dài ít nhất 15 phút",
+        "max": "Phỏng vấn không thể vượt quá 480 phút (8 giờ)"
+      },
+      "location": {
+        "required": "Địa điểm là bắt buộc cho phỏng vấn trực tiếp"
+      },
+      "meetingLink": {
+        "required": "Link cuộc họp là bắt buộc cho phỏng vấn video",
+        "invalidUrl": "Vui lòng nhập link cuộc họp hợp lệ"
+      }
+    },
+    "messages": {
+      "statusUpdated": "Đã cập nhật trạng thái thành {{status}}",
+      "bulkUpdateSuccess": "Đã cập nhật {{count}} cuộc phỏng vấn thành {{status}}",
+      "interviewCreated": "Đã tạo cuộc hẹn phỏng vấn thành công",
+      "interviewUpdated": "Đã cập nhật cuộc phỏng vấn",
+      "interviewDeleted": "Đã xóa cuộc phỏng vấn",
+      "interviewRescheduled": "Đã dời lịch phỏng vấn",
+      "reminderSent": "Đã gửi nhắc nhở",
+      "exportStarted": "Bắt đầu xuất dữ liệu"
+    },
+    "errors": {
+      "updateStatusFailed": "Không thể cập nhật trạng thái",
+      "bulkUpdateFailed": "Không thể cập nhật hàng loạt",
+      "createFailed": "Không thể tạo cuộc hẹn phỏng vấn",
+      "updateFailed": "Không thể cập nhật cuộc phỏng vấn",
+      "deleteFailed": "Không thể xóa cuộc phỏng vấn",
+      "rescheduleFailed": "Không thể dời lịch",
+      "reminderFailed": "Không thể gửi nhắc nhở"
+    }
+  },
+  "companyMembers": {
+    "title": "Quản lý nhân sự",
+    "subtitle": "Quản lý thành viên và phê duyệt đơn xin vào công ty",
+    "yourRole": "Vai trò của bạn",
+    "role": {
+      "owner": "Chủ sở hữu",
+      "admin": "Quản trị viên",
+      "hr": "Nhân sự",
+      "recruiter": "Tuyển dụng",
+      "employee": "Nhân viên"
+    },
+    "status": {
+      "pending": "Chờ duyệt",
+      "approved": "Đã duyệt",
+      "rejected": "Từ chối",
+      "suspended": "Tạm ngưng"
+    },
+    "accessDenied": {
+      "title": "Không có quyền truy cập",
+      "description": "Bạn cần có vai trò Owner hoặc Admin để quản lý nhân sự"
+    },
+    "table": {
+      "member": "Thành viên",
+      "role": "Vai trò",
+      "status": "Trạng thái",
+      "joinedAt": "Ngày tham gia"
+    },
+    "actions": {
+      "approve": "Phê duyệt",
+      "reject": "Từ chối",
+      "updateRole": "Cập nhật vai trò",
+      "remove": "Xóa khỏi công ty",
+      "viewDetail": "Xem chi tiết"
+    },
+    "messages": {
+      "memberStatusUpdated": "Đã cập nhật trạng thái {{status}} cho {{name}}",
+      "memberUpdated": "Đã cập nhật thông tin {{name}}",
+      "memberRemoved": "Đã xóa thành viên khỏi công ty",
+      "bulkApproveSuccess": "Đã phê duyệt {{count}} thành viên với vai trò {{role}}",
+      "bulkRemoveSuccess": "Đã xóa {{count}} thành viên",
+      "exportStarted": "Bắt đầu xuất dữ liệu"
+    },
+    "errors": {
+      "loadRoleFailed": "Không thể tải thông tin vai trò",
+      "approveFailed": "Không thể phê duyệt thành viên",
+      "updateFailed": "Không thể cập nhật thành viên",
+      "removeFailed": "Không thể xóa thành viên",
+      "bulkApproveFailed": "Không thể phê duyệt hàng loạt",
+      "bulkRemoveFailed": "Không thể xóa hàng loạt"
+    }
+  },
   "jobApplication": {
     "modal": {
       "title": "Ứng tuyển",
@@ -256,7 +571,13 @@
     "myApplications": "Đơn ứng tuyển",
     "resumeManagement": "Quản lý CV",
     "accountSettings": "Cài đặt tài khoản",
-    "logout": "Đăng xuất"
+    "logout": "Đăng xuất",
+    "jobManagement": "Quản lý tin tuyển dụng",
+    "applicationsManagement": "Quản lý đơn ứng tuyển",
+    "interviews": "Phỏng vấn",
+    "staffManagement": "Quản lý nhân sự",
+    "userManagement": "Quản lý người dùng",
+    "contentModeration": "Kiểm duyệt nội dung"
   },
   "savedJobs": {
     "title": "Việc làm đã lưu",
@@ -277,6 +598,114 @@
     "searchPlaceholder": "Tìm kiếm theo tên công việc hoặc công ty...",
     "filterByStatus": "Lọc theo trạng thái",
     "selectStatus": "Chọn trạng thái",
+    "status": {
+      "pending": "Chờ xử lý",
+      "reviewed": "Đã xem xét",
+      "interviewed": "Đã phỏng vấn",
+      "offered": "Đã đề nghị",
+      "hired": "Đã tuyển",
+      "rejected": "Chưa phù hợp",
+      "withdrawn": "Đã rút lại"
+    },
+    "sort": {
+      "newestFirst": "Mới nhất trước",
+      "oldestFirst": "Cũ nhất trước",
+      "recentlyUpdated": "Cập nhật gần đây",
+      "statusAsc": "Trạng thái tăng dần"
+    },
+    "table": {
+      "candidate": "Ứng viên",
+      "job": "Công việc",
+      "status": "Trạng thái",
+      "appliedAt": "Ngày ứng tuyển"
+    },
+    "filters": {
+      "selectStatus": "Chọn trạng thái",
+      "advanced": "Bộ lọc nâng cao",
+      "sortBy": "Sắp xếp theo"
+    },
+    "stats": {
+      "pending": "Chờ xử lý",
+      "reviewed": "Đã xem xét",
+      "hired": "Đã tuyển"
+    },
+    "filters": {
+      "selectStatus": "Chọn trạng thái",
+      "advanced": "Bộ lọc nâng cao",
+      "job": "Công việc",
+      "status": "Trạng thái",
+      "search": "Tìm kiếm",
+      "sortBy": "Sắp xếp theo"
+    },
+    "search": {
+      "placeholder": "Tìm kiếm ứng viên..."
+    },
+    "sort": {
+      "newestFirst": "Mới nhất trước",
+      "oldestFirst": "Cũ nhất trước",
+      "recentlyUpdated": "Cập nhật gần đây",
+      "statusAsc": "Trạng thái tăng dần"
+    },
+    "appliedAt": "Ngày ứng tuyển",
+    "lastUpdated": "Cập nhật lần cuối",
+    "coverLetter": "Thư xin việc",
+    "pagination": {
+      "showing": "Hiển thị {start}-{end} của {total} kết quả"
+    },
+    "results": {
+      "showing": "Hiển thị {count} kết quả"
+    },
+    "errors": {
+      "loadFailed": "Không thể tải danh sách ứng tuyển",
+      "generic": "Có lỗi xảy ra khi tải dữ liệu",
+      "fetchJobApplicationsFailed": "Không thể tải danh sách ứng tuyển",
+      "fetchStatsFailed": "Không thể tải thống kê",
+      "searchFailed": "Tìm kiếm thất bại",
+      "updateStatusFailed": "Cập nhật trạng thái thất bại"
+    },
+    "messages": {
+      "statusUpdated": "Đã cập nhật trạng thái thành {status}"
+    },
+    "empty": {
+      "title": "Chưa có đơn ứng tuyển",
+      "noResults": "Không tìm thấy kết quả phù hợp",
+      "noApplications": "Chưa có đơn ứng tuyển nào"
+    },
+    "list": {
+      "title": "Danh sách đơn ứng tuyển"
+    },
+    "detail": {
+      "candidateInfo": "Thông tin ứng viên",
+      "jobInfo": "Thông tin công việc",
+      "timeline": "Timeline",
+      "applied": "Đã ứng tuyển",
+      "lastUpdated": "Cập nhật lần cuối",
+      "coverLetter": "Thư xin việc",
+      "resume": "CV",
+      "resumeFile": "File CV"
+    },
+    "actions": {
+      "view": "Xem",
+      "download": "Tải xuống",
+      "downloadCV": "Tải CV",
+      "viewDetail": "Xem chi tiết",
+      "viewDetails": "Chi tiết",
+      "viewJob": "Xem việc làm",
+      "sendMessage": "Gửi tin nhắn",
+      "scheduleInterview": "Lên lịch phỏng vấn",
+      "review": "Xem xét"
+    },
+    "empty": {
+      "title": "Chưa có đơn ứng tuyển nào",
+      "noApplications": "Chưa có ứng viên nào ứng tuyển"
+    },
+    "list": {
+      "title": "Danh sách đơn ứng tuyển"
+    },
+    "selected": "{{count}} đã chọn",
+    "bulkActions": {
+      "export": "Xuất dữ liệu"
+    },
     "noApplications": "Chưa có đơn ứng tuyển nào",
     "noApplicationsSubtitle": "Bắt đầu ứng tuyển việc làm để xem các đơn ứng tuyển ở đây",
     "noResultsFound": "Không tìm thấy đơn ứng tuyển nào",
@@ -284,13 +713,24 @@
     "browseJobs": "Duyệt việc làm",
     "showingResults": "Hiển thị {{start}}-{{end}} trong tổng số {{total}} đơn ứng tuyển",
     "unknownJob": "Công việc không xác định",
+    "appliedOn": "Nộp đơn",
     "detail": {
       "title": "Chi tiết đơn ứng tuyển",
       "applicationInfo": "Thông tin đơn ứng tuyển",
+      "candidateInfo": "Thông tin ứng viên",
+      "jobInfo": "Thông tin công việc",
+      "timeline": "Lịch sử ứng tuyển",
+      "resume": "Hồ sơ ứng viên",
+      "applied": "Đã ứng tuyển",
+      "lastUpdated": "Cập nhật lần cuối",
+      "notFound": "Không tìm thấy đơn ứng tuyển",
+      "applicationId": "Mã đơn ứng tuyển",
+      "candidateFor": "Ứng tuyển vào vị trí",
       "actions": "Hành động",
       "viewJob": "Xem tin tuyển dụng",
       "contactRecruiter": "Liên hệ nhà tuyển dụng",
-      "coverLetter": "Thư xin việc"
+      "coverLetter": "Thư xin việc",
+      "error": "Không thể tải chi tiết đơn ứng tuyển. Vui lòng thử lại."
     },
     "timeline": {
       "title": "Lịch sử đơn ứng tuyển",
@@ -349,7 +789,51 @@
       "address": "Địa chỉ",
       "bio": "Giới thiệu bản thân",
       "bioPlaceholder": "Hãy kể về bản thân bạn...",
-      "uploadingAvatar": "Đang tải lên ảnh đại diện..."
+      "uploadingAvatar": "Đang tải lên ảnh đại diện...",
+      "validation": {
+        "fullNameMin": "Họ và tên phải có ít nhất 2 ký tự"
+      }
+    },
+    "account": {
+      "info": {
+        "lastUpdated": "Cập nhật lần cuối",
+        "email": "Email",
+        "accountCreated": "Tạo tài khoản"
+      },
+      "password": {
+        "title": "Mật khẩu & Bảo mật",
+        "changePassword": "Đổi mật khẩu",
+        "resetPassword": "Đặt lại mật khẩu",
+        "hideForm": "Ẩn form",
+        "currentPassword": "Mật khẩu hiện tại",
+        "newPassword": "Mật khẩu mới",
+        "confirmPassword": "Xác nhận mật khẩu mới",
+        "enterCurrentPassword": "Nhập mật khẩu hiện tại",
+        "enterNewPassword": "Nhập mật khẩu mới",
+        "confirmNewPassword": "Xác nhận mật khẩu mới",
+        "updatePassword": "Cập nhật mật khẩu",
+        "requirements": "Yêu cầu mật khẩu",
+        "requirement1": "Ít nhất 8 ký tự",
+        "requirement2": "Chứa ít nhất một chữ hoa",
+        "requirement3": "Chứa ít nhất một chữ thường",
+        "requirement4": "Chứa ít nhất một số",
+        "requirement5": "Chứa ít nhất một ký tự đặc biệt (@$!%*?&)",
+        "currentPassword": "Mật khẩu hiện tại",
+        "newPassword": "Mật khẩu mới",
+        "confirmPassword": "Xác nhận mật khẩu mới",
+        "enterCurrentPassword": "Nhập mật khẩu hiện tại",
+        "enterNewPassword": "Nhập mật khẩu mới",
+        "confirmNewPassword": "Xác nhận mật khẩu mới",
+        "updatePassword": "Cập nhật mật khẩu",
+        "requirements": "Yêu cầu mật khẩu",
+        "validation": {
+          "currentRequired": "Mật khẩu hiện tại là bắt buộc",
+          "minLength": "Mật khẩu mới phải có ít nhất 8 ký tự",
+          "complexity": "Mật khẩu phải chứa chữ hoa, chữ thường, số và ký tự đặc biệt",
+          "confirmRequired": "Vui lòng xác nhận mật khẩu mới",
+          "mismatch": "Mật khẩu không khớp"
+        }
+      }
     },
     "password": {
       "title": "Đổi mật khẩu",
@@ -417,15 +901,65 @@
       "exportMyData": "Xuất dữ liệu của tôi"
     }
   },
+  "recruiterInterviews": {
+    "title": "Quản lý lịch phỏng vấn",
+    "subtitle": "Quản lý và theo dõi tất cả các cuộc phỏng vấn của bạn",
+    "status": {
+      "scheduled": "Đã lên lịch",
+      "completed": "Hoàn thành",
+      "cancelled": "Đã hủy",
+      "rescheduled": "Đổi lịch",
+      "no_show": "Không đến"
+    },
+    "type": {
+      "phone": "Điện thoại",
+      "video": "Video",
+      "in_person": "Trực tiếp"
+    },
+    "empty": {
+      "noInterviews": "Chưa có cuộc phỏng vấn nào"
+    },
+    "table": {
+      "candidate": "Ứng viên",
+      "job": "Công việc",
+      "type": "Loại",
+      "scheduledAt": "Thời gian",
+      "status": "Trạng thái"
+    }
+  },
+  "recruiterStaff": {
+    "noCompany": {
+      "title": "Bạn chưa thuộc công ty nào",
+      "description": "Để quản lý nhân sự, bạn cần tạo mới hoặc tham gia một công ty.",
+      "createCompany": "Tạo công ty mới",
+      "joinCompany": "Tham gia công ty"
+    }
+  },
+  "validation": {
+    "required": "Trường này là bắt buộc",
+    "selectOption": "Vui lòng chọn một tùy chọn",
+    "enterValidInput": "Vui lòng nhập thông tin hợp lệ",
+    "interview": {
+      "selectType": "Vui lòng chọn loại phỏng vấn",
+      "selectDateTime": "Vui lòng chọn ngày và giờ phỏng vấn",
+      "minDuration": "Phỏng vấn phải có ít nhất {{min}} phút",
+      "maxDuration": "Phỏng vấn không được vượt quá {{max}} phút",
+      "futureDate": "Phỏng vấn phải được lên lịch cho thời gian trong tương lai",
+      "locationRequired": "Địa điểm là bắt buộc cho phỏng vấn trực tiếp",
+      "meetingLinkRequired": "Link cuộc họp là bắt buộc cho phỏng vấn video",
+      "validUrl": "Vui lòng nhập link hợp lệ"
+    }
+  },
   "applicationStatus": {
     "pending": "Đang chờ",
     "under_review": "Đang xem xét",
-    "interview_scheduled": "Đã lên lịch phỏng vấn",
-    "rejected": "Bị từ chối",
-    "accepted": "Được chấp nhận"
+    "interviewed": "Đã phỏng vấn",
+    "rejected": "Chưa phù hợp",
+    "accepted": "Phù hợp"
   },
   "jobs": {
     "unknownCompany": "Công ty không xác định",
+    "unknownJob": "Công việc không xác định",
     "remote": "Làm việc từ xa",
     "title": "Tìm Việc Làm",
     "findJobs": "Tìm Việc Làm",
@@ -433,6 +967,15 @@
     "locationPlaceholder": "Thành phố hoặc mã bưu điện",
     "searchButton": "Tìm Việc Làm",
     "discoverOpportunities": "Khám phá cơ hội nghề nghiệp tiếp theo của bạn từ hàng nghìn tin tuyển dụng",
+    "types": {
+      "full_time": "Toàn thời gian",
+      "part_time": "Bán thời gian",
+      "contract": "Hợp đồng",
+      "freelance": "Tự do",
+      "internship": "Thực tập",
+      "temporary": "Tạm thời"
+    },
+    "featured": "Nổi bật",
     "details": {
       "jobDescription": "Mô tả công việc",
       "requirements": "Yêu cầu",
@@ -534,13 +1077,23 @@
     "employees": "nhân viên",
     "openPositions": "vị trí đang tuyển"
   },
+  "search": {
+    "jobPlaceholder": "Tên công việc, từ khóa...",
+    "locationPlaceholder": "Địa điểm",
+    "filtersButton": "Bộ lọc",
+    "advancedFilters": "Bộ lọc nâng cao",
+    "searchJobs": "Tìm việc làm",
+    "search": "Tìm kiếm"
+  },
   "hero": {
     "title": {
-      "main": "Khởi đầu mới – Cơ hội lớn –",
-      "highlight": "Thành công thật",
+      "main": "Có",
+      "count": "93,178",
+      "postings": "Công việc",
+      "forYou": "Dành cho bạn!",
       "subtitle": ""
     },
-    "description": "Bắt đầu hành trình sự nghiệp với những cơ hội tuyệt vời",
+    "description": "Tìm việc làm, cơ hội nghề nghiệp & phát triển sự nghiệp",
     "search": {
       "title": "Tìm việc làm mơ ước",
       "subtitle": "Khám phá hàng nghìn cơ hội việc làm từ các công ty hàng đầu",
@@ -548,7 +1101,8 @@
       "locationPlaceholder": "Thành phố hoặc mã bưu điện",
       "button": "Tìm việc làm"
     },
-    "popularSearches": "Tìm kiếm phổ biến"
+    "popularSearches": "Tìm kiếm phổ biến",
+    "popularSearchTerms": "Thiết kế, Lập trình, Web, IOS, PHP, Senior, Kỹ sư"
   },
   "contact": {
     "title": "Liên hệ với chúng tôi",
@@ -557,6 +1111,190 @@
       "emailPlaceholder": "Địa chỉ email",
       "messagePlaceholder": "Tin nhắn",
       "sendButton": "Gửi tin nhắn"
+    }
+  },
+  "recruiter": {
+    "jobs": {
+      "management": {
+        "title": "Quản lý tin tuyển dụng",
+        "subtitle": "Quản lý tất cả tin tuyển dụng của công ty bạn",
+        "jobsList": "Danh sách tin tuyển dụng",
+        "createJob": "Tạo tin mới",
+        "createFirstJob": "Tạo tin tuyển dụng đầu tiên",
+        "noJobs": "Chưa có tin tuyển dụng nào",
+        "confirmDelete": "Bạn có chắc chắn muốn xóa tin tuyển dụng này?",
+        "deleteSuccess": "Đã xóa tin tuyển dụng thành công",
+        "errors": {
+          "fetchFailed": "Không thể tải danh sách tin tuyển dụng",
+          "deleteFailed": "Không thể xóa tin tuyển dụng"
+        }
+      },
+      "fields": {
+        "title": "Tiêu đề",
+        "type": "Loại hình",
+        "location": "Địa điểm",
+        "salary": "Mức lương",
+        "salaryMin": "Mức lương tối thiểu",
+        "salaryMax": "Mức lương tối đa",
+        "salaryDescription": "Mô tả lương",
+        "status": "Trạng thái",
+        "actions": "Thao tác",
+        "applications": "Ứng tuyển",
+        "postedDate": "Ngày đăng",
+        "description": "Mô tả công việc",
+        "requirements": "Yêu cầu công việc",
+        "benefits": "Quyền lợi",
+        "expiresAt": "Ngày hết hạn"
+      },
+      "type": {
+        "full_time": "Toàn thời gian",
+        "part_time": "Bán thời gian",
+        "contract": "Hợp đồng",
+        "internship": "Thực tập",
+        "temporary": "Tạm thời",
+        "freelance": "Tự do"
+      },
+      "status": {
+        "pending": "Chờ phê duyệt",
+        "active": "Đang hoạt động",
+        "inactive": "Tạm ngưng",
+        "closed": "Đã đóng",
+        "rejected": "Từ chối"
+      },
+      "actions": {
+        "label": "Thao tác",
+        "edit": "Chỉnh sửa tin",
+        "delete": "Xóa tin",
+        "extend": "Gia hạn tin",
+        "duplicate": "Nhân bản",
+        "more": "Thêm hành động",
+        "view": "Xem chi tiết",
+        "changeStatus": "Thay đổi trạng thái"
+      },
+      "detail": {
+        "notFound": "Không tìm thấy công việc",
+        "jobDescription": "Mô tả công việc",
+        "requirements": "Yêu cầu",
+        "jobDetails": "Chi tiết công việc",
+        "posted": "Đã đăng",
+        "applications": "Đơn ứng tuyển",
+        "noApplications": "Chưa có đơn ứng tuyển",
+        "noApplicationsSubtitle": "Chưa có ai ứng tuyển vào vị trí này",
+        "tabs": {
+          "overview": "Tổng quan",
+          "applications": "Đơn ứng tuyển"
+        }
+      },
+      "statusManager": {
+        "currentStatus": "Trạng thái hiện tại",
+        "changeToStatus": "Thay đổi thành",
+        "confirmTitle": "Xác nhận thay đổi trạng thái",
+        "confirmDescription": "Bạn có chắc chắn muốn thay đổi trạng thái tin tuyển dụng thành {{status}}?"
+      },
+      "create": {
+        "title": "Tạo tin tuyển dụng mới",
+        "description": "Điền thông tin chi tiết để tạo tin tuyển dụng mới cho công ty của bạn",
+        "formTitle": "Thông tin cơ bản",
+        "formDescription": "Điền thông tin chi tiết để tạo tin tuyển dụng mới cho công ty của bạn",
+        "sections": {
+          "basicInfo": "Thông tin cơ bản",
+          "jobDetails": "Chi tiết công việc",
+          "requirements": "Yêu cầu công việc",
+          "benefits": "Quyền lợi",
+          "salaryInfo": "Thông tin lương",
+          "publishingSettings": "Cài đặt đăng tin"
+        },
+        "placeholders": {
+          "title": "Ví dụ: Senior Software Engineer",
+          "type": "Chọn loại hình công việc",
+          "location": "Ví dụ: Hồ Chí Minh, Việt Nam",
+          "salary": "Ví dụ: 15-25 triệu VND hoặc Thỏa thuận",
+          "salaryMin": "Ví dụ: 15000000",
+          "salaryMax": "Ví dụ: 25000000",
+          "description": "Mô tả chi tiết về công việc, yêu cầu và quyền lợi...",
+          "requirements": "Yêu cầu về kinh nghiệm, kỹ năng...",
+          "benefits": "Các quyền lợi và phúc lợi cho nhân viên...",
+          "salaryDescription": "VD: 15-25 triệu VND hoặc Thỏa thuận",
+          "expiresAt": "YYYY-MM-DD"
+        },
+        "salaryHelp": "Có thể để trống hoặc nhập khoảng lương/thỏa thuận",
+        "statusHelp": "Tin tuyển dụng sẽ chờ phê duyệt từ Admin",
+        "expiresHelp": "Ngày hết hạn tuyển dụng (tùy chọn)",
+        "preview": "Xem trước",
+        "statusInfo": {
+          "title": "Quy trình phê duyệt tin tuyển dụng",
+          "description": "Tin tuyển dụng sẽ được gửi để chờ phê duyệt từ Admin trước khi hiển thị công khai cho ứng viên."
+        }
+      },
+      "messages": {
+        "createSuccess": "Tạo tin tuyển dụng thành công",
+        "createError": "Không thể tạo tin tuyển dụng",
+        "updateSuccess": "Cập nhật tin tuyển dụng thành công",
+        "updateError": "Không thể cập nhật tin tuyển dụng"
+      },
+      "extend": {
+        "title": "Gia hạn tin tuyển dụng",
+        "description": "Chọn thời gian gia hạn cho tin tuyển dụng",
+        "newExpiryDate": "Ngày hết hạn mới",
+        "confirm": "Xác nhận gia hạn",
+        "success": "Gia hạn tin tuyển dụng thành công",
+        "error": "Không thể gia hạn tin tuyển dụng"
+      },
+      "detailPage": {
+        "viewTitle": "Chi tiết tin tuyển dụng",
+        "editTitle": "Chỉnh sửa tin tuyển dụng"
+      },
+      "errors": {
+        "notFound": "Không tìm thấy tin tuyển dụng"
+      }
+    }
+  },
+  "admin": {
+    "jobs": {
+      "title": "Kiểm duyệt nội dung",
+      "subtitle": "Xem xét và kiểm duyệt các bài đăng tuyển dụng và nội dung",
+      "status": {
+        "pending": "Chờ duyệt",
+        "approved": "Đã duyệt",
+        "rejected": "Đã từ chối"
+      },
+      "pendingJobs": {
+        "title": "Việc làm chờ duyệt",
+        "titleWithCount": "Việc làm chờ duyệt ({{count}})",
+        "loading": "Đang tải việc làm chờ duyệt...",
+        "empty": {
+          "title": "Không có việc làm chờ duyệt",
+          "message": "Tất cả việc làm đã được xem xét. Làm tốt lắm!"
+        },
+        "error": {
+          "title": "Không thể tải việc làm",
+          "message": "Có lỗi khi tải việc làm chờ duyệt. Vui lòng thử lại."
+        }
+      },
+      "actions": {
+        "viewDetails": "Xem chi tiết",
+        "approve": "Phê duyệt",
+        "reject": "Từ chối"
+      },
+      "approve": {
+        "title": "Phê duyệt tin tuyển dụng",
+        "description": "Bạn có chắc chắn muốn phê duyệt tin này?",
+        "approving": "Đang phê duyệt..  .",
+        "approveJob": "Phê duyệt",
+        "success": "Phê duyệt việc làm thành công",
+        "error": "Không thể phê duyệt việc làm"
+      },
+      "reject": {
+        "title": "Từ chối tin tuyển dụng",
+        "description": "Vui lòng cung cấp lý do từ chối.",
+        "reasonLabel": "Lý do từ chối",
+        "reasonPlaceholder": "Vui lòng giải thích tại sao việc làm này bị từ chối...",
+        "reasonRequired": "Vui lòng cung cấp lý do từ chối",
+        "rejecting": "Đang từ chối...",
+        "rejectJob": "Từ chối",
+        "success": "Từ chối việc làm thành công",
+        "error": "Không thể từ chối việc làm"
+      }
     }
   }
 }

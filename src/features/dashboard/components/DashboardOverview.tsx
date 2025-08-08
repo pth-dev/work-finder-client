@@ -8,13 +8,15 @@ import {
 } from "./";
 
 export function DashboardOverview() {
-  const { user, isInitializing } = useAuthStore();
+  const { user, isInitializing, isAuthenticated } = useAuthStore();
   const { data: userWithStats, isLoading: statsLoading } = useUserWithStats();
   const { data: applicationsData, isLoading: applicationsLoading } =
     useRecentApplications(5);
   const isProfileComplete = Boolean(user && user.full_name && user.phone);
 
-  if (isInitializing || statsLoading) {
+  // ✅ FIX: Only show loading if we're actually initializing AND not authenticated yet
+  // If user is authenticated (just logged in), don't show auth loading
+  if ((isInitializing && !isAuthenticated) || statsLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>

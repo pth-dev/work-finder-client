@@ -1,13 +1,13 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface LoadingState {
   // Global loading states
   isLoading: boolean;
   loadingMessage?: string;
-  
+
   // Specific operation loading states
   operations: Record<string, boolean>;
-  
+
   // Actions
   setLoading: (loading: boolean, message?: string) => void;
   setOperationLoading: (operation: string, loading: boolean) => void;
@@ -28,17 +28,25 @@ export const useLoadingStore = create<LoadingState>((set, get) => ({
   },
 
   setOperationLoading: (operation: string, loading: boolean) => {
-    set((state) => ({
-      operations: {
+    set((state) => {
+      const newOperations = {
         ...state.operations,
         [operation]: loading,
-      },
-      // Update global loading if any operation is loading
-      isLoading: loading || Object.values({
-        ...state.operations,
-        [operation]: loading,
-      }).some(Boolean),
-    }));
+      };
+
+      // ✅ FIX: Clean up completed operations to prevent memory leaks
+      if (!loading) {
+        delete newOperations[operation];
+      }
+
+      const hasAnyLoading = Object.values(newOperations).some(Boolean);
+
+      return {
+        operations: newOperations,
+        // Update global loading if any operation is loading
+        isLoading: hasAnyLoading,
+      };
+    });
   },
 
   isOperationLoading: (operation: string) => {

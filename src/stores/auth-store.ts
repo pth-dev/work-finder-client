@@ -40,10 +40,11 @@ export const useAuthStore = create<AuthStore>()(
 
       // Actions
       setUser: (user: User | null) => {
-        set({
+        set((state) => ({
           user,
           isAuthenticated: !!user,
-        });
+          isInitializing: false, // ✅ Set initialized when user is set
+        }));
       },
 
       clearAuth: () => {

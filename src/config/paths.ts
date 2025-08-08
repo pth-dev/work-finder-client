@@ -92,17 +92,31 @@ export const paths = {
       path: "jobs",
       getHref: () => "/recruiter/jobs",
     },
-    candidates: {
-      path: "candidates",
-      getHref: () => "/recruiter/candidates",
+    createJob: {
+      path: "jobs/create",
+      getHref: () => "/recruiter/jobs/create",
+    },
+    jobDetail: {
+      path: "jobs/:id",
+      getHref: (id: string | number) => `/recruiter/jobs/${id}`,
+    },
+    jobApplicationDetail: {
+      path: "jobs/:jobId/applications/:applicationId",
+      getHref: (jobId: string | number, applicationId: string | number) =>
+        `/recruiter/jobs/${jobId}/applications/${applicationId}`,
+    },
+    applications: {
+      path: "applications",
+      getHref: () => "/recruiter/applications",
     },
     interviews: {
       path: "interviews",
       getHref: () => "/recruiter/interviews",
     },
-    analytics: {
-      path: "analytics",
-      getHref: () => "/recruiter/analytics",
+
+    staff: {
+      path: "staff",
+      getHref: () => "/recruiter/staff",
     },
   },
 
@@ -120,13 +134,9 @@ export const paths = {
       path: "users",
       getHref: () => "/admin/users",
     },
-    companies: {
-      path: "companies",
-      getHref: () => "/admin/companies",
-    },
-    analytics: {
-      path: "analytics",
-      getHref: () => "/admin/analytics",
+    jobs: {
+      path: "jobs",
+      getHref: () => "/admin/jobs",
     },
   },
 

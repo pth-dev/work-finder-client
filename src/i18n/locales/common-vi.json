@@ -19,7 +19,8 @@
     "retry": "Thử lại",
     "refresh": "Làm mới",
     "continue": "Tiếp tục",
-    "skip": "Bỏ qua"
+    "skip": "Bỏ qua",
+    "goBack": "Quay lại"
   },
   "statuses": {
     "loading": "Đang tải...",
@@ -255,7 +256,21 @@
     "errorLoadingCompany": "Lỗi tải thông tin công ty",
     "couldNotLoadCompany": "Chúng tôi không thể tải thông tin công ty. Vui lòng thử lại sau.",
     "tryAgain": "Thử lại",
-    "searchPlaceholder": "Tìm kiếm công ty, ngành nghề hoặc công nghệ"
+    "searchPlaceholder": "Tìm kiếm công ty, ngành nghề hoặc công nghệ",
+    "companyNotFound": "Không tìm thấy công ty",
+    "companyNotFoundMessage": "Công ty bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.",
+    "companyDetails": "Thông tin công ty",
+    "industry": "Ngành nghề",
+    "location": "Địa điểm",
+    "companySize": "Quy mô công ty",
+    "founded": "Thành lập",
+    "connect": "Kết nối",
+    "visitWebsite": "Truy cập website",
+    "share": "Chia sẻ",
+    "following": "Đang theo dõi",
+    "jobsCount": "{{count}} việc làm",
+    "noOpenPositions": "Không có vị trí tuyển dụng",
+    "noOpenPositionsMessage": "Công ty này hiện không có vị trí tuyển dụng nào."
   },
   "jobs": {
     "backToJobs": "Quay lại danh sách việc làm",
@@ -351,12 +366,14 @@
     },
     "applicationStatus": {
       "pending": "Đang chờ",
+      "under_review": "Đang xem xét",
       "reviewing": "Đang xem xét",
+      "interview_scheduled": "Đã lên lịch phỏng vấn",
       "shortlisted": "Được chọn",
-      "interview": "Phỏng vấn",
+      "interviewed": "Đã phỏng vấn",
       "offered": "Được nhận",
-      "accepted": "Đã chấp nhận",
-      "rejected": "Bị từ chối",
+      "accepted": "Phù hợp",
+      "rejected": "Chưa phù hợp",
       "withdrawn": "Đã rút",
       "unknown": "Không xác định"
     },

@@ -1,7 +1,6 @@
 export const ApplicationStatus = {
   PENDING: "pending",
   REVIEWING: "reviewing",
-  INTERVIEW_SCHEDULED: "interview_scheduled",
   INTERVIEWED: "interviewed",
   ACCEPTED: "accepted",
   REJECTED: "rejected",
@@ -27,17 +26,37 @@ export interface Application {
   updated_at: string;
   job_post?: {
     job_id: number;
-    title: string;
-    company: {
+    job_title: string;
+    company_id: number;
+    location?: string;
+    job_type?: string;
+    salary_min?: number;
+    salary_max?: number;
+    description?: string;
+    requirements?: string;
+    benefits?: string;
+    company?: {
+      company_id: number;
       company_name: string;
       company_image?: string;
     };
   };
   resume?: {
     resume_id: number;
+    user_id: number;
     file_name: string;
     file_path: string;
+    upload_time?: string;
   };
+  interviews?: Array<{
+    interview_id: number;
+    application_id: number;
+    interviewer_id?: number;
+    interview_type: string;
+    scheduled_at?: string;
+    status?: string;
+    notes?: string;
+  }>;
   user?: {
     user_id: number;
     full_name: string;

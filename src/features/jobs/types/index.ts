@@ -8,7 +8,12 @@ export type ApiJobType =
   | "internship"
   | "temporary";
 
-export type ApiJobStatus = "active" | "inactive" | "closed" | "draft";
+export type ApiJobStatus =
+  | "active"
+  | "inactive"
+  | "closed"
+  | "pending"
+  | "rejected";
 
 export interface ApiCompany {
   company_id: number;
@@ -81,4 +86,36 @@ export interface ApiJobSearchFilters {
   company_id?: number;
   sortBy?: string;
   sortOrder?: "ASC" | "DESC";
+  status?: ApiJobStatus; // Add status filter for recruiter
+}
+
+// ===== CREATE/UPDATE JOB TYPES =====
+
+export interface CreateJobRequest {
+  company_id: number;
+  job_title: string;
+  description?: string;
+  requirements?: string;
+  benefits?: string;
+  location?: string;
+  salary_min?: number;
+  salary_max?: number;
+  salary?: string;
+  job_type?: ApiJobType;
+  status?: ApiJobStatus;
+  expires_at?: string;
+}
+
+export interface UpdateJobRequest {
+  job_title?: string;
+  description?: string;
+  requirements?: string;
+  benefits?: string;
+  location?: string;
+  salary_min?: number;
+  salary_max?: number;
+  salary?: string;
+  job_type?: ApiJobType;
+  status?: ApiJobStatus;
+  expires_at?: string;
 }

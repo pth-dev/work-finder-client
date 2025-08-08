@@ -7,6 +7,7 @@ import { useFeaturedJobs, useSaveJob } from "../hooks";
 import { ApiJobPost } from "../types";
 import { Job } from "@/types";
 import { formatTimeAgo, formatSalary } from "@/utils/common";
+import { formatJobType } from "@/i18n/business-helpers";
 import { generateJobSlug } from "@/utils/slug-utils";
 import {
   JobCard,
@@ -22,13 +23,12 @@ interface FeaturedJobsProps {
   className?: string;
 }
 
-// ✅ Helper function to transform backend job to UI props
 const transformJobToCardProps = (
   job: ApiJobPost,
   onBookmark: (jobId: string, currentlySaved: boolean) => void,
   onClick: (job: ApiJobPost) => void,
   isBookmarked: boolean,
-  t: any // i18n translation function
+  t: any
 ) => {
   // Create tags
   const tags = [];
@@ -36,7 +36,7 @@ const transformJobToCardProps = (
   // Job type tag
   if (job.job_type) {
     tags.push({
-      text: job.job_type.replace("_", "-"),
+      text: formatJobType(t, job.job_type),
       variant: "secondary" as const,
       color: "blue" as const,
     });
@@ -84,7 +84,6 @@ export const FeaturedJobs: React.FC<FeaturedJobsProps> = ({
   const { t } = useTranslation();
   const { mutate: saveJobMutation } = useSaveJob();
 
-  // ✅ BACKEND-FIRST: Use API data directly
   const { data: apiResponse, isLoading, error } = useFeaturedJobs(limit);
   const jobs = apiResponse?.data?.jobs || [];
 

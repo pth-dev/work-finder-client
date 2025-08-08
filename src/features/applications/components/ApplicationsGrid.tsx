@@ -1,10 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  FileText,
-  Briefcase 
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, FileText, Briefcase } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { ApplicationCard } from "./ApplicationCard";
 
@@ -18,6 +13,7 @@ interface Application {
     job_id: number;
     job_title: string;
     location?: string;
+    salary?: string;
     salary_min?: number;
     salary_max?: number;
     job_type?: string;
@@ -89,19 +85,23 @@ export function ApplicationsGrid({
         <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
           <FileText className="h-12 w-12 text-gray-400" />
         </div>
-        
+
         <h3 className="text-lg font-semibold text-gray-900 mb-2">
           {filters.search || filters.status
             ? t("applications.noResultsFound", "No applications found")
-            : t("applications.noApplications", "No applications yet")
-          }
+            : t("applications.noApplications", "No applications yet")}
         </h3>
-        
+
         <p className="text-gray-600 mb-6 max-w-md mx-auto">
           {filters.search || filters.status
-            ? t("applications.noResultsSubtitle", "Try adjusting your filters to see more results")
-            : t("applications.noApplicationsSubtitle", "Start applying to jobs to see your applications here")
-          }
+            ? t(
+                "applications.noResultsSubtitle",
+                "Try adjusting your filters to see more results"
+              )
+            : t(
+                "applications.noApplicationsSubtitle",
+                "Start applying to jobs to see your applications here"
+              )}
         </p>
 
         {!filters.search && !filters.status && (
@@ -121,16 +121,20 @@ export function ApplicationsGrid({
       {/* Results Summary */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-gray-600">
-          {t("applications.showingResults", "Showing {{start}}-{{end}} of {{total}} applications", {
-            start: (currentPage - 1) * (filters.limit || 10) + 1,
-            end: Math.min(currentPage * (filters.limit || 10), total),
-            total,
-          })}
+          {t(
+            "applications.showingResults",
+            "Showing {{start}}-{{end}} of {{total}} applications",
+            {
+              start: (currentPage - 1) * (filters.limit || 10) + 1,
+              end: Math.min(currentPage * (filters.limit || 10), total),
+              total,
+            }
+          )}
         </p>
       </div>
 
-      {/* Applications List */}
-      <div className="space-y-4">
+      {/* Applications Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {applications.map((application) => (
           <ApplicationCard
             key={application.application_id}
